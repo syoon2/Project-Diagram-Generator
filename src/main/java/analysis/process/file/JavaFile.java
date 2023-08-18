@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class JavaFile extends GenericFile {
 
@@ -15,6 +17,8 @@ public class JavaFile extends GenericFile {
 	private final static String[] KEY_BUFFER_PHRASES = new String[] {"(", ")", "<", ">"};
 	private final static String[] REMOVE_TERMS = new String[] {"volatile", "abstract", "static", "final"};
 	private final static String REGEX_VISIBILITY_FILE_DEF = "((public|private|protected) )?";
+
+	private static Logger logger = LogManager.getLogger();
 
 //---  Constructors   -------------------------------------------------------------------------
 	
@@ -94,7 +98,7 @@ public class JavaFile extends GenericFile {
 	}
 
 	private void processInstanceVariable(String in) {
-		System.out.println(in);
+		logger.debug(in);
 		in = removeEquals(in);
 		boolean underline = false;
 		boolean fina = false;
@@ -105,7 +109,7 @@ public class JavaFile extends GenericFile {
 			fina = true;
 		}
 		String[] cont = cleanInput(in);
-		System.out.println(Arrays.toString(cont));
+		logger.debug(Arrays.toString(cont));
 		int vis = processVisibility(cont[0]);
 		String typ = compileType(cont, 1);
 		addInstanceVariableToClass(vis, cont[cont.length - 1], typ, underline, fina);

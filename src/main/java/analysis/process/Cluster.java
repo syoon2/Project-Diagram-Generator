@@ -6,7 +6,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+
 public class Cluster {
+
+	private static Logger logger = LogManager.getLogger();
 
 //---  Instance Variables   -------------------------------------------------------------------
 	
@@ -120,9 +125,9 @@ public class Cluster {
 	}
 	
 	private void debugPrintOut(int d) {
-		System.out.println(tabBuffer(d) + getAddress());
+		logger.debug(tabBuffer(d) + getAddress());
 		for(String gd : getComponents()) {
-			System.out.println(tabBuffer(d) + "  " + gd);
+			logger.debug(tabBuffer(d) + "  " + gd);
 		}
 		for(Cluster c : getChildren()) {
 			c.debugPrintOut(d + 1);

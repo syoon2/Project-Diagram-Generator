@@ -51,7 +51,7 @@ public class ConvertVisual  {
 	public static File draw(String dotData, String name, Format format) {
 		File folder = new File(imagePath);
 		folder.mkdir();
-		System.out.println( settingsPath + "/config.txt");
+		logger.debug( settingsPath + "/config.txt");
 		Graphviz graphviz = Graphviz.fromString(dotData);
 		
 		File out = new File(imagePath + File.separator + name + FilenameUtils.EXTENSION_SEPARATOR + format.fileExtension);

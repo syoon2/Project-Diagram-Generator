@@ -9,11 +9,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+
 import analysis.language.actor.GenericDefinition;
 import analysis.process.file.FileFactory;
 import analysis.process.file.GenericFile;
 
 public class Explore{
+
+	private static Logger logger = LogManager.getLogger();
 	
 //---  Instance Variables   -------------------------------------------------------------------
 		
@@ -49,14 +54,14 @@ public class Explore{
 	
 	public void run() {
 		File use = new File(rootPath);
-		System.out.println("Begun exploring files");
+		logger.info("Begun exploring files");
 		explore(use);
-		System.out.println("Finished exploring files");
-		System.out.println("Begun processing files");
+		logger.info("Finished exploring files");
+		logger.info("Begun processing files");
 		for(GenericFile f : files) {
 			f.process(getDefinitionMapping(), parent);
 		}
-		System.out.println("Finished processing files");
+		logger.info("Finished processing files");
 	}
 	
 	private void explore(File root) {
