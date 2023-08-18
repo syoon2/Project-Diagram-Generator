@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import analysis.language.actor.GenericDefinition;
 import analysis.process.file.FileFactory;
@@ -14,14 +17,14 @@ public class Explore{
 	
 //---  Instance Variables   -------------------------------------------------------------------
 		
-	private ArrayList<GenericFile> files;
-	private HashMap<String, GenericDefinition> classes;
-	private HashMap<String, GenericDefinition> interfaces;
-	private HashMap<String, GenericDefinition> enums;
+	private List<GenericFile> files;
+	private Map<String, GenericDefinition> classes;
+	private Map<String, GenericDefinition> interfaces;
+	private Map<String, GenericDefinition> enums;
 	private Cluster parent;
 	private String rootPath;
 	
-	private HashSet<String> ignore;
+	private Set<String> ignore;
 	
 //---  Constructors   -------------------------------------------------------------------------
 	
@@ -66,7 +69,7 @@ public class Explore{
 				explore(look);
 			}
 			else if(look.isFile()){
-				ArrayList<GenericFile> gfs = FileFactory.generateFile(look, rootPath);
+				List<GenericFile> gfs = FileFactory.generateFile(look, rootPath);
 				if(gfs == null) {
 					continue;
 				}
@@ -121,8 +124,8 @@ public class Explore{
 		return enums.values();
 	}
 	
-	public ArrayList<GenericDefinition> getDefinitions(){
-		ArrayList<GenericDefinition> out = new ArrayList<GenericDefinition>();
+	public List<GenericDefinition> getDefinitions(){
+		List<GenericDefinition> out = new ArrayList<GenericDefinition>();
 		for(String s : classes.keySet())
 			out.add(classes.get(s));
 		for(String s : interfaces.keySet())
@@ -132,8 +135,8 @@ public class Explore{
 		return out;
 	}
 	
-	public HashMap<String, GenericDefinition> getDefinitionMapping(){
-		HashMap<String, GenericDefinition> out = new HashMap<String, GenericDefinition>();
+	public Map<String, GenericDefinition> getDefinitionMapping(){
+		Map<String, GenericDefinition> out = new HashMap<String, GenericDefinition>();
 		for(String s : classes.keySet())
 			out.put(s, classes.get(s));
 		for(String s : interfaces.keySet())

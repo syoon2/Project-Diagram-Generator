@@ -2,6 +2,7 @@ package main;
 
 import java.util.Arrays;
 import java.util.ArrayList;
+import java.util.List;
 
 import image.ConvertVisual;
 import ui.Display;
@@ -27,7 +28,7 @@ public class Main <T> {
 	public static void main(String[] args) throws Exception{
 		if (args.length == 0) runReal();
 		else {
-			ArrayList<String> argList = new ArrayList<>(Arrays.asList(args));
+			List<String> argList = new ArrayList<>(Arrays.asList(args));
 			if (argList.contains("-h")) {
 				printHelp();
 				System.exit(0);
@@ -60,7 +61,7 @@ public class Main <T> {
 		System.out.println("    Displays this help message then exits.");
 	}
 
-	private static String findArgData(ArrayList<String> args, String argPrefix) {
+	private static String findArgData(List<String> args, String argPrefix) {
 		for (int i = 0; i < args.size(); i++) {
 			if (args.get(i).startsWith(argPrefix)) {
 				String arg = args.remove(i);
@@ -70,13 +71,13 @@ public class Main <T> {
 		throw new IllegalArgumentException(argPrefix + " not specified");
 	}
 
-	private static boolean containsArg(ArrayList<String> args, String arg) {
+	private static boolean containsArg(List<String> args, String arg) {
 		return args.remove(arg);
 	}
 	
 	private static <T> void runLoose(String path, String name, boolean inst, boolean func, boolean priv, boolean consta, String ... rem) {
 		ConvertVisual.assignPaths(ADDRESS_IMAGES, ADDRESS_SOURCES, ADDRESS_SETTINGS);
-		ArrayList<String> ignore = new ArrayList<String>();
+		List<String> ignore = new ArrayList<String>();
 		for(String s : rem) {
 			ignore.add(s);
 		}

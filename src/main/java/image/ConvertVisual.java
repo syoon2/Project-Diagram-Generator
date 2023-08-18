@@ -1,7 +1,7 @@
 package image;
 
 import java.io.File;
-import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
@@ -29,7 +29,7 @@ public class ConvertVisual  {
 		settingsPath = sett;
 	}
 	
-	public static String generateUMLDiagram(String path, ArrayList<String> ignore, String name, boolean inst, boolean func, boolean priv, boolean consta) {
+	public static String generateUMLDiagram(String path, List<String> ignore, String name, boolean inst, boolean func, boolean priv, boolean consta) {
 		File f = new File(path);
 		Explore.setParameters(inst, func, priv, consta);
 		logger.info("Beginning Explore operations");

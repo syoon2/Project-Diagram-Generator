@@ -1,6 +1,7 @@
 package analysis.language.actor;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import analysis.language.component.Constructor;
 import analysis.language.component.Function;
@@ -11,9 +12,9 @@ public abstract class GenericDefinition implements Comparable<GenericDefinition>
 	
 	private String name;
 	private String context;
-	private ArrayList<GenericDefinition> associates;
-	private ArrayList<GenericDefinition> realizations;	//dotted line, empty arrowhead
-	private ArrayList<Function> functions;
+	private List<GenericDefinition> associates;
+	private List<GenericDefinition> realizations;	//dotted line, empty arrowhead
+	private List<Function> functions;
 	
 //---  Constructors   -------------------------------------------------------------------------
 	
@@ -42,7 +43,7 @@ public abstract class GenericDefinition implements Comparable<GenericDefinition>
 		realizations.add(in);
 	}
 	
-	public void addFunction(String vis, String nom, String ret, ArrayList<String> argNom, ArrayList<String> argTyp, boolean statStatic, boolean statAbstract, boolean isFinal) {
+	public void addFunction(String vis, String nom, String ret, List<String> argNom, List<String> argTyp, boolean statStatic, boolean statAbstract, boolean isFinal) {
 		Function in = new Function(vis, nom, ret, argNom, argTyp);
 		in.setAbstract(statAbstract);
 		in.setStatic(statStatic);
@@ -50,7 +51,7 @@ public abstract class GenericDefinition implements Comparable<GenericDefinition>
 		addFunction(in);
 	}
 	
-	public void addConstructor(String vis, String nom, ArrayList<String> argNom, ArrayList<String> argTyp) {
+	public void addConstructor(String vis, String nom, List<String> argNom, List<String> argTyp) {
 		Constructor in = new Constructor(vis, nom, argNom, argTyp);
 		addFunction(in);
 	}
@@ -59,7 +60,7 @@ public abstract class GenericDefinition implements Comparable<GenericDefinition>
 
 	//-- Functions  -------------------------------------------
 	
-	public ArrayList<Function> getFunctions() {
+	public List<Function> getFunctions() {
 		return functions;
 	}
 	
@@ -119,11 +120,11 @@ public abstract class GenericDefinition implements Comparable<GenericDefinition>
 		return name;
 	}
 	
-	public ArrayList<GenericDefinition> getClassAssociates(){
+	public List<GenericDefinition> getClassAssociates(){
 		return associates;
 	}
 	
-	public ArrayList<GenericDefinition> getRealizations(){
+	public List<GenericDefinition> getRealizations(){
 		return realizations;
 	}
 

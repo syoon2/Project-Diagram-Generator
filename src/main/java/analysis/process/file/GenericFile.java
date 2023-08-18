@@ -2,9 +2,11 @@ package analysis.process.file;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
+import java.util.Set;
 
 import analysis.language.actor.GenericClass;
 import analysis.language.actor.GenericDefinition;
@@ -33,7 +35,7 @@ public abstract class GenericFile {
 	private static boolean procConstants;
 	
 	private String contents;
-	private ArrayList<String> lines;
+	private List<String> lines;
 	private String name;
 	private String context;
 	private GenericDefinition gen;
@@ -76,7 +78,7 @@ public abstract class GenericFile {
 		}
 	}
 	
-	public GenericFile(ArrayList<String> inLines, String inContext) {
+	public GenericFile(List<String> inLines, String inContext) {
 		lines = inLines;
 		name = findName();
 		context = inContext;
@@ -93,8 +95,8 @@ public abstract class GenericFile {
 	
 //---  Operations   ---------------------------------------------------------------------------
 
-	public void process(HashMap<String, GenericDefinition> classRef, Cluster parent) {
-		HashSet<String> neighbors = parent.getCluster(context.split("\\.")).getComponents();
+	public void process(Map<String, GenericDefinition> classRef, Cluster parent) {
+		Set<String> neighbors = parent.getCluster(context.split("\\.")).getComponents();
 		if(isClassFile()) {
 			processClass(classRef, neighbors);
 		}
@@ -106,11 +108,11 @@ public abstract class GenericFile {
 		}
 	}
 	
-	public void processClass(HashMap<String, GenericDefinition> classRef, HashSet<String> neighbors) {
+	public void processClass(Map<String, GenericDefinition> classRef, Set<String> neighbors) {
 		handleInheritance(extractInheritance(), classRef);
 		
 		((GenericClass)gen).setAbstract(extractAbstract());
-		HashSet<String> bar = handleRealizations(extractRealizations(), classRef);
+		Set<String> bar = handleRealizations(extractRealizations(), classRef);
 		handleAssociations(neighbors, bar, classRef);
 		if(getStatusFunction()) {
 			extractFunctions();
@@ -121,16 +123,16 @@ public abstract class GenericFile {
 		}
 	}
 
-	public void processInterface(HashMap<String, GenericDefinition> classRef, HashSet<String> neighbors) {
-		HashSet<String> bar = handleRealizations(extractRealizations(), classRef);
+	public void processInterface(Map<String, GenericDefinition> classRef, Set<String> neighbors) {
+		Set<String> bar = handleRealizations(extractRealizations(), classRef);
 		handleAssociations(neighbors, bar, classRef);
 		if(getStatusFunction()) {
 			extractFunctions();
 		}
 	}
 	
-	public void processEnum(GenericDefinition in, HashMap<String, GenericDefinition> classRef, HashSet<String> neighbors) {
-		HashSet<String> bar = handleRealizations(extractRealizations(), classRef);
+	public void processEnum(GenericDefinition in, Map<String, GenericDefinition> classRef, Set<String> neighbors) {
+		Set<String> bar = handleRealizations(extractRealizations(), classRef);
 		handleAssociations(neighbors, bar, classRef);
 		if(getStatusFunction()) {
 			extractFunctions();
@@ -139,7 +141,7 @@ public abstract class GenericFile {
 	
 	//-- Other  -----------------------------------------------
 	
-	private void handleInheritance(String parName, HashMap<String, GenericDefinition> ref) {
+	private void handleInheritance(String parName, Map<String, GenericDefinition> ref) {
 		if(parName == null)
 			return;
 		for(GenericDefinition gd : ref.values()) {
@@ -150,8 +152,8 @@ public abstract class GenericFile {
 		}
 	}
 	
-	private HashSet<String> handleRealizations(ArrayList<String> realiz, HashMap<String, GenericDefinition> ref) {
-		HashSet<String> bar = new HashSet<String>();
+	private Set<String> handleRealizations(List<String> realiz, Map<String, GenericDefinition> ref) {
+		Set<String> bar = new HashSet<String>();
 		for(String s : realiz) {
 			for(GenericDefinition gi : ref.values()) {
 				if(gi.getName().equals(s)) {
@@ -163,8 +165,8 @@ public abstract class GenericFile {
 		return bar;
 	}
 	
-	private void handleAssociations(HashSet<String> neighbors, HashSet<String> bar, HashMap<String, GenericDefinition> ref) {
-		ArrayList<String> noms = extractAssociations(neighbors);
+	private void handleAssociations(Set<String> neighbors, Set<String> bar, Map<String, GenericDefinition> ref) {
+		List<String> noms = extractAssociations(neighbors);
 		for(String s : noms) {
 			if(ref.get(s) != null) {
 				if(!bar.contains(breakFullName(ref.get(s).getFullName())[1])) {	//TODO: While I only allow one association
@@ -199,7 +201,7 @@ public abstract class GenericFile {
 	
 	public abstract boolean detectInternalClasses();
 	
-	public abstract ArrayList<GenericFile> extractInternalClasses();
+	public abstract List<GenericFile> extractInternalClasses();
 	
 	protected abstract String findName();
 	
@@ -209,7 +211,7 @@ public abstract class GenericFile {
 	 * 
 	 */
 	
-	protected abstract ArrayList<String> preProcess(String contents);
+	protected abstract List<String> preProcess(String contents);
 
 	protected abstract boolean extractAbstract();
 	
@@ -219,9 +221,9 @@ public abstract class GenericFile {
 	
 	protected abstract String extractInheritance();
 	
-	protected abstract ArrayList<String> extractRealizations();
+	protected abstract List<String> extractRealizations();
 	
-	protected abstract ArrayList<String> extractAssociations(HashSet<String> neighbor);
+	protected abstract List<String> extractAssociations(Set<String> neighbor);
 	
 	//-- Support Methods  -------------------------------------
 	
@@ -233,13 +235,13 @@ public abstract class GenericFile {
 		return context + FULL_NAME_SEPARATOR + name;
 	}
 	
-	protected void addFunctionToDef(int vis, String nom, String ret, ArrayList<String> argNom, ArrayList<String> argTyp, boolean statStatic, boolean statAbstract, boolean isFin) {
+	protected void addFunctionToDef(int vis, String nom, String ret, List<String> argNom, List<String> argTyp, boolean statStatic, boolean statAbstract, boolean isFin) {
 		if(privateCheck(vis)) {
 			gen.addFunction(interpretVisibility(vis), nom, ret, argNom, argTyp, statStatic, statAbstract, isFin);
 		}
 	}
 	
-	protected void addConstructorToDef(int vis, String nom, ArrayList<String> argNom, ArrayList<String> argTyp) {
+	protected void addConstructorToDef(int vis, String nom, List<String> argNom, List<String> argTyp) {
 		if(privateCheck(vis)) {
 			gen.addConstructor(interpretVisibility(vis), nom, argNom, argTyp);
 		}
@@ -283,7 +285,7 @@ public abstract class GenericFile {
 	
 //---  Getter Methods   -----------------------------------------------------------------------
 	
-	public ArrayList<String> getFileContents(){
+	public List<String> getFileContents(){
 		return lines;
 	}
 

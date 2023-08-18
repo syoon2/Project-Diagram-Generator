@@ -1,10 +1,11 @@
 package ui;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Node {
 
-	private ArrayList<Node> children;
+	private List<Node> children;
 	private String label;
 	private boolean enable;
 	private int code;
@@ -65,7 +66,7 @@ public class Node {
 		children.add(in);
 	}
 	
-	public ArrayList<Node> getChildren(){
+	public List<Node> getChildren(){
 		return children;
 	}
 	

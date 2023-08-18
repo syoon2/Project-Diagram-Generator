@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 
@@ -130,7 +131,7 @@ public class Display {
 							new PopoutAlert(300, 250, "Source folder for project not found.");
 						}
 						else {
-							ArrayList<String> igno = processPackagesIgnore(ignore);
+							List<String> igno = processPackagesIgnore(ignore);
 							String path = ConvertVisual.generateUMLDiagram(rootPath, igno, nom, state[0][0], state[1][0], state[2][0], state[3][0]);
 							showImage(path);
 							new PopoutAlert(300, 250, "UML generated to: \"" + path + "\".");
@@ -201,8 +202,8 @@ public class Display {
 		drawImage();
 	}
 	
-	private ArrayList<String> processPackagesIgnore(String sub){
-		ArrayList<String> out = new ArrayList<String>();
+	private List<String> processPackagesIgnore(String sub){
+		List<String> out = new ArrayList<String>();
 		String[] use = sub.split(";");
 		for(String s : use) {
 			out.add(s);

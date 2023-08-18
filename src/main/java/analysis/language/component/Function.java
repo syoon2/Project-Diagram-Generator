@@ -1,24 +1,25 @@
 package analysis.language.component;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Function extends ClassComponent{
 
 //---  Instance Variables   -------------------------------------------------------------------
 	
-	private ArrayList<Argument> arguments;
+	private List<Argument> arguments;
 	private boolean isAbstract;	//italics
 	private boolean isStatic;	//underline
 	private boolean isFinal;
 	
 //---  Constructors   -------------------------------------------------------------------------
 	
-	public Function(String vis, String nom, ArrayList<Argument> arg, String ret) {
+	public Function(String vis, String nom, List<Argument> arg, String ret) {
 		super(ret, nom, vis);
 		arguments = arg;
 	}
 	
-	public Function(String vis, String nom, String ret, ArrayList<String> argNom, ArrayList<String> argTyp) {
+	public Function(String vis, String nom, String ret, List<String> argNom, List<String> argTyp) {
 		super(ret, nom, vis);
 		arguments = new ArrayList<Argument>();
 		for(int i = 0; i < argNom.size(); i++) {
@@ -42,7 +43,7 @@ public class Function extends ClassComponent{
 	
 //---  Getter Methods   -----------------------------------------------------------------------
 	
-	public ArrayList<Argument> getArguments(){
+	public List<Argument> getArguments(){
 		return arguments;
 	}
 	

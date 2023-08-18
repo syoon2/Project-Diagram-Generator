@@ -1,6 +1,7 @@
 package analysis.language.actor;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import analysis.language.component.InstanceVariable;
 
@@ -18,7 +19,7 @@ public class GenericClass extends GenericDefinition{
 	
 	private GenericDefinition inheritance;
 	
-	private ArrayList<InstanceVariable> instanceVariables;
+	private List<InstanceVariable> instanceVariables;
 	
 //---  Constructors   -------------------------------------------------------------------------
 	
@@ -60,7 +61,7 @@ public class GenericClass extends GenericDefinition{
 	
 	//-- Instance Variables  ----------------------------------
 	
-	public ArrayList<InstanceVariable> getInstanceVariables() {
+	public List<InstanceVariable> getInstanceVariables() {
 		return instanceVariables;
 	}
 	

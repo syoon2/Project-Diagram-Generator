@@ -3,14 +3,16 @@ package analysis.process;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class Cluster {
 
 //---  Instance Variables   -------------------------------------------------------------------
 	
 	private String[] address;
-	private ArrayList<Cluster> children;
-	private HashSet<String> composite;
+	private List<Cluster> children;
+	private Set<String> composite;
 	
 //---  Constructors   -------------------------------------------------------------------------
 	
@@ -70,11 +72,11 @@ public class Cluster {
 		return next.getCluster(tearArray(path));
 	}
 	
-	public ArrayList<Cluster> getChildren(){
+	public List<Cluster> getChildren(){
 		return children;
 	}
 	
-	public HashSet<String> getComponents(){
+	public Set<String> getComponents(){
 		return composite;
 	}
 	

@@ -3,7 +3,8 @@ package analysis.process.file;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class JavaFile extends GenericFile {
 
@@ -19,7 +20,7 @@ public class JavaFile extends GenericFile {
 		super(in, root);
 	}
 	
-	public JavaFile(ArrayList<String> lines, String context) {
+	public JavaFile(List<String> lines, String context) {
 		super(lines, context);
 	}
 
@@ -37,8 +38,8 @@ public class JavaFile extends GenericFile {
 	}
 
 	@Override
-	protected ArrayList<String> preProcess(String in){
-		ArrayList<String> out = new ArrayList<String>();
+	protected List<String> preProcess(String in){
+		List<String> out = new ArrayList<String>();
 		while(in.contains("\\\\")) {
 			in = in.replace("\\\\", "");		//remove instances of \\ (double backslashes) as being redundant to important \" searching
 		}
@@ -140,8 +141,8 @@ public class JavaFile extends GenericFile {
 			}
 		}
 		String ret = argStart == typeIndex ? "" : compileType(cont, typeIndex);
-		ArrayList<String> argNom = new ArrayList<String>();
-		ArrayList<String> argTyp = new ArrayList<String>();
+		List<String> argNom = new ArrayList<String>();
+		List<String> argTyp = new ArrayList<String>();
 		for(int i = argStart + 1; i < cont.length - 2; i += 1) {
 			if(cont[i].equals(")"))
 				break;
@@ -162,10 +163,10 @@ public class JavaFile extends GenericFile {
 	//-- Extraction  ------------------------------------------
 	
 	@Override
-	public ArrayList<GenericFile> extractInternalClasses(){
-		ArrayList<GenericFile> out = new ArrayList<GenericFile>();
+	public List<GenericFile> extractInternalClasses(){
+		List<GenericFile> out = new ArrayList<GenericFile>();
 		String context = getContext();
-		ArrayList<String> headerInfo = new ArrayList<String>();
+		List<String> headerInfo = new ArrayList<String>();
 		for(String s : getFileContents()) {
 			if(s.matches("import .*")) {
 				headerInfo.add(s);
@@ -181,11 +182,11 @@ public class JavaFile extends GenericFile {
 		return out;
 	}
 	
-	private int searchFile(ArrayList<String> contents, ArrayList<GenericFile> out, ArrayList<String> header, int currLine, String context) {
+	private int searchFile(List<String> contents, List<GenericFile> out, List<String> header, int currLine, String context) {
 		if(currLine >= contents.size()) {
 			return currLine;
 		}
-		ArrayList<String> lines = new ArrayList<String>();
+		List<String> lines = new ArrayList<String>();
 		for(String s : header) {
 			lines.add(s);
 		}
@@ -271,8 +272,8 @@ public class JavaFile extends GenericFile {
 	}
 
 	@Override
-	protected ArrayList<String> extractRealizations() {
-		ArrayList<String> out = new ArrayList<String>();
+	protected List<String> extractRealizations() {
+		List<String> out = new ArrayList<String>();
 		for(String line : getFileContents()) {
 			if(isClassDefinition(line) && line.contains(getRealizationTerm())){
 				String[] use = cleanInput(line);
@@ -291,8 +292,8 @@ public class JavaFile extends GenericFile {
 	}
 
 	@Override
-	protected ArrayList<String> extractAssociations(HashSet<String> neighbors) {
-		ArrayList<String> out = new ArrayList<String>();
+	protected List<String> extractAssociations(Set<String> neighbors) {
+		List<String> out = new ArrayList<String>();
 		for(String line : getFileContents()) {
 			if(line.matches("import .*;")){
 				String name = processImportName(line);

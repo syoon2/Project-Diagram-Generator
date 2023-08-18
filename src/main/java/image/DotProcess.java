@@ -1,6 +1,7 @@
 package image;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import analysis.language.actor.GenericClass;
 import analysis.language.actor.GenericDefinition;
@@ -15,7 +16,7 @@ public class DotProcess {
 //---  Instance Variables   -------------------------------------------------------------------
 	
 	private static Explore explore;
-	private static HashMap<String, Integer> reference;
+	private static Map<String, Integer> reference;
 	private static int count;
 	
 //---  Static Assignment   --------------------------------------------------------------------
