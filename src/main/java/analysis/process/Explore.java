@@ -36,8 +36,8 @@ public class Explore{
 		interfaces = new HashMap<String, GenericDefinition>();
 		enums = new HashMap<String, GenericDefinition>();
 		parent = new Cluster(new String[] {});
-		if(rootPath.charAt(rootPath.length() - 1) != '/') {
-			rootPath += "/";
+		if(rootPath.charAt(rootPath.length() - 1) != File.separatorChar) {
+			rootPath += File.separatorChar;
 		}
 	}
 

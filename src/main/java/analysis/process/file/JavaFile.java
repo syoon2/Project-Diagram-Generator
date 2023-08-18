@@ -6,6 +6,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.lang3.ArrayUtils;
+
 public class JavaFile extends GenericFile {
 
 //---  Constants   ----------------------------------------------------------------------------
@@ -123,7 +125,7 @@ public class JavaFile extends GenericFile {
 			fin = true;
 		}
 		String[] cont = cleanInput(in);
-		int argStart = indexOf(cont, "(");
+		int argStart = ArrayUtils.indexOf(cont, "(");
 		int vis = processVisibility(cont[0]);
 		String name = cont[argStart-1];
 		int typeIndex = 1;
@@ -263,7 +265,7 @@ public class JavaFile extends GenericFile {
 		for(String line : getFileContents()) {
 			if(isClassDefinition(line) && line.contains("extends")){
 				String[] use = cleanInput(line);
-				int posit = indexOf(use, "extends");
+				int posit = ArrayUtils.indexOf(use, "extends");
 				String name = use[posit + 1];
 				return name;
 			}
@@ -277,7 +279,7 @@ public class JavaFile extends GenericFile {
 		for(String line : getFileContents()) {
 			if(isClassDefinition(line) && line.contains(getRealizationTerm())){
 				String[] use = cleanInput(line);
-				int posit = indexOf(use, getRealizationTerm());
+				int posit = ArrayUtils.indexOf(use, getRealizationTerm());
 				while(++posit < use.length && use[posit].matches("[\\w><]*")) {
 					String name = use[posit].replaceAll("<[^>]*>", "");
 					out.add(name);
@@ -323,9 +325,9 @@ public class JavaFile extends GenericFile {
 		for(String line : getFileContents()) {
 			if(isFileDefinition(line)){
 				String[] use = cleanInput(line);
-				int posit = indexOf(use, "class");
-				posit = (posit == -1 ? indexOf(use, "interface") : posit);
-				posit = (posit == -1 ? indexOf(use, "enum") : posit);
+				int posit = ArrayUtils.indexOf(use, "class");
+				posit = (posit == ArrayUtils.INDEX_NOT_FOUND ? ArrayUtils.indexOf(use, "interface") : posit);
+				posit = (posit == ArrayUtils.INDEX_NOT_FOUND  ? ArrayUtils.indexOf(use, "enum") : posit);
 				String out = use[posit + 1];
 				if(out.contains("<")) {
 					out = out.substring(0, out.indexOf("<"));
@@ -475,17 +477,6 @@ public class JavaFile extends GenericFile {
 			default:
 				return VISIBILITY_OTHER;
 		}
-	}
-
-//---  Mechanics   ----------------------------------------------------------------------------
-	
-	private int indexOf(String[] arr, String key) {
-		for(int i = 0; i < arr.length; i++) {
-			if(arr[i].equals(key)) {
-				return i;
-			}
-		}
-		return -1;
 	}
 
 }

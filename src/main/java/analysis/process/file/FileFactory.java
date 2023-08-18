@@ -4,11 +4,13 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.io.FilenameUtils;
+
 public class FileFactory {
 
 	public static List<GenericFile> generateFile(File f, String root) {
 		String name = f.getName();
-		String type = name.substring(name.lastIndexOf(".")+1);
+		String type = FilenameUtils.getExtension(name);
 		switch(type) {
 			case "java":
 				JavaFile jf = new JavaFile(f, root);

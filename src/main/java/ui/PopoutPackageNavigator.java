@@ -9,8 +9,6 @@ import java.io.UncheckedIOException;
 
 import javax.imageio.ImageIO;
 
-import org.apache.commons.io.IOUtils;
-
 import com.github.softwarevisualinterface.visual.composite.HandlePanel;
 import com.github.softwarevisualinterface.visual.composite.popout.PopoutWindow;
 
@@ -23,9 +21,9 @@ public class PopoutPackageNavigator extends PopoutWindow{
 	private final static Image ICON_BEND;
 	static {
 		try {
-			ICON_OPEN = ImageIO.read(IOUtils.resourceToURL("chest_open.png", PopoutPackageNavigator.class.getClassLoader()));
-			ICON_CLOSED = ImageIO.read(IOUtils.resourceToURL("closed_chest.png", PopoutPackageNavigator.class.getClassLoader()));
-			ICON_BEND = ImageIO.read(IOUtils.resourceToURL("l-bend.png", PopoutPackageNavigator.class.getClassLoader()));
+			ICON_OPEN = ImageIO.read(PopoutPackageNavigator.class.getResourceAsStream("chest_open.png"));
+			ICON_CLOSED = ImageIO.read(PopoutPackageNavigator.class.getResourceAsStream("closed_chest.png"));
+			ICON_BEND = ImageIO.read(PopoutPackageNavigator.class.getResourceAsStream("l-bend.png"));
 		} catch (IOException ioe) {
 			throw new UncheckedIOException(ioe);
 		}
