@@ -1,5 +1,5 @@
 apply plugin: 'java'
-apply plugin: 'maven-publish'
+apply plugin: 'application'
 
 // Assume Java 11
 sourceCompatibility = 11
@@ -35,6 +35,10 @@ dependencies {
   runtimeOnly group: 'org.apache.logging.log4j', name: 'log4j-slf4j-impl', version: '2.20.0'
 }
 
+ext {
+  javaMainClass = 'main.Main'
+}
+
 test {
   dependsOn cleanTest
   testLogging.showStandardStreams = true
@@ -66,23 +70,34 @@ task buildDependenciesFolder(type: Copy) {
   into './dependencies'
 }
 
-publishing {
-  repositories {
-    maven {
-      name = "GitHubPackages"
-      url = "https://maven.pkg.github.com/syoon2/SoftwareVisualInterface"
-      credentials {
-        username = System.getenv("GITHUB_ACTOR")
-        password = System.getenv("GITHUB_TOKEN")
-      }
-    }
+application {
+  mainClassName = javaMainClass
+}
+
+jar {
+  manifest {
+    attributes(
+      "Main-Class": javaMainClass
+    )
+  }
+}
+
+task uberJar(type: Jar) {
+  manifest {
+    attributes(
+      "Main-Class": javaMainClass,
+      'Multi-Release': 'true'
+    )
   }
 
-  publications {
-    maven(MavenPublication) {
-      groupId = 'com.github.softwarevisualinterface'
-      artifactId = 'svi'
-      version = '2.0-SNAPSHOT'
-    }
+  archiveClassifier = 'uber'
+
+  from sourceSets.main.output
+
+  duplicatesStrategy(DuplicatesStrategy.EXCLUDE)
+
+  dependsOn configurations.runtimeClasspath
+  from {
+    configurations.runtimeClasspath.findAll { it.name.endsWith('jar') }.collect { zipTree(it) }
   }
 }
