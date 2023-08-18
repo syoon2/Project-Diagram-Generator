@@ -36,7 +36,7 @@ import java.io.FileWriter;
 import java.io.InputStreamReader;
 import java.util.Properties;
 
-import filemeta.config.Config;
+import com.github.softwarevisualinterface.filemeta.config.Config;
 
 
 /**

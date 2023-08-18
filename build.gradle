@@ -1,0 +1,82 @@
+apply plugin: 'java'
+apply plugin: 'maven-publish'
+
+// Assume Java 11
+sourceCompatibility = 11
+targetCompatibility = 11
+
+repositories {
+  mavenLocal()
+  mavenCentral()
+  maven {
+    url = uri("https://maven.pkg.github.com/syoon2/SoftwareVisualInterface")
+  }
+}
+
+dependencies {
+  // JUnit 5 / Jupiter
+  testImplementation('org.junit.jupiter:junit-jupiter:5.10.0')
+  testRuntimeOnly('org.junit.jupiter:junit-jupiter-engine:5.10.0')
+
+  // Apache Commons
+  implementation group: 'commons-io', name: 'commons-io', version: '2.13.0'
+
+  // Apache Log4j2
+  implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.20.0'
+  runtimeOnly group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.20.0'
+
+  // SoftwareVisualInterface
+  implementation group: 'com.github.softwarevisualinterface', name: 'svi', version: '2.0-SNAPSHOT'
+}
+
+test {
+  dependsOn cleanTest
+  testLogging.showStandardStreams = true
+}
+
+tasks.named('test', Test) {
+  useJUnitPlatform()
+}
+
+tasks.withType(JavaCompile) {
+  options.encoding = 'UTF-8'
+  options.compilerArgs += [
+    '-Xlint:unchecked',
+    '-Xlint:deprecation'
+  ]
+}
+
+// Options when compiling tests
+compileTestJava {
+  options.encoding = 'UTF-8'
+  options.compilerArgs += [
+    '-Xlint:unchecked',
+    '-Xlint:deprecation'
+  ]
+}
+
+task buildDependenciesFolder(type: Copy) {
+  from configurations.implementation
+  into './dependencies'
+}
+
+publishing {
+  repositories {
+    maven {
+      name = "GitHubPackages"
+      url = "https://maven.pkg.github.com/syoon2/SoftwareVisualInterface"
+      credentials {
+        username = System.getenv("GITHUB_ACTOR")
+        password = System.getenv("GITHUB_TOKEN")
+      }
+    }
+  }
+
+  publications {
+    maven(MavenPublication) {
+      groupId = 'com.github.softwarevisualinterface'
+      artifactId = 'svi'
+      version = '2.0-SNAPSHOT'
+    }
+  }
+}

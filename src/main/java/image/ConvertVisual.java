@@ -5,7 +5,7 @@ import java.io.RandomAccessFile;
 import java.util.ArrayList;
 
 import analysis.process.Explore;
-import visual.composite.popout.PopoutAlert;
+import com.github.softwarevisualinterface.visual.composite.popout.PopoutAlert;
 
 public class ConvertVisual  {
 	

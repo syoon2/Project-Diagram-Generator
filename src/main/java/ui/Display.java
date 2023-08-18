@@ -2,18 +2,26 @@ package ui;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Image;
 import java.io.File;
+import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.util.ArrayList;
 
-import filemeta.FileChooser;
-import filemeta.config.Config;
+import javax.imageio.ImageIO;
+
+import org.apache.commons.io.IOUtils;
+
+import com.github.softwarevisualinterface.filemeta.FileChooser;
+import com.github.softwarevisualinterface.filemeta.config.Config;
+import com.github.softwarevisualinterface.input.CustomEventReceiver;
+import com.github.softwarevisualinterface.input.NestedEventReceiver;
+import com.github.softwarevisualinterface.visual.composite.popout.PopoutAlert;
+import com.github.softwarevisualinterface.visual.composite.HandlePanel;
+import com.github.softwarevisualinterface.visual.composite.ImageDisplay;
+import com.github.softwarevisualinterface.visual.frame.WindowFrame;
+
 import image.ConvertVisual;
-import input.CustomEventReceiver;
-import input.NestedEventReceiver;
-import visual.composite.popout.PopoutAlert;
-import visual.composite.HandlePanel;
-import visual.composite.ImageDisplay;
-import visual.frame.WindowFrame;
 
 /**
  * 
@@ -185,7 +193,11 @@ public class Display {
 		});
 		image = new HandlePanel(0, 0, DEFAULT_WIDTH, (int)(DEFAULT_HEIGHT * (1 - VERTICAL_RATIO)));
 		
-		display = new ImageDisplay("/assets/Complexity.jpg", image);
+		try {
+			display = new ImageDisplay(ImageIO.read(IOUtils.resourceToURL("Complexity.jpg", Display.class.getClassLoader())), image);
+		} catch (IOException ioe) {
+			throw new UncheckedIOException(ioe);
+		}
 		
 		image.setEventReceiver(new NestedEventReceiver(display.generateEventReceiver()));
 		
@@ -236,15 +248,22 @@ public class Display {
 		int horzWid = wid / 3;
 		int vertHei = hei / 6;
 		int extend = wid / 6;
-		
+
+		Image plusIcon;
+		try {
+			plusIcon = ImageIO.read(IOUtils.resourceToURL("plus_icon.png", Display.class.getClassLoader()));
+		} catch (IOException ioe) {
+			throw new UncheckedIOException(ioe);
+		}
+
 		panel.handleRectangle("rect_entry_root", "no_move", 10, posX + extend / 2, posY, horzWid + extend, vertHei, Color.white, Color.black);
 		panel.handleTextEntry(ENTRY_LABEL_PROJECT_ROOT, "no_move", 15, posX + extend / 2, posY, horzWid + extend, vertHei, subCode--, DEFAULT_FONT, path);
-		panel.handleImageButton("filepath_src_button", "no_move", 15, posX + wid * 9 / 48 + extend, posY, iconSize, iconSize, "src/assets/plus_icon.png", CODE_NAVIGATE_SRC);
+		panel.handleImageButton("filepath_src_button", "no_move", 15, posX + wid * 9 / 48 + extend, posY, iconSize, iconSize, plusIcon, CODE_NAVIGATE_SRC);
 		panel.handleRectangle("filepath_src_rect", "no_move", 5, posX + wid * 9 / 48 + extend, posY, iconSize, iconSize, Color.white, Color.black);
 		posY += chngY;
 		panel.handleRectangle("rect_entry_sub", "no_move", 10, posX + extend / 2, posY, horzWid + extend, vertHei, Color.white, Color.black);
 		panel.handleTextEntry(ENTRY_LABEL_SUB_PACKAGE, "no_move", 15, posX + extend / 2, posY, horzWid + extend, vertHei, subCode--, DEFAULT_FONT, ignore);
-		panel.handleImageButton("pkg_nvg_button", "no_move", 15, posX + wid * 9 / 48 + extend, posY, iconSize, iconSize, "src/assets/plus_icon.png", CODE_NAVIGATE_SUB_PKG);
+		panel.handleImageButton("pkg_nvg_button", "no_move", 15, posX + wid * 9 / 48 + extend, posY, iconSize, iconSize, plusIcon, CODE_NAVIGATE_SUB_PKG);
 		panel.handleRectangle("pkg_nvg_rect", "no_move", 5, posX + wid * 9 / 48 + extend, posY, iconSize, iconSize, Color.white, Color.black);
 		posY += chngY;
 		panel.handleRectangle("rect_entry_name", "no_move", 10, posX, posY, horzWid, vertHei,Color.white, Color.black);

@@ -2,18 +2,34 @@ package ui;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Image;
 import java.io.File;
+import java.io.IOException;
+import java.io.UncheckedIOException;
 
-import visual.composite.HandlePanel;
-import visual.composite.popout.PopoutWindow;
+import javax.imageio.ImageIO;
+
+import org.apache.commons.io.IOUtils;
+
+import com.github.softwarevisualinterface.visual.composite.HandlePanel;
+import com.github.softwarevisualinterface.visual.composite.popout.PopoutWindow;
 
 public class PopoutPackageNavigator extends PopoutWindow{
 
 	private final static int DEFAULT_WIDTH = 300;
 	private final static int DEFAULT_HEIGHT = 600;
-	private final static String ICON_PATH_OPEN = "src/assets/chest_open.png";
-	private final static String ICON_PATH_CLOSED = "src/assets/closed_chest.png";
-	private final static String ICON_BEND = "src/assets/l-bend.png";
+	private final static Image ICON_OPEN;
+	private final static Image ICON_CLOSED;
+	private final static Image ICON_BEND;
+	static {
+		try {
+			ICON_OPEN = ImageIO.read(IOUtils.resourceToURL("chest_open.png", PopoutPackageNavigator.class.getClassLoader()));
+			ICON_CLOSED = ImageIO.read(IOUtils.resourceToURL("closed_chest.png", PopoutPackageNavigator.class.getClassLoader()));
+			ICON_BEND = ImageIO.read(IOUtils.resourceToURL("l-bend.png", PopoutPackageNavigator.class.getClassLoader()));
+		} catch (IOException ioe) {
+			throw new UncheckedIOException(ioe);
+		}
+	}
 	private final static int CODE_SUBMIT = -15;
 	public final static String COMM_CODE = "Arbitrary";
 	
@@ -61,7 +77,7 @@ public class PopoutPackageNavigator extends PopoutWindow{
 	
 	private int drawNode(Node n, int x, int y) {
 		int iconSize = p.getHeight() / 20;
-		p.handleImageButton("node_butt_" + n.getName() + "_" + x + "_" + y, "move", 10, x, y, iconSize, iconSize, n.getStatus() ? ICON_PATH_OPEN : ICON_PATH_CLOSED, n.getCode());
+		p.handleImageButton("node_butt_" + n.getName() + "_" + x + "_" + y, "move", 10, x, y, iconSize, iconSize, n.getStatus() ? ICON_OPEN : ICON_CLOSED, n.getCode());
 		int textWid = this.getHandlePanel().getTextWidth(n.getName() + "/", DEFAULT_FONT);
 		p.addText("node_text_" + n.getName() + "_" + x + "_" + y, 15, "move", x + iconSize / 2 + textWid / 2, y, textWid + 2 * iconSize, p.getHeight() / 15, n.getName() + "/", DEFAULT_FONT, true, true, true);
 		y += p.getHeight() / 15;

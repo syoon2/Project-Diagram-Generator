@@ -5,3 +5,5 @@ diagram
 .classpath
 .settings/
 src/main/MainTest.java
+.gradle/**
+build/**
