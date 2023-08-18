@@ -58,7 +58,7 @@ public class Explore{
 	
 	private void explore(File root) {
 		for(String s : root.list()) {
-			File look = new File(root.getAbsolutePath() + "/" + s);
+			File look = new File(root.getAbsolutePath() + File.separator + s);
 			if(!look.exists()) {
 				continue;
 			}

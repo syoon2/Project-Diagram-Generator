@@ -11,9 +11,9 @@ import java.util.ArrayList;
 import javax.imageio.ImageIO;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.SystemUtils;
 
 import com.github.softwarevisualinterface.filemeta.FileChooser;
-import com.github.softwarevisualinterface.filemeta.config.Config;
 import com.github.softwarevisualinterface.input.CustomEventReceiver;
 import com.github.softwarevisualinterface.input.NestedEventReceiver;
 import com.github.softwarevisualinterface.visual.composite.popout.PopoutAlert;
@@ -47,21 +47,8 @@ public class Display {
 	public final static String ADDRESS_IMAGES = "./Diagram/images/";
 	public final static String ADDRESS_SOURCES = "./Diagram/sources/";
 	public final static String ADDRESS_CONFIG = ADDRESS_SETTINGS + "/config.txt";
-	private final static String WINDOWS_DEFAULT_CONFIG_PATH = System.getProperty("user.dir") + "/src/assets/config_windows.properties";
-	private final static String LINUX_DEFAULT_CONFIG_PATH = System.getProperty("user.dir") + "/src/assets/config_linux.properties";
-
-	//-- Config References  -----------------------------------
-	
-	public final static String DOT_ADDRESS_VAR = "dotAddress";
 	
 	//-- Text Defaults  ---------------------------------------
-	
-	private final static String DEFAULT_CONFIG_COMMENT = 
-			"##############################################################\r\n" + 
-			"#                       Configurations                       #\r\n" + 
-			"##############################################################\r\n" + 
-			"# Format as 'name = address', the \" = \" spacing is necessary\r\n" + 
-			"# It's awkward but it makes the file reading easier and I'm telling you this directly";
 	
 	private final static String ENTRY_LABEL_PROJECT_ROOT = "text_entry_root";
 	private final static String ENTRY_LABEL_SUB_PACKAGE = "text_entry_sub";
@@ -113,9 +100,8 @@ public class Display {
 	private String nom;
 	
 	public Display() {
-		fileConfiguration();
 		
-		path = testing ? System.getProperty("user.dir") + "/src" : DEFAULT_SRC_TEXT;
+		path = testing ? SystemUtils.USER_DIR + "/src" : DEFAULT_SRC_TEXT;
 		nom = DEFAULT_NAME;
 		ignore = DEFAULT_PKG_TEXT;
 		
@@ -153,7 +139,7 @@ public class Display {
 					case CODE_NAVIGATE_SRC:
 						try {
 							path = FileChooser.promptSelectFile(
-								System.getProperty("os.name").contains("Windows") ? "C://" : "/",
+								SystemUtils.IS_OS_WINDOWS ? "C://" : "/",
 								true, true
 							).getAbsolutePath();
 						}
@@ -301,59 +287,6 @@ public class Display {
 	
 	private void drawImage() {
 		display.drawPage();
-	}
-	
-	//-- File Configuration  ----------------------------------
-	
-	private void fileConfiguration() {
-		Config c = new Config("", new UMLConfigValidation());
-		c.addFilePath("Diagram");
-		c.addFilePath("Diagram/settings");
-		c.addFilePath("Diagram/images");
-		c.addFilePath("Diagram/sources");
-		c.addFile("Diagram/settings", "config.txt", DEFAULT_CONFIG_COMMENT);
-		if (System.getProperty("os.name").contains("Windows")) {
-			c.addFileEntry("Diagram/settings", "config.txt", DOT_ADDRESS_VAR,
-				"Where is your dot program located? It will be called externally.",
-				Config.getConfigFileEntry(WINDOWS_DEFAULT_CONFIG_PATH, DOT_ADDRESS_VAR)
-			);
-		}
-		else if (System.getProperty("os.name").contains("Linux")) {
-			c.addFileEntry("Diagram/settings", "config.txt", DOT_ADDRESS_VAR,
-				"Where is your dot program located? It will be called externally.",
-				Config.getConfigFileEntry(LINUX_DEFAULT_CONFIG_PATH, DOT_ADDRESS_VAR)
-			);
-		}
-		else {
-			c.addFileEntry("Diagram/settings", "config.txt", DOT_ADDRESS_VAR,
-				"Where is your dot program located? It will be called externally.",
-				"?"
-			);
-		}
-		c.softWriteConfig();
-		
-		while(!c.verifyConfig()) {
-			switch(c.getErrorCode()) {
-				case UMLConfigValidation.CODE_FAILURE_DOT_ADDRESS:
-					PopoutAlert pA = new PopoutAlert(400, 250, "Please navigate to and select the path for your graphviz/bin/dot.exe file in the following navigation tool");
-					Config.setConfigFileEntry(
-						"Diagram/settings/config.txt", DOT_ADDRESS_VAR,
-						FileChooser.promptSelectFile(
-							System.getProperty("os.name").contains("Windows")
-							? "C://"
-							: "/",
-							true, true
-						).getAbsolutePath()
-					);
-					pA.dispose();
-					break;
-				case UMLConfigValidation.CODE_FAILURE_FILE_MISSING:
-					c.initializeDefaultConfig();
-					break;
-				default:
-					break;
-			}
-		}
 	}
 	
 }

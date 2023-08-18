@@ -19,6 +19,7 @@ dependencies {
   testRuntimeOnly('org.junit.jupiter:junit-jupiter-engine:5.10.0')
 
   // Apache Commons
+  implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.13.0'
   implementation group: 'commons-io', name: 'commons-io', version: '2.13.0'
 
   // Apache Log4j2
@@ -27,6 +28,11 @@ dependencies {
 
   // SoftwareVisualInterface
   implementation group: 'com.github.softwarevisualinterface', name: 'svi', version: '2.0-SNAPSHOT'
+
+  // graphviz-java
+  implementation group: 'guru.nidi', name: 'graphviz-java', version: '0.18.1'
+  runtimeOnly group: 'org.graalvm.js', name: 'js', version: '23.0.1'
+  runtimeOnly group: 'org.apache.logging.log4j', name: 'log4j-slf4j-impl', version: '2.20.0'
 }
 
 test {

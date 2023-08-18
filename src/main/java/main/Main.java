@@ -13,8 +13,6 @@ import ui.Display;
  *  - Explore
  *  - Class
  *  
- * TODO: A UI, embed GraphViz? c
- * 
  * @author Ada Clevinger
  *
  */
