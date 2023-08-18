@@ -1,8 +1,11 @@
 package main;
 
 import java.util.Arrays;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.apache.commons.cli.*;
 
 import image.ConvertVisual;
 import ui.Display;
@@ -27,60 +30,54 @@ public class Main <T> {
 	
 	public static void main(String[] args) throws Exception{
 		if (args.length == 0) runReal();
-		else {
-			List<String> argList = new ArrayList<>(Arrays.asList(args));
-			if (argList.contains("-h")) {
-				printHelp();
-				System.exit(0);
-			}
-			String root = findArgData(argList, "-root=");
-			String saveName = findArgData(argList, "-savename=");
-			boolean inst = containsArg(argList, "-i");
-			boolean func = containsArg(argList, "-f");
-			boolean priv = containsArg(argList, "-p");
-			boolean consta = containsArg(argList, "-c");
-			runLoose(root, saveName, inst, func, priv, consta, argList.toArray(new String[0]));
+
+		Options cliOptions = new Options();
+
+		Option root = Option.builder("root").hasArg(true).numberOfArgs(1).argName("path-to-root-of-project").desc("Specifies the path to project root.").type(File.class).build();
+		Option savename = Option.builder("savename").hasArg(true).argName("image-name").desc("Specifies the filename of the generated diagram.").type(File.class).build();
+		Option instanceVariable = new Option("i", false, "If this argument is present, the generated diagram will show instance variables.");
+		Option privateEntities = new Option("p", false, "If this argument is present, the generated diagram will show private entities.");
+		Option functions = new Option("f", false, "If this argument is present, the generated diagram will show functions.");
+		Option constants = new Option("c", false, "If this argument is present, the generated diagram will show constants.");
+		Option help = new Option("h", "help", false, "Displays this help message then exits.");
+
+		cliOptions.addOption(root);
+		cliOptions.addOption(savename);
+		cliOptions.addOption(instanceVariable);
+		cliOptions.addOption(privateEntities);
+		cliOptions.addOption(functions);
+		cliOptions.addOption(constants);
+		cliOptions.addOption(help);
+		
+		CommandLineParser parser = new DefaultParser();
+
+		CommandLine line = parser.parse(cliOptions, args, true);
+		if (line.hasOption(help)) {
+			HelpFormatter formatter = new HelpFormatter();
+			formatter.printHelp("java -jar Project-Diagram-Generator.jar", cliOptions, true);
+			System.exit(0);
 		}
-	}
-
-	private static void printHelp() {
-		System.out.println("========== List of Available Arguments ==========");
-		System.out.println("-root=<path-to-root-of-project (required)");
-		System.out.println("    This argument specifies the path to project root.");
-		System.out.println("-savename=<image-name> (required)");
-		System.out.println("    This argument specifies the filename of the generated diagram.");
-		System.out.println("-i (optional)");
-		System.out.println("    If this argument is present, the generated diagram will show instance variables.");
-		System.out.println("-p (optional)");
-		System.out.println("    If this argument is present, the generated diagram will show private entities.");
-		System.out.println("-f (optional)");
-		System.out.println("    If this argument is present, the generated diagram will show functions.");
-		System.out.println("-c (optional)");
-		System.out.println("    If this argument is present, the generated diagram will show constants.");
-		System.out.println("-h (optional)");
-		System.out.println("    Displays this help message then exits.");
-	}
-
-	private static String findArgData(List<String> args, String argPrefix) {
-		for (int i = 0; i < args.size(); i++) {
-			if (args.get(i).startsWith(argPrefix)) {
-				String arg = args.remove(i);
-				return arg.substring(argPrefix.length());
-			}
+		List<Option> missingOptions = new ArrayList<>();
+		if (!line.hasOption(root)) {
+			missingOptions.add(root);
 		}
-		throw new IllegalArgumentException(argPrefix + " not specified");
+		if (!line.hasOption(savename)) {
+			missingOptions.add(savename);
+		}
+		if (!missingOptions.isEmpty()) {
+			throw new MissingOptionException(missingOptions);
+		}
+		boolean inst = line.hasOption(instanceVariable);
+		boolean func = line.hasOption(functions);
+		boolean priv = line.hasOption(privateEntities);
+		boolean consta = line.hasOption(constants);
+		runLoose(line.getOptionValue(root), line.getOptionValue(savename), inst, func, priv, consta, line.getArgs());
+		
 	}
 
-	private static boolean containsArg(List<String> args, String arg) {
-		return args.remove(arg);
-	}
-	
 	private static <T> void runLoose(String path, String name, boolean inst, boolean func, boolean priv, boolean consta, String ... rem) {
 		ConvertVisual.assignPaths(ADDRESS_IMAGES, ADDRESS_SOURCES, ADDRESS_SETTINGS);
-		List<String> ignore = new ArrayList<String>();
-		for(String s : rem) {
-			ignore.add(s);
-		}
+		List<String> ignore = List.of(rem);
 		ConvertVisual.generateUMLDiagram(path, ignore, name, inst, func, priv, consta);
 	}
 	
