@@ -1,0 +1,61 @@
+plugins {
+  id 'application'
+}
+
+dependencies {
+
+  // Parsing API
+  implementation project(':project-diagram-generator-api')
+
+  // Apache Batik
+  implementation group: 'org.apache.xmlgraphics', name: 'batik-swing', version: '1.17'
+
+  // Apache Commons CLI
+  implementation group: 'commons-cli', name: 'commons-cli', version: '1.5.0'
+
+  // Apache Log4j2
+  runtimeOnly group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.20.0'
+
+  // GraalVM JS
+  runtimeOnly group: 'org.graalvm.js', name: 'js', version: '23.0.1'
+
+  // SoftwareVisualInterface
+  implementation group: 'com.github.softwarevisualinterface', name: 'svi', version: '2.0-SNAPSHOT'
+
+}
+
+ext {
+  javaMainClass = 'main.Main'
+}
+
+application {
+  mainClassName = javaMainClass
+}
+
+jar {
+  manifest {
+    attributes(
+      "Main-Class": javaMainClass
+    )
+  }
+}
+
+task uberJar(type: Jar) {
+  manifest {
+    attributes(
+      "Main-Class": javaMainClass,
+      'Multi-Release': 'true'
+    )
+  }
+
+  archiveClassifier = 'uber'
+
+  from sourceSets.main.output
+
+  duplicatesStrategy(DuplicatesStrategy.EXCLUDE)
+
+  dependsOn configurations.runtimeClasspath
+  from {
+    configurations.runtimeClasspath.findAll { it.name.endsWith('jar') }.collect { zipTree(it) }
+  }
+}

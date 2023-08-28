@@ -1,9 +1,10 @@
 /Diagram/
 /bin/
-bin
+**/bin/**
 diagram
 .classpath
 .settings/
 src/main/MainTest.java
 .gradle/**
-build/**
+**/build/**
+**/*.svg

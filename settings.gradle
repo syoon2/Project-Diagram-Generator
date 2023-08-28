@@ -1,0 +1,3 @@
+rootProject.name = 'project-diagram-generator'
+include 'project-diagram-generator-api'
+include 'project-diagram-generator-gui'
