@@ -3,7 +3,6 @@ plugins {
 }
 
 dependencies {
-
   // Parsing API
   implementation project(':project-diagram-generator-api')
 
@@ -19,13 +18,10 @@ dependencies {
   // GraalVM JS
   runtimeOnly group: 'org.graalvm.js', name: 'js', version: '23.0.1'
 
-  // SoftwareVisualInterface
-  implementation group: 'com.github.softwarevisualinterface', name: 'svi', version: '2.0-SNAPSHOT'
-
 }
 
 ext {
-  javaMainClass = 'main.Main'
+  javaMainClass = 'main.PDGLauncher'
 }
 
 application {
