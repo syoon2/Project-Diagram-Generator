@@ -15,7 +15,7 @@ jobs:
     timeout-minutes: 360
     permissions:
       actions: read
-      contents: read
+      contents: write
       security-events: write
 
     strategy:

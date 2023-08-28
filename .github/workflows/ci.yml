@@ -33,7 +33,7 @@ jobs:
       uses: gradle/gradle-build-action@v2.7.1
       with:
         gradle-version: wrapper
-        dependency-graph: generate-and-submit
+        # dependency-graph: generate-and-submit
     - name: Build
       uses: gradle/gradle-build-action@v2.7.1
       with:
