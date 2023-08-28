@@ -1,5 +1,8 @@
 # Project-Diagram-Generator
 
+[![CI](https://github.com/syoon2/Project-Diagram-Generator/actions/workflows/ci.yml/badge.svg)](https://github.com/syoon2/Project-Diagram-Generator/actions/workflows/ci.yml)
+[![CodeQL](https://github.com/syoon2/Project-Diagram-Generator/actions/workflows/codeql.yml/badge.svg)](https://github.com/syoon2/Project-Diagram-Generator/actions/workflows/codeql.yml)
+
 Program that takes the root folder of a programming project and automatically generates a UML diagram for that entire project; will only process `.java` files for now as that is what I am familiar with.
 
 ## Build
@@ -24,11 +27,11 @@ That's about it! Let me know if anything doesn't work or if you would recommend 
 
 ## License
 
-- API: [The MIT License](https://opensource.org/license/mit/)  
+- API: [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)  
   The API submodule provides Java parsing library, independent of any GPL code.
   Thus, this submodule is distributed under the MIT License, matching
   the upstream license.
-- GUI: [GNU General Public License v3](https://opensource.org/license/gpl-3-0/)  
+- GUI: [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)  
   The GUI submodule involves GPL code, and thus, is distributed under GPLv3.
   The upstream repository, however, uses non-GPL code for GUI, and uses the MIT
   License for GUI as well.
