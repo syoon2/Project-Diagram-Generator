@@ -1,0 +1,47 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - "README.md"
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+'
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  ci:
+    name: Validation
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+    - name: Setup JDK 11
+      uses: actions/setup-java@v3
+      with:
+        distribution: temurin
+        java-version: 11
+    - name: Validate Gradle wrapper
+      uses: gradle/wrapper-validation-action@v1
+    - name: Setup Gradle
+      uses: gradle/gradle-build-action@v2.7.1
+      with:
+        gradle-version: wrapper
+        dependency-graph: generate-and-submit
+    - name: Build
+      uses: gradle/gradle-build-action@v2.7.1
+      with:
+        arguments: :project-diagram-generator-gui:uberJar
+    - name: Upload JAR file
+      # if: false
+      # if: startsWith(github.ref, 'refs/tags/v')
+      uses: actions/upload-artifact@v3.1.2
+      with:
+        name: PDG-jar
+        path: '**/build/libs/*.jar'
