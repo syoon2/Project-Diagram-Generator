@@ -18,6 +18,8 @@
 
 package ui;
 
+import static main.PDGLauncher.gitProperties;
+
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
@@ -51,6 +53,13 @@ public class PDGWindow extends JFrame {
     private static final int DEFAULT_WIDTH = 800;
     private static final int DEFAULT_HEIGHT = 600;
 
+    private static final String NAME = "Project Diagram Generator";
+    private static final String TITLE = String.format(
+            "%s (%s - %s%s)",
+            NAME,
+            Objects.requireNonNullElse(PDGWindow.class.getPackage().getImplementationVersion(), "dev"),
+            gitProperties.getProperty("git.commit.id.abbrev"),
+            Boolean.valueOf(gitProperties.getProperty("git.dirty")) ? "*" : "");
 
     private static final String[] BOOLEAN_SELECTION = new String[] {"Show Instance Variables?",
                                                                     "Show Functions?",
@@ -98,6 +107,9 @@ public class PDGWindow extends JFrame {
         panel.setBottomComponent(configContainer);
 
         panel.setResizeWeight(1d);
+
+        // Update title
+        setTitle(TITLE);
 
         pack();
 

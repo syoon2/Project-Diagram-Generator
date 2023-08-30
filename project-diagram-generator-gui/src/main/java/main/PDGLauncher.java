@@ -42,7 +42,7 @@ public class PDGLauncher {
     /**
      * Automatically generated Git properties at build time
      */
-    private static final Properties gitProperties;
+    public static final Properties gitProperties;
     static {
         try {
             gitProperties = PropertiesFactory.INSTANCE
