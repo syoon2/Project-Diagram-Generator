@@ -19,10 +19,15 @@
 package main;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 import org.apache.commons.cli.*;
+import org.apache.commons.collections4.properties.PropertiesFactory;
+import org.apache.commons.lang3.SystemUtils;
 
 import image.ConvertVisual;
 import ui.PDGWindow;
@@ -33,6 +38,19 @@ import ui.PDGWindow;
  * @author Sung Ho Yoon
  */
 public class PDGLauncher {
+
+    /**
+     * Automatically generated Git properties at build time
+     */
+    private static final Properties gitProperties;
+    static {
+        try {
+            gitProperties = PropertiesFactory.INSTANCE
+                    .load(PDGLauncher.class.getClassLoader(), "git.properties");
+        } catch (IOException ioe) {
+            throw new UncheckedIOException(ioe);
+        }
+    }
 
     /**
      * The default directory to save generated images to.

@@ -1,5 +1,6 @@
 plugins {
   id 'java'
+  id "com.gorylenko.gradle-git-properties" version "2.4.1"
 }
 
 
@@ -17,6 +18,7 @@ subprojects {
   targetCompatibility = 11
 
   apply plugin: 'java'
+  apply plugin: "com.gorylenko.gradle-git-properties"
 
   repositories {
     mavenCentral()
@@ -49,14 +51,6 @@ subprojects {
       useJUnitPlatform()
     }
 
-    tasks.withType(JavaCompile) {
-    options.encoding = 'UTF-8'
-    options.compilerArgs += [
-      '-Xlint:unchecked',
-      '-Xlint:deprecation'
-    ]
-  }
-
   // Options when compiling tests
   compileTestJava {
     options.encoding = 'UTF-8'
@@ -83,5 +77,23 @@ project(':project-diagram-generator-gui') {
 }
 
 allprojects {
-    task printAllDependencies(type: DependencyReportTask) {}
+  tasks.withType(JavaCompile) {
+    dependsOn generateGitProperties
+    options.encoding = 'UTF-8'
+    options.compilerArgs += [
+      '-Xlint:unchecked',
+      '-Xlint:deprecation'
+    ]
+  }
+  gitProperties {
+    gitPropertiesName = "git.properties"
+  }
+  task printAllDependencies(type: DependencyReportTask) {}
+  tasks.withType(Jar) {
+    manifest {
+      attributes('Implementation-Title': project.name,
+                 'Implementation-Version': project.version)
+    }
+  }
+
 }
