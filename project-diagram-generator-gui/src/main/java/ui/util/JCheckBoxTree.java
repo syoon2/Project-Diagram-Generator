@@ -54,7 +54,7 @@ import javax.swing.tree.TreePath;
  *
  * @author Sung Ho Yoon
  * 
- * @see https://stackoverflow.com/a/21851201
+ * @see <a href="https://stackoverflow.com/a/21851201">Original source code</a>
  */
 public class JCheckBoxTree extends JTree {
 
