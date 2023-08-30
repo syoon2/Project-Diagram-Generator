@@ -123,6 +123,7 @@ public class PDGLauncher {
         }
         if (line.hasOption(help)) {
             HelpFormatter formatter = new HelpFormatter();
+            // TODO: Dynamically retrieve cmd line syntax, if possible
             formatter.printHelp("java -jar Project-Diagram-Generator.jar", cliOptions, true);
             System.exit(0);
         }

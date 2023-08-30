@@ -95,6 +95,7 @@ class SaveOption extends InputOption {
                 };
                 fileChooser.setAcceptAllFileFilterUsed(false);
                 fileChooser.setDialogTitle("Save as...");
+                // TODO: Reenable PNG export
                 final List<Format> supportedFormats = List.of(/* Format.PNG, */ Format.SVG);
                 for (Format f : supportedFormats) {
                     fileChooser.addChoosableFileFilter(
