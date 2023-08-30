@@ -50,13 +50,18 @@ import image.DotProcess;
  * The main GUI window for Project Diagram Generator.
  *
  * @author Sung Ho Yoon
+ * @since 2.0
  */
 public class PDGWindow extends JFrame {
 
+    /** Default width of a PDG window */
     private static final int DEFAULT_WIDTH = 800;
+    /** Default height of a PDG window */
     private static final int DEFAULT_HEIGHT = 600;
 
+    /** Name of the program */
     private static final String NAME = "Project Diagram Generator";
+    /** Title for the window */
     private static final String TITLE = String.format(
             "%s (%s - %s%s)",
             NAME,
@@ -64,17 +69,19 @@ public class PDGWindow extends JFrame {
             gitProperties.getProperty("git.commit.id.abbrev"),
             Boolean.valueOf(gitProperties.getProperty("git.dirty")) ? "*" : "");
 
-    private static final String[] BOOLEAN_SELECTION = new String[] {"Show Instance Variables?",
-                                                                    "Show Functions?",
-                                                                    "Show Private Entities?",
-                                                                    "Show Constants?"
-                                                                    };
+    /** Toggleable options for the generator */
+    private static final String[] BOOLEAN_SELECTION = new String[] { "Show Instance Variables?",
+            "Show Functions?",
+            "Show Private Entities?",
+            "Show Constants?"
+    };
 
     /** Class logger */
     private static Logger logger = LogManager.getLogger();
 
     /** Internally used {@link SVGDocumentFactory} object */
-    private static SVGDocumentFactory svgFactory = new SAXSVGDocumentFactory(XMLResourceDescriptor.getXMLParserClassName());
+    private static SVGDocumentFactory svgFactory = new SAXSVGDocumentFactory(
+            XMLResourceDescriptor.getXMLParserClassName());
 
     /** The dividing split pane. */
     private JSplitPane panel;
@@ -89,6 +96,7 @@ public class PDGWindow extends JFrame {
     /** Container for diagram generator options. */
     private Container optionContainer;
 
+    /** Toggleable option checkbox */
     private JCheckBox instanceVarCheck, functionCheck, privateEntityCheck, constantCheck;
 
     /**
@@ -199,7 +207,8 @@ public class PDGWindow extends JFrame {
                 try {
                     generateButton.setEnabled(false);
                     generateButton.setText("Generating image");
-                    Explore.setParameters(instanceVarCheck.isSelected(), functionCheck.isSelected(), privateEntityCheck.isSelected(), constantCheck.isSelected());
+                    Explore.setParameters(instanceVarCheck.isSelected(), functionCheck.isSelected(),
+                            privateEntityCheck.isSelected(), constantCheck.isSelected());
                     Explore e = new Explore(directoryOption.getDirectory());
                     e.run();
                     DotProcess.setProject(e);
@@ -239,7 +248,7 @@ public class PDGWindow extends JFrame {
      *
      * @param fileName The name of the image to be loaded
      * @return the SVG document
-     * @throws IOException if I/O error occurs
+     * @throws IOException          if an I/O error occurs
      * @throws NullPointerException if argument is {@code null}
      **/
     public static SVGDocument loadSVGFromFile(String fileName) throws IOException {
@@ -251,7 +260,7 @@ public class PDGWindow extends JFrame {
      *
      * @param file {@link File} that points to the image to be loaded
      * @return the SVG document
-     * @throws IOException if I/O error occurs
+     * @throws IOException          if an I/O error occurs
      * @throws NullPointerException if argument is {@code null}
      **/
     public static SVGDocument loadSVGFromFile(File file) throws IOException {

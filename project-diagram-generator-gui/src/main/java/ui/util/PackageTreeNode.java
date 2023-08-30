@@ -32,6 +32,7 @@ import javax.swing.tree.TreeNode;
  * represented as a {@link TreeNode}.
  * 
  * @author Sung Ho Yoon
+ * @since 2.0
  */
 public class PackageTreeNode implements TreeNode {
 

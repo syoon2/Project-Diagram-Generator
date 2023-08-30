@@ -36,11 +36,12 @@ import ui.PDGWindow;
  * The entry point used by Project Diagram Generator.
  * 
  * @author Sung Ho Yoon
+ * @since 2.0
  */
 public class PDGLauncher {
 
     /**
-     * Automatically generated Git properties at build time
+     * Automatically generated Git properties at build time.
      */
     public static final Properties gitProperties;
     static {
@@ -57,6 +58,16 @@ public class PDGLauncher {
      */
     public static final String ADDRESS_IMAGES = "./Diagram/images/";
 
+    /** Private constructor. */
+    private PDGLauncher() {
+    }
+
+    /**
+     * The entrypoint for launching PDG.
+     * 
+     * @param args command line arguments
+     * @throws ParseException if failed to parse command line arguments
+     */
     public static void main(String[] args) throws ParseException {
         if (args.length == 0)
             runReal();

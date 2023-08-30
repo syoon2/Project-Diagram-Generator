@@ -30,6 +30,12 @@ import javax.swing.tree.TreePath;
 
 import ui.util.PackageTreeNode;
 
+/**
+ * Input option for handling packages to be excluded from the diagram.
+ * 
+ * @author Sung Ho Yoon
+ * @since 2.0
+ */
 class PackageExcludeOption extends InputOption {
 
     private final static String DEFAULT_PKG_TEXT = "[packages to ignore]";

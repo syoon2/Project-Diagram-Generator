@@ -30,26 +30,41 @@ import javax.swing.*;
 
 import org.apache.commons.io.IOUtils;
 
+/**
+ * Generic graphic component for handling user input options.
+ * 
+ * @author Sung Ho Yoon
+ * @since 2.0
+ */
 abstract class InputOption extends JComponent {
-    
+
     private static final Icon BUTTON_PLUS_ICON;
     static {
         try {
             BUTTON_PLUS_ICON = new ImageIcon(
-                IOUtils.resourceToURL("plus_icon.png", DirectoryOption.class.getClassLoader())
-            );
+                    IOUtils.resourceToURL("plus_icon.png", DirectoryOption.class.getClassLoader()));
         } catch (IOException ioe) {
             throw new UncheckedIOException(ioe);
         }
     }
 
+    /** A text box for displaying user's input */
     private JTextField textField;
+    /** A button */
     private JButton button;
 
+    /**
+     * Constructs a new {@code InputOption}.
+     */
     InputOption() {
         this(null);
     }
 
+    /**
+     * Constructs a new {@code InputOption} with the specified text in the text box.
+     * 
+     * @param txt text to put in the text box
+     */
     InputOption(String txt) {
         textField = new JTextField(txt);
         textField.setMinimumSize(new Dimension(300, 32));
@@ -71,14 +86,31 @@ abstract class InputOption extends JComponent {
         add(getButton(), c);
     }
 
+    /**
+     * Returns the button in this component.
+     * 
+     * @return the button
+     */
     protected final JButton getButton() {
         return button;
     }
 
+    /**
+     * Returns the text box in this component.
+     * 
+     * @return the text box
+     */
     protected final JTextField getTextField() {
         return textField;
     }
 
+    /**
+     * Adds a listener to the underlying button.
+     * 
+     * @param l a listener
+     * 
+     * @see JButton#addActionListener(ActionListener)
+     */
     protected final void addButtonActionListener(ActionListener l) {
         button.addActionListener(l);
     }

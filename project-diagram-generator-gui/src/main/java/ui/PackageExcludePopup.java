@@ -34,6 +34,12 @@ import javax.swing.tree.TreePath;
 import ui.util.JCheckBoxTree;
 import ui.util.PackageTreeNode;
 
+/**
+ * Popup window for users to input ignored packages.
+ * 
+ * @author Sung Ho Yoon
+ * @since 2.0
+ */
 class PackageExcludePopup extends JDialog {
 
     private static final int DEFAULT_WIDTH = 300;

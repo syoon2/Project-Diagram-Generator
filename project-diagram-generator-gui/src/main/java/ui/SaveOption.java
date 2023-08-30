@@ -32,19 +32,41 @@ import org.apache.commons.lang3.SystemUtils;
 import guru.nidi.graphviz.engine.Format;
 import image.ConvertVisual;
 
+/**
+ * Input option for handling the saved destination of the diagram.
+ * 
+ * @author Sung Ho Yoon
+ * @since 2.0
+ */
 class SaveOption extends InputOption {
 
+    /** Default placeholder for the text box */
     private static final String DEFAULT_NAME = "[image name]";
 
+    /** The directory to save file */
     private File directory;
+    /** The file to be saved */
     private File saveFile;
+    /** The filename to be used */
     private String filename;
+    /** The generated file format */
     private Format format;
 
+    /**
+     * Constructs a new {@code SaveOption}.
+     * 
+     * @param parent the frame that owns this {@code SaveOption}
+     */
     public SaveOption(Frame parent) {
         this(parent, new File(SystemUtils.USER_DIR));
     }
 
+    /**
+     * Constructs a new {@code SaveOption}.
+     * 
+     * @param parent    the frame that owns this {@code SaveOption}
+     * @param directory the initial directory
+     */
     public SaveOption(Frame parent, File directory) {
         super(DEFAULT_NAME);
         this.directory = directory;
@@ -73,7 +95,7 @@ class SaveOption extends InputOption {
                 };
                 fileChooser.setAcceptAllFileFilterUsed(false);
                 fileChooser.setDialogTitle("Save as...");
-                final List<Format> supportedFormats = List.of(/*Format.PNG,*/ Format.SVG);
+                final List<Format> supportedFormats = List.of(/* Format.PNG, */ Format.SVG);
                 for (Format f : supportedFormats) {
                     fileChooser.addChoosableFileFilter(
                             new FileNameExtensionFilter(f.name() + " file", f.fileExtension));
@@ -108,14 +130,29 @@ class SaveOption extends InputOption {
         });
     }
 
+    /**
+     * Returns the filename to be used.
+     * 
+     * @return the filename to be used
+     */
     public String getFilename() {
         return filename;
     }
 
+    /**
+     * Returns the file format of the saved file.
+     * 
+     * @return the file format of the saved file
+     */
     public Format getFormat() {
         return format;
     }
 
+    /**
+     * Returns the saved file.
+     * 
+     * @return the saved file
+     */
     public File getSavedFile() {
         return saveFile;
     }

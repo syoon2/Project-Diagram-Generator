@@ -26,16 +26,35 @@ import javax.swing.*;
 
 import org.apache.commons.lang3.SystemUtils;
 
+/**
+ * Input option for selecting the root directory of the project.
+ * 
+ * @author Sung Ho Yoon
+ * @since 2.0
+ */
 class DirectoryOption extends InputOption {
 
+    /** Default placeholder for the text box */
     private static final String DEFAULT_SRC_TEXT = "[path to project src]";
 
+    /** The selected directory */
     private File directory;
 
+    /**
+     * Constructs a new {@code DirectoryOption}.
+     * 
+     * @param parent the frame that owns this {@code DirectoryOption}
+     */
     public DirectoryOption(Frame parent) {
         this(parent, new File(SystemUtils.USER_DIR));
     }
 
+    /**
+     * Constructs a new {@code DirectoryOption}.
+     * 
+     * @param parent    the frame that owns this {@code DirectoryOption}
+     * @param directory the initial directory
+     */
     public DirectoryOption(Frame parent, File directory) {
         super(DEFAULT_SRC_TEXT);
         this.setDirectory(directory);
@@ -54,6 +73,15 @@ class DirectoryOption extends InputOption {
 
     }
 
+    /**
+     * Sets the selected root directory.
+     * 
+     * @param directory a directory
+     * @return the specified directory
+     * @throws IllegalArgumentException if argument does not represent a valid
+     *                                  directory
+     * @throws NullPointerException     if argument is {@code null}
+     */
     public File setDirectory(File directory) {
         if (!Objects.requireNonNull(directory).isDirectory()) {
             throw new IllegalArgumentException("Argument does not represent a directory");

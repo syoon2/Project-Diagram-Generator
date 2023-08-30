@@ -53,6 +53,7 @@ import javax.swing.tree.TreePath;
  * A {@code JTree} with checkboxes for each node.
  *
  * @author Sung Ho Yoon
+ * @since 2.0
  * 
  * @see <a href="https://stackoverflow.com/a/21851201">Original source code</a>
  */
@@ -61,6 +62,9 @@ public class JCheckBoxTree extends JTree {
     /**
      * Data structure that allows fast check-indicate the state of each node.
      * It totally replaces the "selection" mechanism of the {@link JTree}.
+     * 
+     * @author Sung Ho Yoon
+     * @since 2.0
      */
     public static class CheckedNode {
         private boolean isSelected;
@@ -112,6 +116,9 @@ public class JCheckBoxTree extends JTree {
     /**
      * A event type representing the change of the checked state
      * in a {@link JCheckBoxTree}.
+     * 
+     * @author Sung Ho Yoon
+     * @since 2.0
      */
     public class CheckChangeEvent extends EventObject {
 
@@ -163,6 +170,9 @@ public class JCheckBoxTree extends JTree {
 
     /**
      * Type of listener that monitors check changes.
+     * 
+     * @author Sung Ho Yoon
+     * @since 2.0
      */
     @FunctionalInterface
     public interface CheckChangeEventListener extends EventListener {
@@ -174,10 +184,20 @@ public class JCheckBoxTree extends JTree {
         public void checkStateChanged(CheckChangeEvent event);
     }
 
+    /**
+     * Constructs a new {@code JCheckBoxTree} with the sample tree model.
+     * 
+     * @see JTree#getDefaultTreeModel()
+     */
     public JCheckBoxTree() {
         this(getDefaultTreeModel());
     }
 
+    /**
+     * Constructs a new {@code JCheckBoxTree} with the specified tree model.
+     * 
+     * @param newModel the tree model to use
+     */
     public JCheckBoxTree(TreeModel newModel) {
         super(newModel);
         // Disable toggling by double-click
@@ -222,10 +242,23 @@ public class JCheckBoxTree extends JTree {
         });
     }
 
+    /**
+     * Constructs a new {@code JCheckBoxTree} with the specified node as the root.
+     * 
+     * @param root the root node of the tree
+     */
     public JCheckBoxTree(TreeNode root) {
         this(new DefaultTreeModel(root));
     }
 
+    /**
+     * Constructs a new {@code JCheckBoxTree} with the specified node as the root
+     * and
+     * the specified behavior for deciding whether a node is a leaf node.
+     * 
+     * @param root               the root node
+     * @param asksAllowsChildren see {@link DefaultTreeModel#asksAllowsChildren()}
+     */
     public JCheckBoxTree(TreeNode root, boolean asksAllowsChildren) {
         this(new DefaultTreeModel(root, asksAllowsChildren));
     }
@@ -260,6 +293,11 @@ public class JCheckBoxTree extends JTree {
         }
     }
 
+    /**
+     * Sets the underlying tree model.
+     * 
+     * @param newModel a tree model
+     */
     @Override
     public void setModel(TreeModel newModel) {
         super.setModel(newModel);
@@ -312,7 +350,7 @@ public class JCheckBoxTree extends JTree {
     /**
      * Create data structure of the current model for the checking mechanism.
      *
-     * @param node
+     * @param node a node
      */
     private void addSubtreeToCheckingStateTracking(TreeNode node) {
         TreePath tp = buildTreePath(node);
@@ -326,6 +364,9 @@ public class JCheckBoxTree extends JTree {
 
     /**
      * Cell renderer for {@code JCheckBoxTree}.
+     * 
+     * @author Sung Ho Yoon
+     * @since 2.0
      */
     private class CheckBoxCellRenderer extends JPanel implements TreeCellRenderer {
         private JCheckBox checkBox;
@@ -415,6 +456,7 @@ public class JCheckBoxTree extends JTree {
 
     /**
      * Builds the tree path for a generic tree node.
+     * 
      * @param tn a tree node
      * @return the path to the specified node
      */
