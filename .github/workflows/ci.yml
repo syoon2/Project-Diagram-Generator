@@ -37,7 +37,7 @@ jobs:
     - name: Build
       uses: gradle/gradle-build-action@v2.7.1
       with:
-        arguments: :project-diagram-generator-gui:uberJar
+        arguments: :pdg-launcher:uberJar
     - name: Upload JAR file
       # if: false
       # if: startsWith(github.ref, 'refs/tags/v')
