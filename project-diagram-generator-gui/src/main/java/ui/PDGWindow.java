@@ -25,6 +25,8 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.InputEvent;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
@@ -34,6 +36,7 @@ import javax.swing.*;
 import org.apache.batik.anim.dom.SAXSVGDocumentFactory;
 import org.apache.batik.dom.svg.SVGDocumentFactory;
 import org.apache.batik.swing.JSVGCanvas;
+import org.apache.batik.swing.gvt.AbstractPanInteractor;
 import org.apache.batik.util.XMLResourceDescriptor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -91,6 +94,7 @@ public class PDGWindow extends JFrame {
     /**
      * Constructs a new {@code PDGWindow}.
      */
+    @SuppressWarnings("unchecked")
     public PDGWindow() {
         setMinimumSize(new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT));
 
@@ -98,7 +102,46 @@ public class PDGWindow extends JFrame {
 
         getContentPane().add(panel);
 
-        svgCanvas = new JSVGCanvas();
+        svgCanvas = new JSVGCanvas(null, false, false);
+
+        // Use mouse for translation
+        svgCanvas.getInteractors().add(new AbstractPanInteractor() {
+            @Override
+            public boolean startInteraction(InputEvent ie) {
+                int mods = ie.getModifiersEx();
+                return ie.getID() == MouseEvent.MOUSE_PRESSED &&
+                        (mods & InputEvent.BUTTON1_DOWN_MASK) != 0;
+            }
+        });
+
+        // Use mouse for zooming in and scrolling
+        svgCanvas.addMouseWheelListener(e -> {
+            if (e.isControlDown()) {
+                if (e.getWheelRotation() < 0) {
+                    Action action = svgCanvas.getActionMap().get(JSVGCanvas.ZOOM_IN_ACTION);
+                    if (action != null)
+                        action.actionPerformed(null);
+
+                } else if (e.getWheelRotation() > 0) {
+                    Action action = svgCanvas.getActionMap().get(JSVGCanvas.ZOOM_OUT_ACTION);
+                    if (action != null)
+                        action.actionPerformed(null);
+
+                }
+            } else {
+                if (e.getWheelRotation() < 0) {
+                    Action action = svgCanvas.getActionMap().get(JSVGCanvas.FAST_SCROLL_UP_ACTION);
+                    if (action != null)
+                        action.actionPerformed(null);
+
+                } else if (e.getWheelRotation() > 0) {
+                    Action action = svgCanvas.getActionMap().get(JSVGCanvas.FAST_SCROLL_DOWN_ACTION);
+                    if (action != null)
+                        action.actionPerformed(null);
+
+                }
+            }
+        });
 
         panel.setTopComponent(svgCanvas);
 
