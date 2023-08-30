@@ -70,13 +70,13 @@ subprojects {
   }
 }
 
-project(':project-diagram-generator-api') {
+project(':pdg-api') {
   jar { enabled = true }
 }
 
-project(':project-diagram-generator-gui') {
+project(':pdg-launcher') {
   dependencies {
-    implementation project(':project-diagram-generator-api')
+    implementation project(':pdg-api')
   }
 }
 

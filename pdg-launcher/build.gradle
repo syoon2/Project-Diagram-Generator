@@ -4,7 +4,7 @@ plugins {
 
 dependencies {
   // Parsing API
-  implementation project(':project-diagram-generator-api')
+  implementation project(':pdg-api')
 
   // Apache Batik
   implementation group: 'org.apache.xmlgraphics', name: 'batik-swing', version: '1.17'
