@@ -13,12 +13,14 @@ subprojects {
   group = 'com.github.syoon2.pdg'
   version = '2.0.0-SNAPSHOT'
 
-  // Assume Java 11
-  sourceCompatibility = 11
-  targetCompatibility = 11
-
   apply plugin: 'java'
   apply plugin: "com.gorylenko.gradle-git-properties"
+
+  java {
+    // Assume Java 11
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+  }
 
   repositories {
     mavenCentral()
