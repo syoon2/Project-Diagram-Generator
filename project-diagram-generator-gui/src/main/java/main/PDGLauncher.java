@@ -86,6 +86,7 @@ public class PDGLauncher {
         Option constants = new Option("c", false,
                 "If this argument is present, the generated diagram will show constants.");
         Option help = new Option("h", "help", false, "Displays this help message then exits.");
+        Option version = new Option("v", "version", false, "Displays version info then exits.");
 
         cliOptions.addOption(root);
         cliOptions.addOption(savename);
@@ -94,10 +95,21 @@ public class PDGLauncher {
         cliOptions.addOption(functions);
         cliOptions.addOption(constants);
         cliOptions.addOption(help);
+        cliOptions.addOption(version);
 
         CommandLineParser parser = new DefaultParser();
 
         CommandLine line = parser.parse(cliOptions, args, true);
+
+        if (line.hasOption(version)) {
+            System.out.printf("Project diagram generator %s (%s:%s%s)\n",
+                gitProperties.getProperty("git.build.version"),
+                gitProperties.getProperty("git.branch"),
+                gitProperties.getProperty("git.commit.id.abbrev"),
+                Boolean.valueOf(gitProperties.getProperty("git.dirty")) ? "*" : ""
+            );
+            System.exit(0);
+        }
         if (line.hasOption(help)) {
             HelpFormatter formatter = new HelpFormatter();
             formatter.printHelp("java -jar Project-Diagram-Generator.jar", cliOptions, true);
