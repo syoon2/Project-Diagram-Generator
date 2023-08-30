@@ -16,8 +16,8 @@ that corresponds to the provided project.
 ### Instructions
 
 1. Clone this repository.
-2. Run `./gradlew :project-diagram-generator-gui:run` (if you just want to run
-  this) or `./gradlew :project-diagram-generator-gui:uberJar` (if you want an
+2. Run `./gradlew :pdg-launcher:run` (if you just want to run
+  this) or `./gradlew :pdg-launcher:uberJar` (if you want an
   all-in-one JAR file)
 
 ## How to use this
