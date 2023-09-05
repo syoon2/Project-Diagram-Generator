@@ -15,6 +15,8 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
 
+import org.apache.commons.io.IOUtils;
+
 import analysis.language.actor.GenericClass;
 import analysis.language.actor.GenericDefinition;
 import analysis.language.actor.GenericEnum;
@@ -56,7 +58,7 @@ public abstract class GenericFile {
             while(sc.hasNextLine()) {
                 String nex = sc.nextLine();
                 if(nex != null)
-                    contents += nex + "\n";
+                    contents += nex + IOUtils.LINE_SEPARATOR_UNIX;
             }
         }
         lines = preProcess(contents);
