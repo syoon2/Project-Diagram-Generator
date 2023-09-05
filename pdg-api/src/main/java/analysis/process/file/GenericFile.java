@@ -17,6 +17,7 @@ import java.util.Set;
 
 import org.apache.commons.io.IOUtils;
 
+import analysis.language.Visibility;
 import analysis.language.actor.GenericClass;
 import analysis.language.actor.GenericDefinition;
 import analysis.language.actor.GenericEnum;
@@ -26,11 +27,6 @@ import analysis.process.Cluster;
 public abstract class GenericFile {
 
 //---  Constants   ----------------------------------------------------------------------------
-
-    protected final static int VISIBILITY_PUBLIC = 0;
-    protected final static int VISIBILITY_PRIVATE = 1;
-    protected final static int VISIBILITY_PROTECTED = 2;
-    protected final static int VISIBILITY_OTHER = 3;
 
     protected final static String FULL_NAME_SEPARATOR = "/";
 
@@ -241,41 +237,89 @@ public abstract class GenericFile {
 
     protected void addFunctionToDef(int vis, String nom, String ret, List<String> argNom, List<String> argTyp, boolean statStatic, boolean statAbstract, boolean isFin) {
         if(privateCheck(vis)) {
-            gen.addFunction(interpretVisibility(vis), nom, ret, argNom, argTyp, statStatic, statAbstract, isFin);
+            gen.addFunction(Visibility.valueOf(vis), nom, ret, argNom, argTyp, statStatic, statAbstract, isFin);
+        }
+    }
+
+    /**
+     * 
+     * @param vis
+     * @param nom
+     * @param ret
+     * @param argNom
+     * @param argTyp
+     * @param statStatic
+     * @param statAbstract
+     * @param isFin
+     * 
+     * @since 2.0
+     */
+    protected void addFunctionToDef(Visibility vis, String nom, String ret, List<String> argNom, List<String> argTyp, boolean statStatic, boolean statAbstract, boolean isFin) {
+        if(privateCheck(vis)) {
+            gen.addFunction(vis, nom, ret, argNom, argTyp, statStatic, statAbstract, isFin);
         }
     }
 
     protected void addConstructorToDef(int vis, String nom, List<String> argNom, List<String> argTyp) {
         if(privateCheck(vis)) {
-            gen.addConstructor(interpretVisibility(vis), nom, argNom, argTyp);
+            gen.addConstructor(Visibility.valueOf(vis), nom, argNom, argTyp);
+        }
+    }
+
+    /**
+     * 
+     * @param vis
+     * @param nom
+     * @param argNom
+     * @param argTyp
+     * 
+     * @since 2.0
+     */
+    protected void addConstructorToDef(Visibility vis, String nom, List<String> argNom, List<String> argTyp) {
+        if(privateCheck(vis)) {
+            gen.addConstructor(vis, nom, argNom, argTyp);
         }
     }
 
     protected void addInstanceVariableToClass(int vis, String typ, String nom, boolean statStatic, boolean statFinal) {
         if(privateCheck(vis) && constantCheck(statFinal)) {
-            ((GenericClass)gen).addInstanceVariable(interpretVisibility(vis), typ, nom, statStatic, statFinal);
+            ((GenericClass)gen).addInstanceVariable(Visibility.valueOf(vis), typ, nom, statStatic, statFinal);
+        }
+    }
+
+    /**
+     * 
+     * @param vis
+     * @param typ
+     * @param nom
+     * @param statStatic
+     * @param statFinal
+     * 
+     * @since 2.0
+     */
+    protected void addInstanceVariableToClass(Visibility vis, String typ, String nom, boolean statStatic, boolean statFinal) {
+        if(privateCheck(vis) && constantCheck(statFinal)) {
+            ((GenericClass)gen).addInstanceVariable(vis, typ, nom, statStatic, statFinal);
         }
     }
 
     private boolean privateCheck(int vis) {
-        return getStatusPrivate() || vis != VISIBILITY_PRIVATE;
+        return privateCheck(Visibility.valueOf(vis));
+    }
+
+    /**
+     * 
+     * @param vis
+     * @return
+     * 
+     * @since 2.0
+     */
+    private boolean privateCheck(Visibility vis) {
+        return getStatusPrivate() || vis != Visibility.PRIVATE;
     }
 
     private boolean constantCheck(boolean isFinal) {
         return getStatusConstant() || !isFinal;
-    }
-
-    private String interpretVisibility(int in) {
-        switch(in) {
-            case VISIBILITY_PUBLIC:
-                return "+";
-            case VISIBILITY_PRIVATE:
-                return "-";
-            case VISIBILITY_PROTECTED:
-                return "#";
-            default:
-                return "?";
-        }
     }
 
 //---  Setter Methods   -----------------------------------------------------------------------

@@ -9,6 +9,7 @@ package analysis.language.actor;
 import java.util.ArrayList;
 import java.util.List;
 
+import analysis.language.Visibility;
 import analysis.language.component.Constructor;
 import analysis.language.component.Function;
 
@@ -49,7 +50,7 @@ public abstract class GenericDefinition implements Comparable<GenericDefinition>
         realizations.add(in);
     }
 
-    public void addFunction(String vis, String nom, String ret, List<String> argNom, List<String> argTyp, boolean statStatic, boolean statAbstract, boolean isFinal) {
+    public void addFunction(Visibility vis, String nom, String ret, List<String> argNom, List<String> argTyp, boolean statStatic, boolean statAbstract, boolean isFinal) {
         Function in = new Function(vis, nom, ret, argNom, argTyp);
         in.setAbstract(statAbstract);
         in.setStatic(statStatic);
@@ -57,7 +58,7 @@ public abstract class GenericDefinition implements Comparable<GenericDefinition>
         addFunction(in);
     }
 
-    public void addConstructor(String vis, String nom, List<String> argNom, List<String> argTyp) {
+    public void addConstructor(Visibility vis, String nom, List<String> argNom, List<String> argTyp) {
         Constructor in = new Constructor(vis, nom, argNom, argTyp);
         addFunction(in);
     }
@@ -100,7 +101,7 @@ public abstract class GenericDefinition implements Comparable<GenericDefinition>
         return getFunctionAt(index).getType();
     }
 
-    public String getFunctionVisibilityAt(int index) {
+    public Visibility getFunctionVisibilityAt(int index) {
         return getFunctionAt(index).getVisibility();
     }
 

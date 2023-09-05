@@ -6,13 +6,15 @@
 
 package analysis.language.component;
 
+import analysis.language.Visibility;
+
 public class InstanceVariable extends ClassComponent{
 
     private boolean isStatic;
 
     private boolean isFinal;
 
-    public InstanceVariable(String vis, String nom, String typ) {
+    public InstanceVariable(Visibility vis, String nom, String typ) {
         super(typ, nom, vis);
     }
 

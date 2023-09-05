@@ -17,6 +17,8 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import analysis.language.Visibility;
+
 public class JavaFile extends GenericFile {
 
 //---  Constants   ----------------------------------------------------------------------------
@@ -117,7 +119,7 @@ public class JavaFile extends GenericFile {
         }
         String[] cont = cleanInput(in);
         logger.debug(Arrays.toString(cont));
-        int vis = processVisibility(cont[0]);
+        Visibility vis = processVisibility(cont[0]);
         String typ = compileType(cont, 1);
         addInstanceVariableToClass(vis, cont[cont.length - 1], typ, underline, fina);
     }
@@ -137,7 +139,7 @@ public class JavaFile extends GenericFile {
         }
         String[] cont = cleanInput(in);
         int argStart = ArrayUtils.indexOf(cont, "(");
-        int vis = processVisibility(cont[0]);
+        Visibility vis = processVisibility(cont[0]);
         String name = cont[argStart-1];
         int typeIndex = 1;
         if(cont[typeIndex].equals("<")) {
@@ -477,16 +479,16 @@ public class JavaFile extends GenericFile {
         return start;
     }
 
-    private int processVisibility(String in) {
+    private Visibility processVisibility(String in) {
         switch(in) {
             case "public":
-                return VISIBILITY_PUBLIC;
+                return Visibility.PUBLIC;
             case "private":
-                return VISIBILITY_PRIVATE;
+                return Visibility.PRIVATE;
             case "protected":
-                return VISIBILITY_PROTECTED;
+                return Visibility.PROTECTED;
             default:
-                return VISIBILITY_OTHER;
+                return Visibility.PACKAGE;
         }
     }
 

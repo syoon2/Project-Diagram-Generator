@@ -9,6 +9,8 @@ package analysis.language.component;
 import java.util.ArrayList;
 import java.util.List;
 
+import analysis.language.Visibility;
+
 public class Function extends ClassComponent{
 
 //---  Instance Variables   -------------------------------------------------------------------
@@ -20,12 +22,12 @@ public class Function extends ClassComponent{
 
 //---  Constructors   -------------------------------------------------------------------------
 
-    public Function(String vis, String nom, List<Argument> arg, String ret) {
+    public Function(Visibility vis, String nom, List<Argument> arg, String ret) {
         super(ret, nom, vis);
         arguments = arg;
     }
 
-    public Function(String vis, String nom, String ret, List<String> argNom, List<String> argTyp) {
+    public Function(Visibility vis, String nom, String ret, List<String> argNom, List<String> argTyp) {
         super(ret, nom, vis);
         arguments = new ArrayList<Argument>();
         for(int i = 0; i < argNom.size(); i++) {

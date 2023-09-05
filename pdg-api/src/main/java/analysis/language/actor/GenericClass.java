@@ -9,6 +9,7 @@ package analysis.language.actor;
 import java.util.ArrayList;
 import java.util.List;
 
+import analysis.language.Visibility;
 import analysis.language.component.InstanceVariable;
 
 /**
@@ -41,7 +42,7 @@ public class GenericClass extends GenericDefinition{
         instanceVariables.add(in);
     }
 
-    public void addInstanceVariable(String vis, String nom, String typ, boolean isStatic, boolean isFinal) {
+    public void addInstanceVariable(Visibility vis, String nom, String typ, boolean isStatic, boolean isFinal) {
         InstanceVariable iv = new InstanceVariable(vis, nom, typ);
         iv.setStatic(isStatic);
         iv.setFinal(isFinal);
@@ -83,7 +84,7 @@ public class GenericClass extends GenericDefinition{
         return getInstanceVariableAt(index).getType();
     }
 
-    public String getInstanceVariableVisibilityAt(int index) {
+    public Visibility getInstanceVariableVisibilityAt(int index) {
         return getInstanceVariableAt(index).getVisibility();
     }
 

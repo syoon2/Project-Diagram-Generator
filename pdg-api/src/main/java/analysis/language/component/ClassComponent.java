@@ -6,19 +6,21 @@
 
 package analysis.language.component;
 
+import analysis.language.Visibility;
+
 public abstract class ClassComponent {
 
     private String name;
     private String type;
-    private String visibility;
+    private Visibility visibility;
 
-    public ClassComponent(String typ, String nom, String vis) {
+    public ClassComponent(String typ, String nom, Visibility vis) {
         type = typ;
         name = nom;
         visibility = vis;
     }
 
-    public String getVisibility() {
+    public Visibility getVisibility() {
         return visibility;
     }
 
