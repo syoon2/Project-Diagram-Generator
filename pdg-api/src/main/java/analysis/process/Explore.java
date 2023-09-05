@@ -7,6 +7,8 @@
 package analysis.process;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -60,18 +62,22 @@ public class Explore implements Runnable {
 
     @Override
     public void run() {
-        File use = new File(rootPath);
-        logger.info("Begun exploring files");
-        explore(use);
-        logger.info("Finished exploring files");
-        logger.info("Begun processing files");
-        for(GenericFile f : files) {
-            f.process(getDefinitionMapping(), parent);
+        try {
+            File use = new File(rootPath);
+            logger.info("Begun exploring files");
+            explore(use);
+            logger.info("Finished exploring files");
+            logger.info("Begun processing files");
+            for(GenericFile f : files) {
+                f.process(getDefinitionMapping(), parent);
+            }
+            logger.info("Finished processing files");
+        } catch (IOException ioe) {
+            throw new UncheckedIOException(logger.throwing(ioe));
         }
-        logger.info("Finished processing files");
     }
 
-    private void explore(File root) {
+    private void explore(File root) throws IOException {
         for(String s : root.list()) {
             File look = new File(root.getAbsolutePath() + File.separator + s);
             if(!look.exists()) {

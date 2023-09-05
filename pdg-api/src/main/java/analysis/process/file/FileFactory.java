@@ -7,6 +7,7 @@
 package analysis.process.file;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,7 +15,7 @@ import org.apache.commons.io.FilenameUtils;
 
 public class FileFactory {
 
-    public static List<GenericFile> generateFile(File f, String root) {
+    public static List<GenericFile> generateFile(File f, String root) throws IOException {
         String name = f.getName();
         String type = FilenameUtils.getExtension(name);
         switch(type) {

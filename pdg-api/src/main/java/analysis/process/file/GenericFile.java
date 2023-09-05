@@ -7,6 +7,7 @@
 package analysis.process.file;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -48,20 +49,15 @@ public abstract class GenericFile {
 
 //---  Constructors   -------------------------------------------------------------------------
 
-    public GenericFile(File in, String root) {
+    public GenericFile(File in, String root) throws IOException {
         lines = new ArrayList<String>();
         contents = "";
-        try {
-            Scanner sc = new Scanner(in);
+        try (Scanner sc = new Scanner(in)) {
             while(sc.hasNextLine()) {
                 String nex = sc.nextLine();
                 if(nex != null)
                     contents += nex + "\n";
             }
-            sc.close();
-        }
-        catch(Exception e) {
-            e.printStackTrace();
         }
         lines = preProcess(contents);
         name = findName();

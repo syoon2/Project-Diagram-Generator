@@ -7,6 +7,7 @@
 package analysis.process.file;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -28,7 +29,7 @@ public class JavaFile extends GenericFile {
 
 //---  Constructors   -------------------------------------------------------------------------
 
-    public JavaFile(File in, String root) {
+    public JavaFile(File in, String root) throws IOException {
         super(in, root);
     }
 
