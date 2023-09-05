@@ -18,5 +18,8 @@
 
 /**
  * Provides entry point for PDG, in both GUI and CLI environments.
+ * 
+ * @author Sung Ho Yoon
+ * @since 2.0
  */
 package main;
