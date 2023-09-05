@@ -17,7 +17,7 @@ permissions:
 
 jobs:
   ci:
-    name: Validation
+    name: Build
     runs-on: ubuntu-latest
     steps:
     - name: Checkout repository
