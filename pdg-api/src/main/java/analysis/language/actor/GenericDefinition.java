@@ -162,10 +162,14 @@ public abstract class GenericDefinition implements Comparable<GenericDefinition>
         return getFullName().compareTo(o.getFullName());
     }
 
-    public boolean equals(GenericDefinition gd) {
-        if(gd == null)
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        else if (obj instanceof GenericDefinition) {
+            return getFullName().equals(((GenericDefinition) obj).getFullName());
+        } else
             return false;
-        return getFullName().equals(gd.getFullName());
     }
 
 }
