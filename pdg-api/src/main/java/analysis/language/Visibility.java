@@ -13,9 +13,21 @@ package analysis.language;
  * @since 2.0
  */
 public enum Visibility {
+    /** 
+     * Visibility that corresponds to the {@code public} access modifier.
+     */
     PUBLIC(0, "public", "+"),
+    /** 
+     * Visibility that corresponds to the {@code private} access modifier.
+     */
     PRIVATE(1, "private", "-"),
+    /**
+     * Visibility that corresponds to the {@code protected} access modifier.
+     */
     PROTECTED(2, "protected", "#"),
+    /**
+     * Visibility that corresponds to the default (package-private) access modifier.
+     */
     PACKAGE(3, "", "?");
 
     /** Integer representation of this visibility */
