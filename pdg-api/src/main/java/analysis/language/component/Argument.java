@@ -8,20 +8,46 @@ package analysis.language.component;
 
 import java.util.Objects;
 
+/**
+ * A representation of an argument.
+ * 
+ * @author Ada Clevinger
+ * @author Sung Ho Yoon
+ * 
+ * @since 1.0
+ */
 public class Argument {
 
+    /** The name of this argument */
     private String name;
+    /** The type of this argument */
     private String type;
 
+    /**
+     * Constructs a new {@code Argument}.
+     * 
+     * @param name the name of this argument
+     * @param type the type of this argument
+     */
     public Argument(String name, String type) {
         this.name = name;
         this.type = type;
     }
 
+    /**
+     * Returns the name of this argument.
+     * 
+     * @return the name of this argument
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Returns the type of this argument.
+     * 
+     * @return the type of this argument
+     */
     public String getType() {
         return type;
     }
