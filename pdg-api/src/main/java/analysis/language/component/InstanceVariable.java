@@ -6,6 +6,8 @@
 
 package analysis.language.component;
 
+import java.util.Objects;
+
 import analysis.language.Visibility;
 
 public class InstanceVariable extends ClassComponent {
@@ -32,6 +34,22 @@ public class InstanceVariable extends ClassComponent {
 
     public boolean getFinal() {
         return isFinal;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        else if (super.equals(obj) && obj instanceof InstanceVariable) {
+            InstanceVariable instVar = (InstanceVariable) obj;
+            return this.isStatic == instVar.isStatic && this.isFinal == instVar.isFinal;
+        } else
+            return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.getName(), super.getType(), super.getVisibility(), isStatic, isFinal);
     }
 
 }

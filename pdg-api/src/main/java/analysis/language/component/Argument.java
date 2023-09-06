@@ -6,6 +6,8 @@
 
 package analysis.language.component;
 
+import java.util.Objects;
+
 public class Argument {
 
     private String name;
@@ -22,6 +24,22 @@ public class Argument {
 
     public String getType() {
         return type;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        else if (obj instanceof Argument) {
+            Argument arg = (Argument) obj;
+            return this.name.equals(arg.name) && this.type.equals(arg.type);
+        } else
+            return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, type);
     }
 
 }

@@ -8,6 +8,7 @@ package analysis.language.component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import analysis.language.Visibility;
 
@@ -81,6 +82,24 @@ public class Function extends ClassComponent {
 
     public boolean getFinal() {
         return isFinal;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        else if (super.equals(obj) && obj instanceof Function) {
+            Function func = (Function) obj;
+            return this.isAbstract == func.isAbstract && this.isStatic == func.isStatic && this.isFinal == func.isFinal
+                    && this.arguments.equals(func.arguments);
+        } else
+            return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.getName(), super.getType(), super.getVisibility(), arguments, isAbstract, isStatic,
+                isFinal);
     }
 
 }
