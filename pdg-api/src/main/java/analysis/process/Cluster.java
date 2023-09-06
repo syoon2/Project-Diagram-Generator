@@ -19,13 +19,13 @@ public class Cluster {
 
     private static Logger logger = LogManager.getLogger();
 
-//---  Instance Variables   -------------------------------------------------------------------
+    // Instance Variables
 
     private String[] address;
     private List<Cluster> children;
     private Set<String> composite;
 
-//---  Constructors   -------------------------------------------------------------------------
+    // Constructors
 
     public Cluster(String[] givenAddress) {
         address = givenAddress;
@@ -33,15 +33,14 @@ public class Cluster {
         composite = new HashSet<String>();
     }
 
-//---  Operations   ---------------------------------------------------------------------------
+    // Operations
 
     public void addComponent(String[] path, String in) {
-        if(path == null || path.length == 0) {
+        if (path == null || path.length == 0) {
             composite.add(in);
-        }
-        else {
+        } else {
             Cluster use = findChild(path[0]);
-            if(use == null) {
+            if (use == null) {
                 addCluster(path);
                 use = findChild(path[0]);
             }
@@ -50,11 +49,11 @@ public class Cluster {
     }
 
     public void addCluster(String[] path) {
-        if(path == null || path.length == 0) {
+        if (path == null || path.length == 0) {
             return;
         }
         Cluster next = findChild(path[0]);
-        if(next == null) {
+        if (next == null) {
             next = new Cluster(mergePath(path[0]));
             children.add(next);
         }
@@ -62,32 +61,32 @@ public class Cluster {
     }
 
     private Cluster findChild(String step) {
-        for(Cluster c : children) {
-            if(step.equals(c.getTernary())) {
+        for (Cluster c : children) {
+            if (step.equals(c.getTernary())) {
                 return c;
             }
         }
         return null;
     }
 
-//---  Getter Methods   -----------------------------------------------------------------------
+    // Getter Methods
 
     public Cluster getCluster(String[] path) {
-        if(path == null || path.length == 0) {
+        if (path == null || path.length == 0) {
             return this;
         }
         Cluster next = findChild(path[0]);
-        if(next == null) {
+        if (next == null) {
             return null;
         }
         return next.getCluster(tearArray(path));
     }
 
-    public List<Cluster> getChildren(){
+    public List<Cluster> getChildren() {
         return children;
     }
 
-    public Set<String> getComponents(){
+    public Set<String> getComponents() {
         return composite;
     }
 
@@ -96,11 +95,11 @@ public class Cluster {
     }
 
     public String getAddress() {
-        if(address == null || address.length == 0) {
+        if (address == null || address.length == 0) {
             return "";
         }
         String out = address[0];
-        for(int i = 1; i < address.length; i++)
+        for (int i = 1; i < address.length; i++)
             out += "." + address[i];
         return out;
     }
@@ -109,18 +108,18 @@ public class Cluster {
         return address[address.length - 1];
     }
 
-//---  Mechanics   ----------------------------------------------------------------------------
+    // Mechanics
 
     private String[] mergePath(String tack) {
         String[] out = new String[address.length + 1];
-        for(int i = 0; i < address.length; i++)
+        for (int i = 0; i < address.length; i++)
             out[i] = address[i];
-        out[out.length-1] = tack;
+        out[out.length - 1] = tack;
         return out;
     }
 
     private String[] tearArray(String[] in) {
-        if(in.length <= 1) {
+        if (in.length <= 1) {
             return new String[] {};
         }
         return Arrays.copyOfRange(in, 1, in.length);
@@ -132,22 +131,23 @@ public class Cluster {
 
     private void debugPrintOut(int d) {
         logger.debug(tabBuffer(d) + getAddress());
-        for(String gd : getComponents()) {
+        for (String gd : getComponents()) {
             logger.debug(tabBuffer(d) + "  " + gd);
         }
-        for(Cluster c : getChildren()) {
+        for (Cluster c : getChildren()) {
             c.debugPrintOut(d + 1);
         }
     }
 
     private String tabBuffer(int d) {
         String out = "";
-        for(int i = 0; i < d; i++) {
+        for (int i = 0; i < d; i++) {
             out += "\t";
         }
         return out;
     }
 
+    @Override
     public String toString() {
         return Arrays.toString(address) + " -> (" + children + ")";
     }

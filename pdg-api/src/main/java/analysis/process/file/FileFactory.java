@@ -18,16 +18,15 @@ public class FileFactory {
     public static List<GenericFile> generateFile(File f, String root) throws IOException {
         String name = f.getName();
         String type = FilenameUtils.getExtension(name);
-        switch(type) {
+        switch (type) {
             case "java":
                 JavaFile jf = new JavaFile(f, root);
                 List<GenericFile> out = new ArrayList<GenericFile>();
-                if(jf.detectInternalClasses()) {
-                    for(GenericFile gf : jf.extractInternalClasses()) {
+                if (jf.detectInternalClasses()) {
+                    for (GenericFile gf : jf.extractInternalClasses()) {
                         out.add(gf);
                     }
-                }
-                else {
+                } else {
                     out.add(jf);
                 }
                 return out;

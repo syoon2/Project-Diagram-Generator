@@ -26,13 +26,13 @@ import analysis.process.Cluster;
 
 public abstract class GenericFile {
 
-//---  Constants   ----------------------------------------------------------------------------
+    // Constants
 
-    protected final static String FULL_NAME_SEPARATOR = "/";
+    protected static final String FULL_NAME_SEPARATOR = "/";
 
-    protected final static String ASSOCIATION_STAR_IMPORT = "*";
+    protected static final String ASSOCIATION_STAR_IMPORT = "*";
 
-//---  Instance Variables   -------------------------------------------------------------------
+    // Instance Variables
 
     private static boolean procInstance;
     private static boolean procFunction;
@@ -45,35 +45,33 @@ public abstract class GenericFile {
     private String context;
     private GenericDefinition gen;
 
-//---  Constructors   -------------------------------------------------------------------------
+    // Constructors
 
     public GenericFile(File in, String root) throws IOException {
         lines = new ArrayList<String>();
         contents = "";
         try (Scanner sc = new Scanner(in)) {
-            while(sc.hasNextLine()) {
+            while (sc.hasNextLine()) {
                 String nex = sc.nextLine();
-                if(nex != null)
+                if (nex != null)
                     contents += nex + IOUtils.LINE_SEPARATOR_UNIX;
             }
         }
         lines = preProcess(contents);
         name = findName();
         context = in.getAbsolutePath().substring(root.length()).replaceAll("\\\\", "/");
-        if(context.contains("/")) {
+        if (context.contains("/")) {
             context = context.substring(0, context.lastIndexOf("/"));
         }
         context = context.replaceAll("/", ".");
-        if(context.equals(in.getName())) {
+        if (context.equals(in.getName())) {
             context = "";
         }
-        if(isClassFile()) {
+        if (isClassFile()) {
             gen = new GenericClass(getName(), getContext());
-        }
-        else if(isInterfaceFile()) {
+        } else if (isInterfaceFile()) {
             gen = new GenericInterface(getName(), getContext());
-        }
-        else if(isEnumFile()) {
+        } else if (isEnumFile()) {
             gen = new GenericEnum(getName(), getContext());
         }
     }
@@ -82,28 +80,24 @@ public abstract class GenericFile {
         lines = inLines;
         name = findName();
         context = inContext;
-        if(isClassFile()) {
+        if (isClassFile()) {
             gen = new GenericClass(getName(), getContext());
-        }
-        else if(isInterfaceFile()) {
+        } else if (isInterfaceFile()) {
             gen = new GenericInterface(getName(), getContext());
-        }
-        else if(isEnumFile()) {
+        } else if (isEnumFile()) {
             gen = new GenericEnum(getName(), getContext());
         }
     }
 
-//---  Operations   ---------------------------------------------------------------------------
+    // Operations
 
     public void process(Map<String, GenericDefinition> classRef, Cluster parent) {
         Set<String> neighbors = parent.getCluster(context.split("\\.")).getComponents();
-        if(isClassFile()) {
+        if (isClassFile()) {
             processClass(classRef, neighbors);
-        }
-        else if(isInterfaceFile()){
+        } else if (isInterfaceFile()) {
             processInterface(classRef, neighbors);
-        }
-        else if(isEnumFile()) {
+        } else if (isEnumFile()) {
             processEnum(classRef.get(getFullName()), classRef, neighbors);
         }
     }
@@ -111,14 +105,14 @@ public abstract class GenericFile {
     public void processClass(Map<String, GenericDefinition> classRef, Set<String> neighbors) {
         handleInheritance(extractInheritance(), classRef);
 
-        ((GenericClass)gen).setAbstract(extractAbstract());
+        ((GenericClass) gen).setAbstract(extractAbstract());
         Set<String> bar = handleRealizations(extractRealizations(), classRef);
         handleAssociations(neighbors, bar, classRef);
-        if(getStatusFunction()) {
+        if (getStatusFunction()) {
             extractFunctions();
         }
 
-        if(getStatusInstanceVariable()) {
+        if (getStatusInstanceVariable()) {
             extractInstanceVariables();
         }
     }
@@ -126,7 +120,7 @@ public abstract class GenericFile {
     public void processInterface(Map<String, GenericDefinition> classRef, Set<String> neighbors) {
         Set<String> bar = handleRealizations(extractRealizations(), classRef);
         handleAssociations(neighbors, bar, classRef);
-        if(getStatusFunction()) {
+        if (getStatusFunction()) {
             extractFunctions();
         }
     }
@@ -134,19 +128,19 @@ public abstract class GenericFile {
     public void processEnum(GenericDefinition in, Map<String, GenericDefinition> classRef, Set<String> neighbors) {
         Set<String> bar = handleRealizations(extractRealizations(), classRef);
         handleAssociations(neighbors, bar, classRef);
-        if(getStatusFunction()) {
+        if (getStatusFunction()) {
             extractFunctions();
         }
     }
 
-    //-- Other  -----------------------------------------------
+    // Other
 
     private void handleInheritance(String parName, Map<String, GenericDefinition> ref) {
-        if(parName == null)
+        if (parName == null)
             return;
-        for(GenericDefinition gd : ref.values()) {
-            if(gd.getName().equals(parName)) {
-                ((GenericClass)gen).setInheritance(gd);
+        for (GenericDefinition gd : ref.values()) {
+            if (gd.getName().equals(parName)) {
+                ((GenericClass) gen).setInheritance(gd);
                 return;
             }
         }
@@ -154,9 +148,9 @@ public abstract class GenericFile {
 
     private Set<String> handleRealizations(List<String> realiz, Map<String, GenericDefinition> ref) {
         Set<String> bar = new HashSet<String>();
-        for(String s : realiz) {
-            for(GenericDefinition gi : ref.values()) {
-                if(gi.getName().equals(s)) {
+        for (String s : realiz) {
+            for (GenericDefinition gi : ref.values()) {
+                if (gi.getName().equals(s)) {
                     gen.addRealization(gi);
                     bar.add(s);
                 }
@@ -167,23 +161,23 @@ public abstract class GenericFile {
 
     private void handleAssociations(Set<String> neighbors, Set<String> bar, Map<String, GenericDefinition> ref) {
         List<String> noms = extractAssociations(neighbors);
-        for(String s : noms) {
-            if(ref.get(s) != null) {
-                if(!bar.contains(breakFullName(ref.get(s).getFullName())[1])) {	//TODO: While I only allow one association
+        for (String s : noms) {
+            if (ref.get(s) != null) {
+                if (!bar.contains(breakFullName(ref.get(s).getFullName())[1])) { // TODO: While I only allow one
+                                                                                 // association
                     gen.addAssociation(ref.get(s));
                 }
-            }
-            else if(!s.contains(ASSOCIATION_STAR_IMPORT)){
-                for(GenericDefinition gd : ref.values()) {
-                    if(gd.getName().equals(s) && !bar.contains(gd.getName())) {
+            } else if (!s.contains(ASSOCIATION_STAR_IMPORT)) {
+                for (GenericDefinition gd : ref.values()) {
+                    if (gd.getName().equals(s) && !bar.contains(gd.getName())) {
                         gen.addAssociation(gd);
                     }
                 }
-            }
-            else {
+            } else {
                 String path = s.substring(0, s.length() - 1);
-                for(String con : ref.keySet()) {
-                    if(con.matches(path + "/.*") && !gen.hasAssociate((ref.get(con))) && !bar.contains(breakFullName(ref.get(con).getFullName())[1])) {
+                for (String con : ref.keySet()) {
+                    if (con.matches(path + "/.*") && !gen.hasAssociate((ref.get(con)))
+                            && !bar.contains(breakFullName(ref.get(con).getFullName())[1])) {
                         gen.addAssociation(ref.get(con));
                     }
                 }
@@ -191,7 +185,7 @@ public abstract class GenericFile {
         }
     }
 
-    //-- Subclass Implement  ----------------------------------
+    //Subclass Implement
 
     public abstract boolean isClassFile();
 
@@ -206,7 +200,8 @@ public abstract class GenericFile {
     protected abstract String findName();
 
     /**
-     * According to whatever rules of the language the file is for, process the lump sum String file contents into
+     * According to whatever rules of the language the file is for, process the lump
+     * sum String file contents into
      * significant lines of single spaced text.
      *
      */
@@ -225,7 +220,7 @@ public abstract class GenericFile {
 
     protected abstract List<String> extractAssociations(Set<String> neighbor);
 
-    //-- Support Methods  -------------------------------------
+    // Support Methods
 
     protected String stripContext(String in) {
         return in.substring(in.lastIndexOf(".") + 1);
@@ -235,8 +230,9 @@ public abstract class GenericFile {
         return context + FULL_NAME_SEPARATOR + name;
     }
 
-    protected void addFunctionToDef(int vis, String nom, String ret, List<String> argNom, List<String> argTyp, boolean statStatic, boolean statAbstract, boolean isFin) {
-        if(privateCheck(vis)) {
+    protected void addFunctionToDef(int vis, String nom, String ret, List<String> argNom, List<String> argTyp,
+            boolean statStatic, boolean statAbstract, boolean isFin) {
+        if (privateCheck(vis)) {
             gen.addFunction(Visibility.valueOf(vis), nom, ret, argNom, argTyp, statStatic, statAbstract, isFin);
         }
     }
@@ -254,14 +250,15 @@ public abstract class GenericFile {
      * 
      * @since 2.0
      */
-    protected void addFunctionToDef(Visibility vis, String nom, String ret, List<String> argNom, List<String> argTyp, boolean statStatic, boolean statAbstract, boolean isFin) {
-        if(privateCheck(vis)) {
+    protected void addFunctionToDef(Visibility vis, String nom, String ret, List<String> argNom, List<String> argTyp,
+            boolean statStatic, boolean statAbstract, boolean isFin) {
+        if (privateCheck(vis)) {
             gen.addFunction(vis, nom, ret, argNom, argTyp, statStatic, statAbstract, isFin);
         }
     }
 
     protected void addConstructorToDef(int vis, String nom, List<String> argNom, List<String> argTyp) {
-        if(privateCheck(vis)) {
+        if (privateCheck(vis)) {
             gen.addConstructor(Visibility.valueOf(vis), nom, argNom, argTyp);
         }
     }
@@ -276,14 +273,14 @@ public abstract class GenericFile {
      * @since 2.0
      */
     protected void addConstructorToDef(Visibility vis, String nom, List<String> argNom, List<String> argTyp) {
-        if(privateCheck(vis)) {
+        if (privateCheck(vis)) {
             gen.addConstructor(vis, nom, argNom, argTyp);
         }
     }
 
     protected void addInstanceVariableToClass(int vis, String typ, String nom, boolean statStatic, boolean statFinal) {
-        if(privateCheck(vis) && constantCheck(statFinal)) {
-            ((GenericClass)gen).addInstanceVariable(Visibility.valueOf(vis), typ, nom, statStatic, statFinal);
+        if (privateCheck(vis) && constantCheck(statFinal)) {
+            ((GenericClass) gen).addInstanceVariable(Visibility.valueOf(vis), typ, nom, statStatic, statFinal);
         }
     }
 
@@ -297,9 +294,10 @@ public abstract class GenericFile {
      * 
      * @since 2.0
      */
-    protected void addInstanceVariableToClass(Visibility vis, String typ, String nom, boolean statStatic, boolean statFinal) {
-        if(privateCheck(vis) && constantCheck(statFinal)) {
-            ((GenericClass)gen).addInstanceVariable(vis, typ, nom, statStatic, statFinal);
+    protected void addInstanceVariableToClass(Visibility vis, String typ, String nom, boolean statStatic,
+            boolean statFinal) {
+        if (privateCheck(vis) && constantCheck(statFinal)) {
+            ((GenericClass) gen).addInstanceVariable(vis, typ, nom, statStatic, statFinal);
         }
     }
 
@@ -322,7 +320,7 @@ public abstract class GenericFile {
         return getStatusConstant() || !isFinal;
     }
 
-//---  Setter Methods   -----------------------------------------------------------------------
+    // Setter Methods
 
     public static void assignProcessStates(boolean inst, boolean func, boolean priv, boolean constant) {
         procInstance = inst;
@@ -331,9 +329,9 @@ public abstract class GenericFile {
         procConstants = constant;
     }
 
-//---  Getter Methods   -----------------------------------------------------------------------
+    // Getter Methods
 
-    public List<String> getFileContents(){
+    public List<String> getFileContents() {
         return lines;
     }
 

@@ -28,7 +28,7 @@ public class Explore implements Runnable {
 
     private static Logger logger = LogManager.getLogger();
 
-//---  Instance Variables   -------------------------------------------------------------------
+    // Instance Variables
 
     private List<GenericFile> files;
     private Map<String, GenericDefinition> classes;
@@ -39,7 +39,7 @@ public class Explore implements Runnable {
 
     private Set<String> ignore;
 
-//---  Constructors   -------------------------------------------------------------------------
+    // Constructors
 
     public Explore(File root) {
         rootPath = root.getAbsolutePath();
@@ -49,12 +49,12 @@ public class Explore implements Runnable {
         interfaces = new HashMap<String, GenericDefinition>();
         enums = new HashMap<String, GenericDefinition>();
         parent = new Cluster(new String[] {});
-        if(rootPath.charAt(rootPath.length() - 1) != File.separatorChar) {
+        if (rootPath.charAt(rootPath.length() - 1) != File.separatorChar) {
             rootPath += File.separatorChar;
         }
     }
 
-//---  Operations   ---------------------------------------------------------------------------
+    // Operations
 
     public void ignorePackage(String path) {
         ignore.add(path);
@@ -68,7 +68,7 @@ public class Explore implements Runnable {
             explore(use);
             logger.info("Finished exploring files");
             logger.info("Begun processing files");
-            for(GenericFile f : files) {
+            for (GenericFile f : files) {
                 f.process(getDefinitionMapping(), parent);
             }
             logger.info("Finished processing files");
@@ -78,39 +78,36 @@ public class Explore implements Runnable {
     }
 
     private void explore(File root) throws IOException {
-        for(String s : root.list()) {
+        for (String s : root.list()) {
             File look = new File(root.getAbsolutePath() + File.separator + s);
-            if(!look.exists()) {
+            if (!look.exists()) {
                 continue;
             }
-            if(look.isDirectory() && !ignore(look.getAbsolutePath())) {
+            if (look.isDirectory() && !ignore(look.getAbsolutePath())) {
                 explore(look);
-            }
-            else if(look.isFile()){
+            } else if (look.isFile()) {
                 List<GenericFile> gfs = FileFactory.generateFile(look, rootPath);
-                if(gfs == null) {
+                if (gfs == null) {
                     continue;
                 }
-                for(GenericFile f : gfs) {
-                    if(f == null || f.getDefinition() == null) {
+                for (GenericFile f : gfs) {
+                    if (f == null || f.getDefinition() == null) {
                         continue;
                     }
                     GenericDefinition gd = f.getDefinition();
 
                     boolean canAdd = false;
-                    if(f.isClassFile()) {
+                    if (f.isClassFile()) {
                         classes.put(gd.getFullName(), gd);
                         canAdd = true;
-                    }
-                    else if(f.isInterfaceFile()) {
+                    } else if (f.isInterfaceFile()) {
                         interfaces.put(gd.getFullName(), gd);
                         canAdd = true;
-                    }
-                    else if(f.isEnumFile()) {
+                    } else if (f.isEnumFile()) {
                         enums.put(gd.getFullName(), gd);
                         canAdd = true;
                     }
-                    if(canAdd)
+                    if (canAdd)
                         parent.addComponent(gd.getContextArray(), gd.getFullName());
                     files.add(f);
                 }
@@ -128,47 +125,47 @@ public class Explore implements Runnable {
         return out;
     }
 
-//---  Getter Methods   -----------------------------------------------------------------------
+    // Getter Methods
 
-    public Collection<GenericDefinition> getClasses(){
+    public Collection<GenericDefinition> getClasses() {
         return classes.values();
     }
 
-    public Collection<GenericDefinition> getInterfaces(){
+    public Collection<GenericDefinition> getInterfaces() {
         return interfaces.values();
     }
 
-    public Collection<GenericDefinition> getEnums(){
+    public Collection<GenericDefinition> getEnums() {
         return enums.values();
     }
 
-    public List<GenericDefinition> getDefinitions(){
+    public List<GenericDefinition> getDefinitions() {
         List<GenericDefinition> out = new ArrayList<GenericDefinition>();
-        for(String s : classes.keySet())
+        for (String s : classes.keySet())
             out.add(classes.get(s));
-        for(String s : interfaces.keySet())
+        for (String s : interfaces.keySet())
             out.add(interfaces.get(s));
-        for(String s : enums.keySet())
+        for (String s : enums.keySet())
             out.add(enums.get(s));
         return out;
     }
 
-    public Map<String, GenericDefinition> getDefinitionMapping(){
+    public Map<String, GenericDefinition> getDefinitionMapping() {
         Map<String, GenericDefinition> out = new HashMap<String, GenericDefinition>();
-        for(String s : classes.keySet())
+        for (String s : classes.keySet())
             out.put(s, classes.get(s));
-        for(String s : interfaces.keySet())
+        for (String s : interfaces.keySet())
             out.put(s, interfaces.get(s));
-        for(String s : enums.keySet())
+        for (String s : enums.keySet())
             out.put(s, enums.get(s));
         return out;
     }
 
-    public Cluster getClusterRoot(){
+    public Cluster getClusterRoot() {
         return parent;
     }
 
-//--  Setter Methods   ------------------------------------------------------------------------
+    // Setter Methods
 
     public static void setParameters(boolean inst, boolean func, boolean priv, boolean consta) {
         GenericFile.assignProcessStates(inst, func, priv, consta);

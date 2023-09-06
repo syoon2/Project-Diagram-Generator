@@ -16,7 +16,7 @@ import analysis.process.Explore;
 import guru.nidi.graphviz.engine.Format;
 import guru.nidi.graphviz.engine.Graphviz;
 
-public class ConvertVisual  {
+public class ConvertVisual {
 
     private static String imagePath;
 
@@ -26,12 +26,13 @@ public class ConvertVisual  {
         imagePath = img;
     }
 
-    public static String generateUMLDiagram(String path, List<String> ignore, String name, boolean inst, boolean func, boolean priv, boolean consta) {
+    public static String generateUMLDiagram(String path, List<String> ignore, String name, boolean inst, boolean func,
+            boolean priv, boolean consta) {
         File f = new File(path);
         Explore.setParameters(inst, func, priv, consta);
         logger.info("Beginning Explore operations");
         Explore e = new Explore(f);
-        for(String s : ignore) {
+        for (String s : ignore) {
             e.ignorePackage(s);
         }
         e.run();
@@ -50,16 +51,17 @@ public class ConvertVisual  {
         folder.mkdir();
         Graphviz graphviz = Graphviz.fromString(dotData);
 
-        File out = new File(imagePath + File.separator + name + FilenameUtils.EXTENSION_SEPARATOR + format.fileExtension);
+        File out = new File(
+                imagePath + File.separator + name + FilenameUtils.EXTENSION_SEPARATOR + format.fileExtension);
 
         try {
             graphviz.render(format).toFile(out);
         } catch (Exception e) {
             logger.error("Failure to draw UML via GraphViz.", e);
-            // PopoutAlert pa = new PopoutAlert(300, 250, "Failure to draw UML via GraphViz.");
+            // PopoutAlert pa = new PopoutAlert(300, 250, "Failure to draw UML via
+            // GraphViz.");
         }
         logger.info("Done");
         return out;
     }
 }
-
