@@ -13,30 +13,30 @@ import analysis.language.Visibility;
 import analysis.language.component.Constructor;
 import analysis.language.component.Function;
 
-public abstract class GenericDefinition implements Comparable<GenericDefinition>{
+public abstract class GenericDefinition implements Comparable<GenericDefinition> {
 
-//---  Instance Variables   -------------------------------------------------------------------
+    // Instance Variables
 
     private String name;
     private String context;
     private List<GenericDefinition> associates;
-    private List<GenericDefinition> realizations;	//dotted line, empty arrowhead
+    private List<GenericDefinition> realizations; // dotted line, empty arrowhead
     private List<Function> functions;
 
-//---  Constructors   -------------------------------------------------------------------------
+    // Constructors
 
-    public GenericDefinition(String inName, String inContext) {
-        name = inName;
-        context = inContext;
+    public GenericDefinition(String name, String context) {
+        this.name = name;
+        this.context = context;
         associates = new ArrayList<GenericDefinition>();
         functions = new ArrayList<Function>();
         realizations = new ArrayList<GenericDefinition>();
     }
 
-//---  Operations   ---------------------------------------------------------------------------
+    // Operations
 
     public void addAssociation(GenericDefinition ref) {
-        if(ref == null) {
+        if (ref == null) {
             return;
         }
         associates.add(ref);
@@ -50,22 +50,23 @@ public abstract class GenericDefinition implements Comparable<GenericDefinition>
         realizations.add(in);
     }
 
-    public void addFunction(Visibility vis, String nom, String ret, List<String> argNom, List<String> argTyp, boolean statStatic, boolean statAbstract, boolean isFinal) {
-        Function in = new Function(vis, nom, ret, argNom, argTyp);
+    public void addFunction(Visibility vis, String funcName, String ret, List<String> argName, List<String> argType,
+            boolean statStatic, boolean statAbstract, boolean isFinal) {
+        Function in = new Function(vis, funcName, ret, argName, argType);
         in.setAbstract(statAbstract);
         in.setStatic(statStatic);
         in.setFinal(isFinal);
         addFunction(in);
     }
 
-    public void addConstructor(Visibility vis, String nom, List<String> argNom, List<String> argTyp) {
-        Constructor in = new Constructor(vis, nom, argNom, argTyp);
+    public void addConstructor(Visibility vis, String name, List<String> argName, List<String> argType) {
+        Constructor in = new Constructor(vis, name, argName, argType);
         addFunction(in);
     }
 
-//---  Getter Methods   -----------------------------------------------------------------------
+    // Getter Methods
 
-    //-- Functions  -------------------------------------------
+    // Functions
 
     public List<Function> getFunctions() {
         return functions;
@@ -82,7 +83,7 @@ public abstract class GenericDefinition implements Comparable<GenericDefinition>
     public String[] getFunctionArgumentNamesAt(int index) {
         Function func = getFunctionAt(index);
         String[] argNom = new String[func.getNumberArguments()];
-        for(int i = 0; i < func.getNumberArguments(); i++) {
+        for (int i = 0; i < func.getNumberArguments(); i++) {
             argNom[i] = func.getArgumentNameAt(i);
         }
         return argNom;
@@ -91,7 +92,7 @@ public abstract class GenericDefinition implements Comparable<GenericDefinition>
     public String[] getFunctionArgumentTypesAt(int index) {
         Function func = getFunctionAt(index);
         String[] argNom = new String[func.getNumberArguments()];
-        for(int i = 0; i < func.getNumberArguments(); i++) {
+        for (int i = 0; i < func.getNumberArguments(); i++) {
             argNom[i] = func.getArgumentTypeAt(i);
         }
         return argNom;
@@ -121,17 +122,17 @@ public abstract class GenericDefinition implements Comparable<GenericDefinition>
         return getFunctionAt(index).getFinal();
     }
 
-    //-- GenericDefinition  -----------------------------------
+    // GenericDefinition
 
     public String getName() {
         return name;
     }
 
-    public List<GenericDefinition> getClassAssociates(){
+    public List<GenericDefinition> getClassAssociates() {
         return associates;
     }
 
-    public List<GenericDefinition> getRealizations(){
+    public List<GenericDefinition> getRealizations() {
         return realizations;
     }
 
@@ -148,15 +149,15 @@ public abstract class GenericDefinition implements Comparable<GenericDefinition>
     }
 
     public boolean hasAssociate(GenericDefinition gc) {
-        for(GenericDefinition c : associates) {
-            if(c.compareTo(gc) == 0) {
+        for (GenericDefinition c : associates) {
+            if (c.compareTo(gc) == 0) {
                 return true;
             }
         }
         return false;
     }
 
-//---  Mechanics   ----------------------------------------------------------------------------
+    // Mechanics
 
     @Override
     public int compareTo(GenericDefinition o) {

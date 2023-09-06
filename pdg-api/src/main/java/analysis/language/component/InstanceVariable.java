@@ -8,14 +8,14 @@ package analysis.language.component;
 
 import analysis.language.Visibility;
 
-public class InstanceVariable extends ClassComponent{
+public class InstanceVariable extends ClassComponent {
 
     private boolean isStatic;
 
     private boolean isFinal;
 
-    public InstanceVariable(Visibility vis, String nom, String typ) {
-        super(typ, nom, vis);
+    public InstanceVariable(Visibility vis, String name, String type) {
+        super(type, name, vis);
     }
 
     public void setStatic(boolean in) {

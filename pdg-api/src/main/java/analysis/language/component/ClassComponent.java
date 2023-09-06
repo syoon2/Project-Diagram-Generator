@@ -14,10 +14,10 @@ public abstract class ClassComponent {
     private String type;
     private Visibility visibility;
 
-    public ClassComponent(String typ, String nom, Visibility vis) {
-        type = typ;
-        name = nom;
-        visibility = vis;
+    public ClassComponent(String type, String name, Visibility visibility) {
+        this.type = type;
+        this.name = name;
+        this.visibility = visibility;
     }
 
     public Visibility getVisibility() {

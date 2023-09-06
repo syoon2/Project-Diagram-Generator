@@ -12,12 +12,12 @@ import analysis.language.Visibility;
 
 public class Constructor extends Function{
 
-    public Constructor(Visibility vis, String nom, List<Argument> arg) {
-        super(vis, nom, arg, null);
+    public Constructor(Visibility vis, String name, List<Argument> arg) {
+        super(vis, name, arg, null);
     }
 
-    public Constructor(Visibility vis, String nom, List<String> argNom, List<String> argTyp) {
-        super(vis, nom, null, argNom, argTyp);
+    public Constructor(Visibility vis, String name, List<String> argName, List<String> argType) {
+        super(vis, name, null, argName, argType);
     }
 
     public String getReturnType() {

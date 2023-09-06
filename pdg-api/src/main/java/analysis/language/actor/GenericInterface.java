@@ -6,10 +6,10 @@
 
 package analysis.language.actor;
 
-public class GenericInterface extends GenericDefinition{
+public class GenericInterface extends GenericDefinition {
 
-    public GenericInterface(String inName, String inContext) {
-        super(inName, inContext);
+    public GenericInterface(String name, String context) {
+        super(name, context);
     }
 
 }

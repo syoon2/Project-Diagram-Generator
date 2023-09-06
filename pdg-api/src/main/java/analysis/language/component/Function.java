@@ -11,31 +11,31 @@ import java.util.List;
 
 import analysis.language.Visibility;
 
-public class Function extends ClassComponent{
+public class Function extends ClassComponent {
 
-//---  Instance Variables   -------------------------------------------------------------------
+    // Instance Variables
 
     private List<Argument> arguments;
-    private boolean isAbstract;	//italics
-    private boolean isStatic;	//underline
+    private boolean isAbstract; // italics
+    private boolean isStatic; // underline
     private boolean isFinal;
 
-//---  Constructors   -------------------------------------------------------------------------
+    // Constructors
 
-    public Function(Visibility vis, String nom, List<Argument> arg, String ret) {
-        super(ret, nom, vis);
+    public Function(Visibility vis, String name, List<Argument> arg, String ret) {
+        super(ret, name, vis);
         arguments = arg;
     }
 
-    public Function(Visibility vis, String nom, String ret, List<String> argNom, List<String> argTyp) {
-        super(ret, nom, vis);
+    public Function(Visibility vis, String name, String ret, List<String> argName, List<String> argType) {
+        super(ret, name, vis);
         arguments = new ArrayList<Argument>();
-        for(int i = 0; i < argNom.size(); i++) {
-            arguments.add(new Argument(argNom.get(i), argTyp.get(i)));
+        for (int i = 0; i < argName.size(); i++) {
+            arguments.add(new Argument(argName.get(i), argType.get(i)));
         }
     }
 
-//---  Setter Methods   -----------------------------------------------------------------------
+    // Setter Methods
 
     public void setAbstract(boolean in) {
         isAbstract = in;
@@ -49,9 +49,9 @@ public class Function extends ClassComponent{
         isFinal = in;
     }
 
-//---  Getter Methods   -----------------------------------------------------------------------
+    // Getter Methods
 
-    public List<Argument> getArguments(){
+    public List<Argument> getArguments() {
         return arguments;
     }
 

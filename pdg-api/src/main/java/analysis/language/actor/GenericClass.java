@@ -14,13 +14,12 @@ import analysis.language.component.InstanceVariable;
 
 /**
  * The platonic ideal of a Class
+ * 
  * @author Ada Clevinger
- *
  */
+public class GenericClass extends GenericDefinition {
 
-public class GenericClass extends GenericDefinition{
-
-//---  Instance Variables   -------------------------------------------------------------------
+    // Instance Variables
 
     private boolean isAbstract;
 
@@ -28,22 +27,22 @@ public class GenericClass extends GenericDefinition{
 
     private List<InstanceVariable> instanceVariables;
 
-//---  Constructors   -------------------------------------------------------------------------
+    // Constructors
 
-    public GenericClass(String inName, String inContext) {
-        super(inName, inContext);
+    public GenericClass(String name, String context) {
+        super(name, context);
         instanceVariables = new ArrayList<InstanceVariable>();
         inheritance = null;
     }
 
-//---  Setter Methods   -----------------------------------------------------------------------
+    // Setter Methods
 
     public void addInstanceVariable(InstanceVariable in) {
         instanceVariables.add(in);
     }
 
-    public void addInstanceVariable(Visibility vis, String nom, String typ, boolean isStatic, boolean isFinal) {
-        InstanceVariable iv = new InstanceVariable(vis, nom, typ);
+    public void addInstanceVariable(Visibility vis, String name, String type, boolean isStatic, boolean isFinal) {
+        InstanceVariable iv = new InstanceVariable(vis, name, type);
         iv.setStatic(isStatic);
         iv.setFinal(isFinal);
         addInstanceVariable(iv);
@@ -51,7 +50,7 @@ public class GenericClass extends GenericDefinition{
 
     @Override
     public void addAssociation(GenericDefinition gd) {
-        if(inheritance == null || !gd.equals(inheritance)) {	//TODO: While I don't allow multiple associations
+        if (inheritance == null || !gd.equals(inheritance)) { // TODO: While I don't allow multiple associations
             super.addAssociation(gd);
         }
     }
@@ -64,9 +63,9 @@ public class GenericClass extends GenericDefinition{
         inheritance = ref;
     }
 
-//---  Getter Methods   -----------------------------------------------------------------------
+    // Getter Methods
 
-    //-- Instance Variables  ----------------------------------
+    // Instance Variables
 
     public List<InstanceVariable> getInstanceVariables() {
         return instanceVariables;
@@ -100,7 +99,7 @@ public class GenericClass extends GenericDefinition{
         return getInstanceVariableAt(index).getFinal();
     }
 
-    //-- GenericClass  ----------------------------------------
+    // GenericClass
 
     public GenericDefinition getInheritance() {
         return inheritance;
