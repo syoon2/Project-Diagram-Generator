@@ -174,4 +174,9 @@ public abstract class GenericDefinition implements Comparable<GenericDefinition>
             return false;
     }
 
+    @Override
+    public int hashCode() {
+        return getFullName().hashCode();
+    }
+
 }
