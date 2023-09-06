@@ -20,8 +20,4 @@ public class Constructor extends Function{
         super(vis, name, null, argName, argType);
     }
 
-    public String getReturnType() {
-        return "";
-    }
-
 }
