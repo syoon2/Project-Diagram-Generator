@@ -46,10 +46,6 @@ public abstract class GenericDefinition implements Comparable<GenericDefinition>
         functions.add(in);
     }
 
-    public void addRealization(GenericDefinition in) {
-        realizations.add(in);
-    }
-
     public void addFunction(Visibility vis, String funcName, String ret, List<String> argName, List<String> argType,
             boolean statStatic, boolean statAbstract, boolean isFinal) {
         Function in = new Function(vis, funcName, ret, argName, argType);
@@ -57,6 +53,10 @@ public abstract class GenericDefinition implements Comparable<GenericDefinition>
         in.setStatic(statStatic);
         in.setFinal(isFinal);
         addFunction(in);
+    }
+
+    public void addRealization(GenericDefinition in) {
+        realizations.add(in);
     }
 
     public void addConstructor(Visibility vis, String name, List<String> argName, List<String> argType) {
