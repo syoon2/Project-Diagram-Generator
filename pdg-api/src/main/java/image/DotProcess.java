@@ -124,9 +124,7 @@ public class DotProcess {
             String pref = "\tn" + val + " [label = <{";
             String out = formDotName(gc) + "|";
             for (int i = 0; i < gc.getNumberInstanceVariables(); i++) {
-                out += DotComponent.dotInstanceVariable(gc.getInstanceVariableVisibilityAt(i).getDotRepr(),
-                        gc.getInstanceVariableNameAt(i), gc.getInstanceVariableTypeAt(i),
-                        gc.getInstanceVariableStaticAt(i), gc.getInstanceVariableFinalAt(i))
+                out += DotComponent.dotInstanceVariable(gc.getInstanceVariableAt(i))
                         + (i + 1 < gc.getNumberInstanceVariables() ? "<BR/>" : StringUtils.EMPTY);
             }
             out += "|";
@@ -231,11 +229,8 @@ public class DotProcess {
         private String getFunctionDot(GenericDefinition gd) {
             String out = StringUtils.EMPTY;
             for (int i = 0; i < gd.getNumberFunctions(); i++) {
-                String[] argNom = gd.getFunctionArgumentNamesAt(i);
-                String[] argTyp = gd.getFunctionArgumentTypesAt(i);
-                out += DotComponent.dotFunction(gd.getFunctionVisibilityAt(i).getDotRepr(), gd.getFunctionNameAt(i),
-                        gd.getFunctionTypeAt(i), argNom, argTyp, gd.getFunctionAbstractAt(i), gd.getFunctionStaticAt(i),
-                        gd.getFunctionFinalAt(i)) + (i + 1 < gd.getNumberFunctions() ? "<BR/>" : StringUtils.EMPTY);
+                out += DotComponent.dotFunction(gd.getFunctionAt(i))
+                        + (i + 1 < gd.getNumberFunctions() ? "<BR/>" : StringUtils.EMPTY);
             }
             return out;
         }
