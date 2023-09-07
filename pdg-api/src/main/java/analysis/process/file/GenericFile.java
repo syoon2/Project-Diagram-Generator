@@ -79,10 +79,10 @@ public abstract class GenericFile {
         }
     }
 
-    public GenericFile(List<String> inLines, String inContext) {
-        lines = inLines;
+    public GenericFile(List<String> lines, String context) {
+        this.lines = lines;
         name = findName();
-        context = inContext;
+        this.context = context;
         if (isClassFile()) {
             gen = new GenericClass(getName(), getContext());
         } else if (isInterfaceFile()) {
