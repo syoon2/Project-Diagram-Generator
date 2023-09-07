@@ -222,7 +222,7 @@ public class PDGWindow extends JFrame {
                 }
                 generateButton.setEnabled(true);
                 generateButton.setText("Generate image");
-            }).start();
+            }, "Diagram generator").start();
         });
         inputContainer.add(directoryOption);
         inputContainer.add(packageExcludeOption);
