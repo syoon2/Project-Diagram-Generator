@@ -25,7 +25,8 @@ public class JavaFile extends GenericFile {
     // Constants
 
     private static final String[] KEY_BUFFER_PHRASES = new String[] { "(", ")", "<", ">" };
-    private static final String[] REMOVE_TERMS = new String[] { "volatile", "abstract", "static", "final" };
+    private static final String[] REMOVE_TERMS = new String[] { "volatile", "abstract", "static", "final", "default",
+            "native", "transient" };
     private static final String REGEX_VISIBILITY_FILE_DEF = "((public|private|protected) )?";
 
     private static Logger logger = LogManager.getLogger();
