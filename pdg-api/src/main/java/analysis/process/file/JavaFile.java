@@ -354,7 +354,8 @@ public class JavaFile extends GenericFile {
     @Override
     public boolean isClassFile() {
         for (String s : getFileContents()) {
-            if (s.matches(REGEX_VISIBILITY_FILE_DEF + "(final )?(abstract )?(final )?class .*")) {
+            if (s.matches(REGEX_VISIBILITY_FILE_DEF
+                    + "(static )?(final )?(abstract )?(static )?(final )?(static )?class .*")) {
                 return true;
             }
         }
@@ -364,7 +365,7 @@ public class JavaFile extends GenericFile {
     @Override
     public boolean isInterfaceFile() {
         for (String s : getFileContents()) {
-            if (s.matches(REGEX_VISIBILITY_FILE_DEF + "interface .*")) {
+            if (s.matches(REGEX_VISIBILITY_FILE_DEF + "(static )?interface .*")) {
                 return true;
             }
         }
@@ -374,7 +375,7 @@ public class JavaFile extends GenericFile {
     @Override
     public boolean isEnumFile() {
         for (String s : getFileContents()) {
-            if (s.matches(REGEX_VISIBILITY_FILE_DEF + "(abstract )?enum .*")) {
+            if (s.matches(REGEX_VISIBILITY_FILE_DEF + "(static )?enum .*")) {
                 return true;
             }
         }
@@ -384,7 +385,8 @@ public class JavaFile extends GenericFile {
     // Tester Methods
 
     private boolean isFileDefinition(String line) {
-        return line.matches(REGEX_VISIBILITY_FILE_DEF + "(final )?(abstract )?(final )?(class|interface|enum) .*");
+        return line.matches(REGEX_VISIBILITY_FILE_DEF
+                + "(static )?(final )?(static )?(abstract )?(static )?(final )?(class|interface|enum) .*");
     }
 
     private boolean isInPackageDependency(String line, String name) {
