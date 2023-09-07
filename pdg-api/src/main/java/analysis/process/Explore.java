@@ -79,7 +79,7 @@ public class Explore implements Runnable {
 
     private void explore(File root) throws IOException {
         for (String s : root.list()) {
-            File look = new File(root.getAbsolutePath() + File.separator + s);
+            File look = new File(root, s);
             if (!look.exists()) {
                 continue;
             }
