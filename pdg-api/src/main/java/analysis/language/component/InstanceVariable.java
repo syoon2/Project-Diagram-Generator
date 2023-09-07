@@ -10,6 +10,14 @@ import java.util.Objects;
 
 import analysis.language.Visibility;
 
+/**
+ * Representation of an instance variable.
+ * 
+ * @author Ada Clevinger
+ * @author Sung Ho Yoon
+ * 
+ * @since 1.0
+ */
 public class InstanceVariable extends ClassComponent {
 
     /** Whether this variable is static */
