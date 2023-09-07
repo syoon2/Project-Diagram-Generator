@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.text.StringEscapeUtils;
 
 import analysis.language.actor.GenericClass;
 import analysis.language.actor.GenericDefinition;
@@ -17,9 +18,6 @@ import analysis.process.Cluster;
 import analysis.process.Explore;
 
 public class DotProcess {
-
-    private static final String HTML_LT = "&lt;";
-    private static final String HTML_GT = "&gt;";
 
     // Instance Variables
 
@@ -171,7 +169,7 @@ public class DotProcess {
         }
 
         private String formInterfaceName() {
-            return HTML_LT + HTML_LT + "interface" + HTML_GT + HTML_GT;
+            return StringEscapeUtils.escapeHtml4("<<interface>>");
         }
 
         public String generateDotInterfaceAssociations(GenericDefinition gi) {
@@ -195,7 +193,7 @@ public class DotProcess {
         }
 
         private String formEnumName() {
-            return HTML_LT + HTML_LT + "enumeration" + HTML_GT + HTML_GT;
+            return StringEscapeUtils.escapeHtml4("<<enumeration>>");
         }
 
         public String generateDotEnumAssociations(GenericDefinition gi) {

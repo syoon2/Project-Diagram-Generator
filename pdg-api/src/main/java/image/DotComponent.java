@@ -7,11 +7,10 @@
 package image;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.text.StringEscapeUtils;
 
 public class DotComponent {
 
-    private static final String[] BAD_CHARACTERS_LABELS = new String[] { "<", ">" };
-    private static final String[] GOOD_CHARACTERS_LABELS = new String[] { "&lt;", "&gt;" };
 
     public static String dotFunction(String vis, String name, String type, String[] argName, String[] argType,
             boolean isAbstract, boolean isStatic, boolean isFinal) {
@@ -26,7 +25,7 @@ public class DotComponent {
             out += " : " + ret;
         }
 
-        out = fixForDot(out);
+        out = StringEscapeUtils.escapeHtml4(out);
 
         if (isAbstract) {
             out = "<u>" + out + "</u>";
@@ -46,7 +45,7 @@ public class DotComponent {
 
     public static String dotInstanceVariable(String vis, String name, String type, boolean isStatic, boolean isFinal) {
         String out = vis + name + " : " + type;
-        out = fixForDot(out);
+        out = StringEscapeUtils.escapeHtml4(out);
         if (isStatic) {
             out = "<i>" + out + "</i>";
         }
@@ -56,10 +55,4 @@ public class DotComponent {
         return out;
     }
 
-    private static String fixForDot(String in) {
-        for (int i = 0; i < BAD_CHARACTERS_LABELS.length; i++) {
-            in = in.replaceAll(BAD_CHARACTERS_LABELS[i], GOOD_CHARACTERS_LABELS[i]);
-        }
-        return in;
-    }
 }
