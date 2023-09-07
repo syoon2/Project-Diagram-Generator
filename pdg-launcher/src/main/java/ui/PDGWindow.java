@@ -38,6 +38,7 @@ import org.apache.batik.dom.svg.SVGDocumentFactory;
 import org.apache.batik.swing.JSVGCanvas;
 import org.apache.batik.swing.gvt.AbstractPanInteractor;
 import org.apache.batik.util.XMLResourceDescriptor;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.w3c.dom.svg.SVGDocument;
@@ -67,7 +68,7 @@ public class PDGWindow extends JFrame {
             NAME,
             Objects.requireNonNullElse(PDGWindow.class.getPackage().getImplementationVersion(), "dev"),
             gitProperties.getProperty("git.commit.id.abbrev"),
-            Boolean.valueOf(gitProperties.getProperty("git.dirty")) ? "*" : "");
+            Boolean.valueOf(gitProperties.getProperty("git.dirty")) ? "*" : StringUtils.EMPTY);
 
     /** Toggleable options for the generator */
     private static final String[] BOOLEAN_SELECTION = new String[] { "Show Instance Variables?",

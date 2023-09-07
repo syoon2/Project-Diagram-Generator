@@ -6,6 +6,8 @@
 
 package analysis.language;
 
+import org.apache.commons.lang3.StringUtils;
+
 /**
  * Enumerates standard visibility types in Java.
  * 
@@ -28,7 +30,7 @@ public enum Visibility {
     /**
      * Visibility that corresponds to the default (package-private) access modifier.
      */
-    PACKAGE(3, "", "?");
+    PACKAGE(3, StringUtils.EMPTY, "?");
 
     /** Integer representation of this visibility */
     private final int val;

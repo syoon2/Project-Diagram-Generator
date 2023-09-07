@@ -27,7 +27,7 @@ import java.util.Properties;
 
 import org.apache.commons.cli.*;
 import org.apache.commons.collections4.properties.PropertiesFactory;
-import org.apache.commons.lang3.SystemUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import image.ConvertVisual;
 import ui.PDGWindow;
@@ -114,11 +114,10 @@ public class PDGLauncher {
 
         if (line.hasOption(version)) {
             System.out.printf("Project diagram generator %s (%s:%s%s)\n",
-                gitProperties.getProperty("git.build.version"),
-                gitProperties.getProperty("git.branch"),
-                gitProperties.getProperty("git.commit.id.abbrev"),
-                Boolean.valueOf(gitProperties.getProperty("git.dirty")) ? "*" : ""
-            );
+                    gitProperties.getProperty("git.build.version"),
+                    gitProperties.getProperty("git.branch"),
+                    gitProperties.getProperty("git.commit.id.abbrev"),
+                    Boolean.valueOf(gitProperties.getProperty("git.dirty")) ? "*" : StringUtils.EMPTY);
             System.exit(0);
         }
         if (line.hasOption(help)) {

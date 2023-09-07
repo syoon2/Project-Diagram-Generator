@@ -9,6 +9,8 @@ package image;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
+
 import analysis.language.actor.GenericClass;
 import analysis.language.actor.GenericDefinition;
 import analysis.process.Cluster;
@@ -73,12 +75,12 @@ public class DotProcess {
                     "\tgraph[splines = ortho, ranksep = 1, ratio = fill, color=blue];\n" +
                     "\trankdir = TB;\n"; // splines = ortho, nodesep = 1 for straight lines, looks rough, let user
                                          // change how lines are displayed
-            out += "\n";
+            out += StringUtils.LF;
             return out;
         }
 
         private String processClasses() {
-            String out = "";
+            String out = StringUtils.EMPTY;
             for (GenericDefinition gc : explore.getClasses()) {
                 reference.put(gc.getFullName(), count++);
                 out += generateClassDot((GenericClass) gc, reference.get(gc.getFullName()));
@@ -87,7 +89,7 @@ public class DotProcess {
         }
 
         private String processInterfaces() {
-            String out = "";
+            String out = StringUtils.EMPTY;
             for (GenericDefinition gc : explore.getInterfaces()) {
                 reference.put(gc.getFullName(), count++);
                 out += generateInterfaceDot(gc, reference.get(gc.getFullName()));
@@ -96,7 +98,7 @@ public class DotProcess {
         }
 
         private String processEnums() {
-            String out = "";
+            String out = StringUtils.EMPTY;
             for (GenericDefinition ge : explore.getEnums()) {
                 reference.put(ge.getFullName(), count++);
                 out += generateEnumDot(ge, reference.get(ge.getFullName()));
@@ -105,7 +107,7 @@ public class DotProcess {
         }
 
         private String processAssociations() {
-            String out = "";
+            String out = StringUtils.EMPTY;
             for (GenericDefinition c : explore.getClasses()) {
                 out += generateDotClassAssociations((GenericClass) c);
             }
@@ -127,7 +129,7 @@ public class DotProcess {
                 out += DotComponent.dotInstanceVariable(gc.getInstanceVariableVisibilityAt(i).getDotRepr(),
                         gc.getInstanceVariableNameAt(i), gc.getInstanceVariableTypeAt(i),
                         gc.getInstanceVariableStaticAt(i), gc.getInstanceVariableFinalAt(i))
-                        + (i + 1 < gc.getNumberInstanceVariables() ? "<BR/>" : "");
+                        + (i + 1 < gc.getNumberInstanceVariables() ? "<BR/>" : StringUtils.EMPTY);
             }
             out += "|";
             out += getFunctionDot(gc);
@@ -137,7 +139,7 @@ public class DotProcess {
 
         public String generateDotClassAssociations(GenericClass gc) {
             int val = reference.get(gc.getFullName());
-            String out = "";
+            String out = StringUtils.EMPTY;
             if (gc.getInheritance() != null) {
                 out = "\tn" + val + " -> n" + reference.get(gc.getInheritance().getFullName())
                         + "[arrowhead=onormal];\n";
@@ -174,7 +176,7 @@ public class DotProcess {
 
         public String generateDotInterfaceAssociations(GenericDefinition gi) {
             int val = reference.get(gi.getFullName());
-            String out = "";
+            String out = StringUtils.EMPTY;
             for (GenericDefinition i : gi.getRealizations()) {
                 out += "\tn" + val + " -> n" + reference.get(i.getFullName()) + "[arrowhead=onormal, style=solid];\n";
             }
@@ -198,7 +200,7 @@ public class DotProcess {
 
         public String generateDotEnumAssociations(GenericDefinition gi) {
             int val = reference.get(gi.getFullName());
-            String out = "";
+            String out = StringUtils.EMPTY;
             for (GenericDefinition i : gi.getRealizations()) {
                 out += "\tn" + val + " -> n" + reference.get(i.getFullName()) + "[arrowhead=onormal, style=dotted];\n";
             }
@@ -208,7 +210,7 @@ public class DotProcess {
         // -- GenericDefinition -----------------------------------
 
         protected String generateDotAssociations(GenericDefinition gd) {
-            String out = "";
+            String out = StringUtils.EMPTY;
             for (GenericDefinition c : gd.getClassAssociates()) {
                 int mV = reference.get(gd.getFullName());
                 int yV = reference.get(c.getFullName());
@@ -229,13 +231,13 @@ public class DotProcess {
         // -- Helper ----------------------------------------------
 
         private String getFunctionDot(GenericDefinition gd) {
-            String out = "";
+            String out = StringUtils.EMPTY;
             for (int i = 0; i < gd.getNumberFunctions(); i++) {
                 String[] argNom = gd.getFunctionArgumentNamesAt(i);
                 String[] argTyp = gd.getFunctionArgumentTypesAt(i);
                 out += DotComponent.dotFunction(gd.getFunctionVisibilityAt(i).getDotRepr(), gd.getFunctionNameAt(i),
                         gd.getFunctionTypeAt(i), argNom, argTyp, gd.getFunctionAbstractAt(i), gd.getFunctionStaticAt(i),
-                        gd.getFunctionFinalAt(i)) + (i + 1 < gd.getNumberFunctions() ? "<BR/>" : "");
+                        gd.getFunctionFinalAt(i)) + (i + 1 < gd.getNumberFunctions() ? "<BR/>" : StringUtils.EMPTY);
             }
             return out;
         }
@@ -261,11 +263,7 @@ public class DotProcess {
         }
 
         private String tabBuffer(int in) {
-            String out = "";
-            while (in-- > 0) {
-                out += "\t";
-            }
-            return out;
+            return "\t".repeat(in);
         }
 
     }

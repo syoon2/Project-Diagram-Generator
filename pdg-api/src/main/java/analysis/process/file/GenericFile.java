@@ -15,7 +15,7 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
 
-import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import analysis.language.Visibility;
 import analysis.language.actor.GenericClass;
@@ -49,12 +49,12 @@ public abstract class GenericFile {
 
     public GenericFile(File in, String root) throws IOException {
         lines = new ArrayList<String>();
-        contents = "";
+        contents = StringUtils.EMPTY;
         try (Scanner sc = new Scanner(in)) {
             while (sc.hasNextLine()) {
                 String nex = sc.nextLine();
                 if (nex != null)
-                    contents += nex + IOUtils.LINE_SEPARATOR_UNIX;
+                    contents += nex + StringUtils.LF;
             }
         }
         lines = preProcess(contents);
@@ -65,7 +65,7 @@ public abstract class GenericFile {
         }
         context = context.replaceAll("/", ".");
         if (context.equals(in.getName())) {
-            context = "";
+            context = StringUtils.EMPTY;
         }
         if (isClassFile()) {
             gen = new GenericClass(getName(), getContext());

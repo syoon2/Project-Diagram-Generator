@@ -6,6 +6,8 @@
 
 package image;
 
+import org.apache.commons.lang3.StringUtils;
+
 public class DotComponent {
 
     private static final String[] BAD_CHARACTERS_LABELS = new String[] { "<", ">" };
@@ -15,7 +17,7 @@ public class DotComponent {
             boolean isAbstract, boolean isStatic, boolean isFinal) {
         String out = vis + name + "(";
         for (int i = 0; i < argName.length; i++) {
-            out += dotArgument(argName[i], argType[i]) + (i + 1 < argName.length ? ", " : "");
+            out += dotArgument(argName[i], argType[i]) + (i + 1 < argName.length ? ", " : StringUtils.EMPTY);
         }
         out += ")";
         String ret = type;

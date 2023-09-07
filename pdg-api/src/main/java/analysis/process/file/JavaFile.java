@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -56,19 +57,19 @@ public class JavaFile extends GenericFile {
     protected List<String> preProcess(String in) {
         List<String> out = new ArrayList<String>();
         while (in.contains("\\\\")) {
-            in = in.replace("\\\\", ""); // remove instances of \\ (double backslashes) as being redundant to important
-                                         // \" searching
+            in = in.replace("\\\\", StringUtils.EMPTY); // remove instances of \\ (double backslashes) as being
+                                                        // redundant to important \" searching
         }
-        in = in.replaceAll("\\\\\"", ""); // remove \" String occurrences
+        in = in.replaceAll("\\\\\"", StringUtils.EMPTY); // remove \" String occurrences
         in = in.replaceAll("\"[^\"]*?\"", "\"\""); // remove String literals
-        in = in.replaceAll("//.*?\n", "\n"); // remove comments
+        in = in.replaceAll("//.*?\n", StringUtils.LF); // remove comments
 
         in = in.replaceAll("(?<=@.*)\n", ";\n"); // Buffer @ lines preceding something to be on a separate line
 
-        in = in.replaceAll("\n", " "); // remove new lines, add space gaps
-        in = in.replaceAll("/\\*.*?\\*/", ""); // remove multi-line comments (/* ... */) with non-greedy regex (?
-                                               // symbol) for minimal removal
-        in = in.replaceAll("\t", ""); // remove tabs
+        in = in.replaceAll(StringUtils.LF, " "); // remove new lines, add space gaps
+        in = in.replaceAll("/\\*.*?\\*/", StringUtils.EMPTY); // remove multi-line comments (/* ... */) with non-greedy
+                                                              // regex (? symbol) for minimal removal
+        in = in.replaceAll("\t", StringUtils.EMPTY); // remove tabs
         in = in.replaceAll("  ", " "); // shorten whitespace
         in = in.replaceAll(";", ";\n"); // add newlines back in at all ;
         in = in.replaceAll("\\{", "\\{\n"); // add newlines around {
@@ -81,10 +82,10 @@ public class JavaFile extends GenericFile {
         while (in.contains("  ")) {
             in = in.replaceAll("  ", " ");
         }
-        in = in.replaceAll("(\n|$) ", "\n");
-        String[] parsed = in.trim().split("\n");
+        in = in.replaceAll("(\n|$) ", StringUtils.LF);
+        String[] parsed = in.trim().split(StringUtils.LF);
         for (String s : parsed) {
-            if (s != null && s.trim() != null && !s.trim().equals("")) {
+            if (s != null && s.trim() != null && !s.trim().isEmpty()) {
                 out.add(s.trim());
             }
         }
@@ -157,7 +158,7 @@ public class JavaFile extends GenericFile {
                 typeIndex++;
             }
         }
-        String ret = argStart == typeIndex ? "" : compileType(cont, typeIndex);
+        String ret = argStart == typeIndex ? StringUtils.EMPTY : compileType(cont, typeIndex);
         List<String> argNom = new ArrayList<String>();
         List<String> argTyp = new ArrayList<String>();
         for (int i = argStart + 1; i < cont.length - 2; i += 1) {
@@ -165,11 +166,11 @@ public class JavaFile extends GenericFile {
                 break;
             String type = compileType(cont, i);
             i = compileTypeLength(cont, i);
-            String nom = cont[i].replaceAll(",", "");
+            String nom = cont[i].replaceAll(",", StringUtils.EMPTY);
             argNom.add(nom);
             argTyp.add(type);
         }
-        if (ret.equals("")) {
+        if (ret.isEmpty()) {
             addConstructorToDef(vis, name, argNom, argTyp);
         } else {
             addFunctionToDef(vis, name, ret, argNom, argTyp, stat, abs, fin);
@@ -293,7 +294,7 @@ public class JavaFile extends GenericFile {
                 String[] use = cleanInput(line);
                 int posit = ArrayUtils.indexOf(use, getRealizationTerm());
                 while (++posit < use.length && use[posit].matches("[\\w><]*")) {
-                    String name = use[posit].replaceAll("<[^>]*>", "");
+                    String name = use[posit].replaceAll("<[^>]*>", StringUtils.EMPTY);
                     out.add(name);
                 }
             }
@@ -411,7 +412,7 @@ public class JavaFile extends GenericFile {
     // Support Methods
 
     private String[] cleanInput(String in) {
-        String out = in.replaceAll("  ", " ").replaceAll(";", "").trim();
+        String out = in.replaceAll("  ", " ").replaceAll(";", StringUtils.EMPTY).trim();
         for (String s : REMOVE_TERMS) {
             out = out.replaceAll(" " + s + " ", " ");
         }

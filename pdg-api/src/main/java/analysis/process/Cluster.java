@@ -13,6 +13,8 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.logging.log4j.Logger;
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 
 public class Cluster {
@@ -96,7 +98,7 @@ public class Cluster {
 
     public String getAddress() {
         if (address == null || address.length == 0) {
-            return "";
+            return StringUtils.EMPTY;
         }
         String out = address[0];
         for (int i = 1; i < address.length; i++)
@@ -120,7 +122,7 @@ public class Cluster {
 
     private String[] tearArray(String[] in) {
         if (in.length <= 1) {
-            return new String[] {};
+            return ArrayUtils.EMPTY_STRING_ARRAY;
         }
         return Arrays.copyOfRange(in, 1, in.length);
     }
@@ -140,11 +142,7 @@ public class Cluster {
     }
 
     private String tabBuffer(int d) {
-        String out = "";
-        for (int i = 0; i < d; i++) {
-            out += "\t";
-        }
-        return out;
+        return "\t".repeat(d);
     }
 
     @Override
