@@ -37,9 +37,9 @@ public class InstanceVariable extends ClassComponent {
     }
 
     /**
-     * Marks whether this function is static or not.
+     * Marks whether this variable is static or not.
      * 
-     * @param in whether this function is static
+     * @param in whether this variable is static
      */
     public void setStatic(boolean in) {
         isStatic = in;
