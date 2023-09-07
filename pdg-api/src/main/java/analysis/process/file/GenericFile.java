@@ -15,6 +15,8 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
 
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import analysis.language.Visibility;
@@ -28,7 +30,7 @@ public abstract class GenericFile {
 
     // Constants
 
-    protected static final String FULL_NAME_SEPARATOR = "/";
+    protected static final String FULL_NAME_SEPARATOR = Character.toString(IOUtils.DIR_SEPARATOR_UNIX);
 
     protected static final String ASSOCIATION_STAR_IMPORT = "*";
 
@@ -48,6 +50,7 @@ public abstract class GenericFile {
     // Constructors
 
     public GenericFile(File in, String root) throws IOException {
+        root = FilenameUtils.separatorsToUnix(root);
         lines = new ArrayList<String>();
         contents = StringUtils.EMPTY;
         try (Scanner sc = new Scanner(in)) {
@@ -59,11 +62,11 @@ public abstract class GenericFile {
         }
         lines = preProcess(contents);
         name = findName();
-        context = in.getAbsolutePath().substring(root.length()).replaceAll("\\\\", "/");
-        if (context.contains("/")) {
-            context = context.substring(0, context.lastIndexOf("/"));
+        context = FilenameUtils.separatorsToUnix(in.getAbsolutePath()).substring(root.length());
+        if (context.contains(FULL_NAME_SEPARATOR)) {
+            context = context.substring(0, context.lastIndexOf(IOUtils.DIR_SEPARATOR_UNIX));
         }
-        context = context.replaceAll("/", ".");
+        context = context.replace(IOUtils.DIR_SEPARATOR_UNIX, '.');
         if (context.equals(in.getName())) {
             context = StringUtils.EMPTY;
         }
@@ -185,7 +188,7 @@ public abstract class GenericFile {
         }
     }
 
-    //Subclass Implement
+    // Subclass Implement
 
     public abstract boolean isClassFile();
 
@@ -223,11 +226,11 @@ public abstract class GenericFile {
     // Support Methods
 
     protected String stripContext(String in) {
-        return in.substring(in.lastIndexOf(".") + 1);
+        return in.substring(in.lastIndexOf('.') + 1);
     }
 
     protected String formFullName(String context, String name) {
-        return context + FULL_NAME_SEPARATOR + name;
+        return context + IOUtils.DIR_SEPARATOR_UNIX + name;
     }
 
     protected void addFunctionToDef(int vis, String nom, String ret, List<String> argNom, List<String> argTyp,
@@ -352,7 +355,7 @@ public abstract class GenericFile {
     }
 
     public String getFullName() {
-        return getContext() + "/" + getName();
+        return getContext() + IOUtils.DIR_SEPARATOR_UNIX + getName();
     }
 
     protected boolean getStatusInstanceVariable() {
