@@ -103,11 +103,12 @@ public class JavaFile extends GenericFile {
     private String processImportName(String line) {
         String[] use = cleanInput(line)[1].split("\\.");
         String nom = use[use.length - 1];
-        String context = use[0];
+        StringBuilder contextBuilder = new StringBuilder(use[0]);
         for (int i = 1; i < use.length - 1; i++) {
-            context += "." + use[i];
+            contextBuilder.append('.');
+            contextBuilder.append(use[i]);
         }
-        return formFullName(context, nom);
+        return formFullName(contextBuilder.toString(), nom);
     }
 
     private void processInstanceVariable(String in) {

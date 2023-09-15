@@ -49,21 +49,21 @@ public class DotProcess {
             reference = new HashMap<String, Integer>();
 
             count = 0;
-            String out = processInitiation();
+            StringBuilder out = new StringBuilder(processInitiation());
 
-            out += processClasses();
+            out.append(processClasses());
 
-            out += processInterfaces();
+            out.append(processInterfaces());
 
-            out += processEnums();
+            out.append(processEnums());
 
             out = processClusters(out, explore.getClusterRoot(), 1, 30, 1);
 
-            out += processAssociations();
+            out.append(processAssociations());
 
-            out += "\n}";
+            out.append("\n}");
 
-            return out;
+            return out.toString();
         }
 
         private String processInitiation() { // Can manipulate here for adjusting draw settings
@@ -78,73 +78,76 @@ public class DotProcess {
         }
 
         private String processClasses() {
-            String out = StringUtils.EMPTY;
+            StringBuilder out = new StringBuilder();
             for (GenericDefinition gc : explore.getClasses()) {
                 reference.put(gc.getFullName(), count++);
-                out += generateClassDot((GenericClass) gc, reference.get(gc.getFullName()));
+                out.append(generateClassDot((GenericClass) gc, reference.get(gc.getFullName())));
             }
-            return out;
+            return out.toString();
         }
 
         private String processInterfaces() {
-            String out = StringUtils.EMPTY;
+            StringBuilder out = new StringBuilder();
             for (GenericDefinition gc : explore.getInterfaces()) {
                 reference.put(gc.getFullName(), count++);
-                out += generateInterfaceDot(gc, reference.get(gc.getFullName()));
+                out.append(generateInterfaceDot(gc, reference.get(gc.getFullName())));
             }
-            return out;
+            return out.toString();
         }
 
         private String processEnums() {
-            String out = StringUtils.EMPTY;
+            StringBuilder out = new StringBuilder();
             for (GenericDefinition ge : explore.getEnums()) {
                 reference.put(ge.getFullName(), count++);
-                out += generateEnumDot(ge, reference.get(ge.getFullName()));
+                out.append(generateEnumDot(ge, reference.get(ge.getFullName())));
             }
-            return out;
+            return out.toString();
         }
 
         private String processAssociations() {
-            String out = StringUtils.EMPTY;
+            StringBuilder out = new StringBuilder();
             for (GenericDefinition c : explore.getClasses()) {
-                out += generateDotClassAssociations((GenericClass) c);
+                out.append(generateDotClassAssociations((GenericClass) c));
             }
             for (GenericDefinition c : explore.getInterfaces()) {
-                out += generateDotInterfaceAssociations(c);
+                out.append(generateDotInterfaceAssociations(c));
             }
             for (GenericDefinition c : explore.getEnums()) {
-                out += generateDotEnumAssociations(c);
+                out.append(generateDotEnumAssociations(c));
             }
-            return out;
+            return out.toString();
         }
 
         // -- GenericClass ----------------------------------------
 
         public String generateClassDot(GenericClass gc, int val) {
             String pref = "\tn" + val + " [label = <{";
-            String out = formDotName(gc) + "|";
+            StringBuilder out = new StringBuilder(formDotName(gc));
+            out.append('|');
             for (int i = 0; i < gc.getNumberInstanceVariables(); i++) {
-                out += DotComponent.dotInstanceVariable(gc.getInstanceVariableAt(i))
-                        + (i + 1 < gc.getNumberInstanceVariables() ? "<BR/>" : StringUtils.EMPTY);
+                out.append(DotComponent.dotInstanceVariable(gc.getInstanceVariableAt(i)));
+                if (i + 1 < gc.getNumberInstanceVariables())
+                    out.append("<BR/>");
             }
-            out += "|";
-            out += getFunctionDot(gc);
+            out.append('|');
+            out.append(getFunctionDot(gc));
             String post = "}>];\n";
-            return pref + out + post;
+            return out.insert(0, pref).append(post).toString();
         };
 
         public String generateDotClassAssociations(GenericClass gc) {
             int val = reference.get(gc.getFullName());
-            String out = StringUtils.EMPTY;
+            StringBuilder out = new StringBuilder();
             if (gc.getInheritance() != null) {
-                out = "\tn" + val + " -> n" + reference.get(gc.getInheritance().getFullName())
-                        + "[arrowhead=onormal];\n";
+                out.append("\tn" + val + " -> n" + reference.get(gc.getInheritance().getFullName()));
+                out.append("[arrowhead=onormal];\n");
             }
-            out += generateDotAssociations(gc);
+            out.append(generateDotAssociations(gc));
             for (GenericDefinition i : gc.getRealizations()) {
-                out += "\tn" + val + " -> n" + reference.get(i.getFullName()) + "[arrowhead=onormal, style=dashed];\n";
+                out.append("\tn" + val + " -> n" + reference.get(i.getFullName()));
+                out.append("[arrowhead=onormal, style=dashed];\n");
             }
-            return out;
+            return out.toString();
         }
 
         private static String formDotName(GenericClass gc) {
@@ -172,11 +175,12 @@ public class DotProcess {
 
         public String generateDotInterfaceAssociations(GenericDefinition gi) {
             int val = reference.get(gi.getFullName());
-            String out = StringUtils.EMPTY;
+            StringBuilder out = new StringBuilder();
             for (GenericDefinition i : gi.getRealizations()) {
-                out += "\tn" + val + " -> n" + reference.get(i.getFullName()) + "[arrowhead=onormal, style=solid];\n";
+                out.append("\tn" + val + " -> n" + reference.get(i.getFullName()));
+                out.append("[arrowhead=onormal, style=solid];\n");
             }
-            return out + generateDotAssociations(gi);
+            return out.append(generateDotAssociations(gi)).toString();
         }
 
         // -- Generic Enum ----------------------------------------
@@ -196,62 +200,64 @@ public class DotProcess {
 
         public String generateDotEnumAssociations(GenericDefinition gi) {
             int val = reference.get(gi.getFullName());
-            String out = StringUtils.EMPTY;
+            StringBuilder out = new StringBuilder();
             for (GenericDefinition i : gi.getRealizations()) {
-                out += "\tn" + val + " -> n" + reference.get(i.getFullName()) + "[arrowhead=onormal, style=dotted];\n";
+                out.append("\tn" + val + " -> n" + reference.get(i.getFullName()));
+                out.append("[arrowhead=onormal, style=dotted];\n");
             }
-            return out + generateDotAssociations(gi);
+            return out.append(generateDotAssociations(gi)).toString();
         }
 
         // -- GenericDefinition -----------------------------------
 
         protected String generateDotAssociations(GenericDefinition gd) {
-            String out = StringUtils.EMPTY;
+            StringBuilder out = new StringBuilder();
             for (GenericDefinition c : gd.getClassAssociates()) {
                 int mV = reference.get(gd.getFullName());
                 int yV = reference.get(c.getFullName());
                 if (!c.hasAssociate(gd) || mV <= yV) { // Processes numerically, so if mutual, only draw if first time
                                                        // seeing
-                    out += "\tn" + mV + " -> n" + yV;
+                    out.append("\tn" + mV + " -> n" + yV);
                     if (c.hasAssociate(gd)) {
-                        out += "[arrowhead=none]";
+                        out.append("[arrowhead=none]");
                     } else {
-                        out += "[arrowhead=normal]";
+                        out.append("[arrowhead=normal]");
                     }
-                    out += ";\n";
+                    out.append(";\n");
                 }
             }
-            return out;
+            return out.toString();
         }
 
         // -- Helper ----------------------------------------------
 
         private String getFunctionDot(GenericDefinition gd) {
-            String out = StringUtils.EMPTY;
+            StringBuilder out = new StringBuilder();
             for (int i = 0; i < gd.getNumberFunctions(); i++) {
-                out += DotComponent.dotFunction(gd.getFunctionAt(i))
-                        + (i + 1 < gd.getNumberFunctions() ? "<BR/>" : StringUtils.EMPTY);
+                out.append(DotComponent.dotFunction(gd.getFunctionAt(i)));
+                if (i + 1 < gd.getNumberFunctions())
+                    out.append("<BR/>");
             }
-            return out;
+            return out.toString();
         }
 
         // -- Clusters --------------------------------------------
 
-        private String processClusters(String out, Cluster next, int depth, int fontSize, int penWidth) {
+        private StringBuilder processClusters(StringBuilder out, Cluster next, int depth, int fontSize, int penWidth) {
             if (next == null)
                 return out;
             String address = next.getAddress();
-            out += tabBuffer(depth) + "subgraph cluster_" + address.replaceAll("\\.", "_") + "{\n";
-            out += tabBuffer(depth + 1) + "label = \"" + address + "\";\n";
-            out += tabBuffer(depth + 1) + "fontsize = " + fontSize + ";\n";
-            out += tabBuffer(depth + 1) + "penwidth = " + penWidth + ";\n";
+            out.append(tabBuffer(depth) + "subgraph cluster_" + address.replaceAll("\\.", "_") + "{\n");
+            out.append(tabBuffer(depth + 1) + "label = \"" + address + "\";\n");
+            out.append(tabBuffer(depth + 1) + "fontsize = " + fontSize + ";\n");
+            out.append(tabBuffer(depth + 1) + "penwidth = " + penWidth + ";\n");
             for (String gd : next.getComponents()) {
-                out += tabBuffer(depth + 1) + "n" + reference.get(gd) + ";\n";
+                out.append(tabBuffer(depth + 1) + "n" + reference.get(gd) + ";\n");
             }
             for (Cluster c : next.getChildren()) {
                 out = processClusters(out, c, depth + 1, fontSize - 4, penWidth + 1);
             }
-            out += tabBuffer(depth) + "}\n";
+            out.append(tabBuffer(depth) + "}\n");
             return out;
         }
 

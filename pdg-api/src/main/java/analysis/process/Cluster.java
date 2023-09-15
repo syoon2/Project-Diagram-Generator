@@ -100,10 +100,12 @@ public class Cluster {
         if (address == null || address.length == 0) {
             return StringUtils.EMPTY;
         }
-        String out = address[0];
-        for (int i = 1; i < address.length; i++)
-            out += "." + address[i];
-        return out;
+        StringBuilder outBuilder = new StringBuilder(address[0]);
+        for (int i = 1; i < address.length; i++) {
+            outBuilder.append('.');
+            outBuilder.append(address[i]);
+        }
+        return outBuilder.toString();
     }
 
     private String getTernary() {

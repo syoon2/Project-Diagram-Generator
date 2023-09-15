@@ -52,14 +52,16 @@ public abstract class GenericFile {
     public GenericFile(File in, String root) throws IOException {
         root = FilenameUtils.separatorsToUnix(root);
         lines = new ArrayList<String>();
-        contents = StringUtils.EMPTY;
+        StringBuilder contentsBuilder = new StringBuilder();
         try (Scanner sc = new Scanner(in)) {
             while (sc.hasNextLine()) {
                 String nex = sc.nextLine();
                 if (nex != null)
-                    contents += nex + StringUtils.LF;
+                    contentsBuilder.append(nex);
+                    contentsBuilder.append(StringUtils.LF);
             }
         }
+        contents = contentsBuilder.toString();
         lines = preProcess(contents);
         name = findName();
         context = FilenameUtils.separatorsToUnix(in.getAbsolutePath()).substring(root.length());

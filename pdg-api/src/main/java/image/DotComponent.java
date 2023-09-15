@@ -44,18 +44,21 @@ public class DotComponent {
     @Deprecated(since = "2.0", forRemoval = true)
     public static String dotFunction(String vis, String name, String type, String[] argName, String[] argType,
             boolean isAbstract, boolean isStatic, boolean isFinal) {
-        String out = vis + name + "(";
+        StringBuilder outBuilder = new StringBuilder(vis + name);
+        outBuilder.append('(');
         for (int i = 0; i < argName.length; i++) {
-            out += dotArgument(argName[i], argType[i]) + (i + 1 < argName.length ? ", " : StringUtils.EMPTY);
+            outBuilder.append(dotArgument(argName[i], argType[i]));
+            if (i + 1 < argName.length)
+                outBuilder.append(", ");
         }
-        out += ")";
+        outBuilder.append(')');
         String ret = type;
 
         if (ret != null) {
-            out += " : " + ret;
+            outBuilder.append(" : " + ret);
         }
 
-        out = StringEscapeUtils.escapeHtml4(out);
+        String out = StringEscapeUtils.escapeHtml4(outBuilder.toString());
 
         if (isAbstract) {
             out = "<u>" + out + "</u>";
@@ -81,18 +84,21 @@ public class DotComponent {
      */
     public static String dotFunction(Function func) {
         Objects.requireNonNull(func);
-        String out = func.getVisibility().getDotRepr() + func.getName() + "(";
+        StringBuilder outBuilder = new StringBuilder(func.getVisibility().getDotRepr() + func.getName());
+        outBuilder.append('(');
         for (int i = 0; i < func.getNumberArguments(); i++) {
-            out += dotArgument(func.getArgumentAt(i)) + (i + 1 < func.getNumberArguments() ? ", " : StringUtils.EMPTY);
+            outBuilder.append(dotArgument(func.getArgumentAt(i)));
+            if (i + 1 < func.getNumberArguments())
+                outBuilder.append(", ");
         }
-        out += ")";
+        outBuilder.append(')');
         String ret = func.getType();
 
         if (ret != null) {
-            out += " : " + ret;
+            outBuilder.append(" : " + ret);
         }
 
-        out = StringEscapeUtils.escapeHtml4(out);
+        String out = StringEscapeUtils.escapeHtml4(outBuilder.toString());
 
         if (func.getAbstract()) {
             out = "<u>" + out + "</u>";
