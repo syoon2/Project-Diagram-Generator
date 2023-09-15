@@ -28,6 +28,7 @@ import java.util.Properties;
 import org.apache.commons.cli.*;
 import org.apache.commons.collections4.properties.PropertiesFactory;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.SystemUtils;
 
 import image.ConvertVisual;
 import ui.PDGWindow;
@@ -39,6 +40,10 @@ import ui.PDGWindow;
  * @since 2.0
  */
 public class PDGLauncher {
+
+    /** Name of the program */
+    public static final String NAME = "Project Diagram Generator";
+
 
     /**
      * Automatically generated Git properties at build time.
@@ -113,7 +118,7 @@ public class PDGLauncher {
         CommandLine line = parser.parse(cliOptions, args, true);
 
         if (line.hasOption(version)) {
-            System.out.printf("Project diagram generator %s (%s:%s%s)\n",
+            System.out.printf(NAME + " %s (%s:%s%s)\n",
                     gitProperties.getProperty("git.build.version"),
                     gitProperties.getProperty("git.branch"),
                     gitProperties.getProperty("git.commit.id.abbrev"),
@@ -151,6 +156,18 @@ public class PDGLauncher {
     }
 
     private static void runReal() {
+        if (SystemUtils.IS_OS_MAC) {
+            // macOS-specific UI tinkering
+
+            // Use system menu bar
+            System.setProperty("apple.laf.useScreenMenuBar", "true");
+            // Set application name
+            System.setProperty("apple.awt.application.name", NAME);
+            // Use system theme for title bar
+            System.setProperty("apple.awt.application.appearance", "system");
+            // Associate cmd+Q with the our window handler
+            System.setProperty("apple.eawt.quitStrategy", "CLOSE_ALL_WINDOWS");
+        }
         PDGWindow disp = new PDGWindow();
     }
 

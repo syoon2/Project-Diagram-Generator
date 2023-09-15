@@ -18,17 +18,22 @@
 
 package ui;
 
+import static main.PDGLauncher.NAME;
 import static main.PDGLauncher.gitProperties;
 
 import java.awt.Container;
+import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Objects;
 
 import javax.swing.*;
@@ -39,6 +44,7 @@ import org.apache.batik.swing.JSVGCanvas;
 import org.apache.batik.swing.gvt.AbstractPanInteractor;
 import org.apache.batik.util.XMLResourceDescriptor;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.SystemUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.w3c.dom.svg.SVGDocument;
@@ -60,8 +66,6 @@ public class PDGWindow extends JFrame {
     /** Default height of a PDG window */
     private static final int DEFAULT_HEIGHT = 600;
 
-    /** Name of the program */
-    private static final String NAME = "Project Diagram Generator";
     /** Title for the window */
     private static final String TITLE = String.format(
             "%s (%s - %s%s)",
@@ -100,12 +104,17 @@ public class PDGWindow extends JFrame {
     /** Toggleable option checkbox */
     private JCheckBox instanceVarCheck, functionCheck, privateEntityCheck, constantCheck;
 
+    /** The menu bar. */
+    private JMenuBar menuBar;
+
     /**
      * Constructs a new {@code PDGWindow}.
      */
     @SuppressWarnings("unchecked")
     public PDGWindow() {
         setMinimumSize(new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT));
+
+        setupMenuBar();
 
         panel = new JSplitPane(JSplitPane.VERTICAL_SPLIT, true);
 
@@ -168,6 +177,49 @@ public class PDGWindow extends JFrame {
         setVisible(true);
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
+
+    private void setupMenuBar() {
+
+        menuBar = new JMenuBar();
+
+        JMenu fileMenu = new JMenu("File");
+
+        if (!SystemUtils.IS_OS_MAC) {
+            JMenuItem exitMenuItem = new JMenuItem("Exit");
+            exitMenuItem.addActionListener(e -> dispatchEvent(new WindowEvent(PDGWindow.this, WindowEvent.WINDOW_CLOSING)));
+            fileMenu.add(exitMenuItem);
+        }
+
+        JMenu aboutMenu = new JMenu("About");
+
+        menuBar.add(fileMenu);
+
+        JMenuItem repoMenuItem = new JMenuItem("Open GitHub Repository");
+        repoMenuItem.addActionListener(event -> {
+            try {
+                Desktop.getDesktop().browse(new URI(gitProperties.getProperty("git.remote.origin.url")));
+            } catch (IOException | URISyntaxException e) {
+                logger.catching(e);
+                JOptionPane.showMessageDialog(PDGWindow.this, e.getMessage(), e.getClass().getName(), JOptionPane.ERROR_MESSAGE);
+            }
+        });
+        aboutMenu.add(repoMenuItem);
+        JMenuItem licenseMenuItem = new JMenuItem("View License");
+        repoMenuItem.addActionListener(event -> {
+            try {
+                Desktop.getDesktop().browse(new URI(gitProperties.getProperty("https://www.gnu.org/licenses/gpl-3.0.html#license-text")));
+            } catch (IOException | URISyntaxException e) {
+                logger.catching(e);
+                JOptionPane.showMessageDialog(PDGWindow.this, e.getMessage(), e.getClass().getName(), JOptionPane.ERROR_MESSAGE);
+            }
+        });
+        aboutMenu.add(licenseMenuItem);
+
+        menuBar.add(aboutMenu);
+
+        setJMenuBar(menuBar);
+
     }
 
     private void setupConfigContainer() {
