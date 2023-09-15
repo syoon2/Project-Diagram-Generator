@@ -114,8 +114,7 @@ public class Cluster {
 
     private String[] mergePath(String tack) {
         String[] out = new String[address.length + 1];
-        for (int i = 0; i < address.length; i++)
-            out[i] = address[i];
+        System.arraycopy(address, 0, out, 0, address.length);
         out[out.length - 1] = tack;
         return out;
     }
