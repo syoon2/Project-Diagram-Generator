@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 
@@ -48,7 +49,7 @@ public class Explore implements Runnable {
         classes = new HashMap<String, GenericDefinition>();
         interfaces = new HashMap<String, GenericDefinition>();
         enums = new HashMap<String, GenericDefinition>();
-        parent = new Cluster(new String[] {});
+        parent = new Cluster(ArrayUtils.EMPTY_STRING_ARRAY);
         if (rootPath.charAt(rootPath.length() - 1) != File.separatorChar) {
             rootPath += File.separatorChar;
         }
