@@ -26,7 +26,7 @@ public class JavaFile extends GenericFile {
 
     private static final String[] KEY_BUFFER_PHRASES = new String[] { "(", ")", "<", ">" };
     private static final String[] REMOVE_TERMS = new String[] { "volatile", "abstract", "static", "final", "default",
-            "native", "transient" };
+            "native", "transient", "synchronized" };
     private static final String REGEX_VISIBILITY_FILE_DEF = "((public|private|protected) )?";
 
     private static Logger logger = LogManager.getLogger();
