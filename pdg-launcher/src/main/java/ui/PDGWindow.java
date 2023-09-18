@@ -206,7 +206,7 @@ public class PDGWindow extends JFrame {
         });
         aboutMenu.add(repoMenuItem);
         JMenuItem licenseMenuItem = new JMenuItem("View License");
-        repoMenuItem.addActionListener(event -> {
+        licenseMenuItem.addActionListener(event -> {
             try {
                 Desktop.getDesktop().browse(new URI("https://www.gnu.org/licenses/gpl-3.0.html#license-text"));
             } catch (IOException | URISyntaxException e) {
