@@ -86,7 +86,7 @@ public class JavaFile extends GenericFile {
         in = in.replaceAll("(\n|$) ", StringUtils.LF);
         String[] parsed = in.trim().split(StringUtils.LF);
         for (String s : parsed) {
-            if (s != null && s.trim() != null && !s.trim().isEmpty()) {
+            if (s != null && !s.trim().isEmpty()) {
                 out.add(s.trim());
             }
         }
