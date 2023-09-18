@@ -162,8 +162,8 @@ public class JavaFile extends GenericFile {
             }
         }
         String ret = argStart == typeIndex ? StringUtils.EMPTY : compileType(cont, typeIndex).getLeft();
-        List<String> argNom = new ArrayList<String>();
-        List<String> argTyp = new ArrayList<String>();
+        List<String> argNames = new ArrayList<String>();
+        List<String> argTypes = new ArrayList<String>();
         for (int i = argStart + 1; i < cont.length - 2; i += 1) {
             if (cont[i].equals(")"))
                 break;
@@ -171,13 +171,13 @@ public class JavaFile extends GenericFile {
             String type = typeLengthPair.getLeft();
             i = typeLengthPair.getRight();
             String nom = cont[i].replaceAll(",", StringUtils.EMPTY);
-            argNom.add(nom);
-            argTyp.add(type);
+            argNames.add(nom);
+            argTypes.add(type);
         }
         if (ret.isEmpty()) {
-            addConstructorToDef(vis, name, argNom, argTyp);
+            addConstructorToDef(vis, name, argNames, argTypes);
         } else {
-            addFunctionToDef(vis, name, ret, argNom, argTyp, stat, abs, fin);
+            addFunctionToDef(vis, name, ret, argNames, argTypes, stat, abs, fin);
         }
     };
 
