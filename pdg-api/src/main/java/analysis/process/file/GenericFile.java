@@ -56,9 +56,10 @@ public abstract class GenericFile {
         try (Scanner sc = new Scanner(in)) {
             while (sc.hasNextLine()) {
                 String nex = sc.nextLine();
-                if (nex != null)
+                if (nex != null) {
                     contentsBuilder.append(nex);
                     contentsBuilder.append(StringUtils.LF);
+                }
             }
         }
         contents = contentsBuilder.toString();
