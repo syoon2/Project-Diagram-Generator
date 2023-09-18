@@ -15,6 +15,7 @@ import java.util.Set;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.tuple.Pair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -125,7 +126,7 @@ public class JavaFile extends GenericFile {
         String[] cont = cleanInput(in);
         logger.debug(Arrays.toString(cont));
         Visibility vis = processVisibility(cont[0]);
-        String typ = compileType(cont, 1);
+        String typ = compileType(cont, 1).getLeft();
         addInstanceVariableToClass(vis, cont[cont.length - 1], typ, underline, fina);
     }
 
@@ -160,14 +161,15 @@ public class JavaFile extends GenericFile {
                 typeIndex++;
             }
         }
-        String ret = argStart == typeIndex ? StringUtils.EMPTY : compileType(cont, typeIndex);
+        String ret = argStart == typeIndex ? StringUtils.EMPTY : compileType(cont, typeIndex).getLeft();
         List<String> argNom = new ArrayList<String>();
         List<String> argTyp = new ArrayList<String>();
         for (int i = argStart + 1; i < cont.length - 2; i += 1) {
             if (cont[i].equals(")"))
                 break;
-            String type = compileType(cont, i);
-            i = compileTypeLength(cont, i);
+            Pair<String, Integer> typeLengthPair = compileType(cont, i);
+            String type = typeLengthPair.getLeft();
+            i = typeLengthPair.getRight();
             String nom = cont[i].replaceAll(",", StringUtils.EMPTY);
             argNom.add(nom);
             argTyp.add(type);
@@ -444,7 +446,7 @@ public class JavaFile extends GenericFile {
         return out.replaceAll(in, " " + in + " ");
     }
 
-    private String compileType(String[] line, int start) {
+    private Pair<String, Integer> compileType(String[] line, int start) {
         String out = line[start++];
         if (line[start].equals("<")) {
             int depth = 1;
@@ -460,26 +462,7 @@ public class JavaFile extends GenericFile {
                 start++;
             }
         }
-        return out;
-    }
-
-    private int compileTypeLength(String[] line, int start) {
-        String out = line[start++];
-        if (line[start].equals("<")) {
-            int depth = 1;
-            out += line[start++];
-            while (depth != 0) {
-                out += line[start];
-                if (line[start].equals("<")) {
-                    depth++;
-                }
-                if (line[start].equals(">")) {
-                    depth--;
-                }
-                start++;
-            }
-        }
-        return start;
+        return Pair.of(out, start);
     }
 
     private Visibility processVisibility(String in) {
