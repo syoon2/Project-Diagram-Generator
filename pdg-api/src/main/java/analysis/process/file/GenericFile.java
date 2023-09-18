@@ -236,10 +236,11 @@ public abstract class GenericFile {
         return context + IOUtils.DIR_SEPARATOR_UNIX + name;
     }
 
-    protected void addFunctionToDef(int vis, String nom, String ret, List<String> argNom, List<String> argTyp,
-            boolean statStatic, boolean statAbstract, boolean isFin) {
+    protected void addFunctionToDef(int vis, String name, String returnType, List<String> argNames,
+            List<String> argTypes, boolean statStatic, boolean statAbstract, boolean isFinal) {
         if (privateCheck(vis)) {
-            gen.addFunction(Visibility.valueOf(vis), nom, ret, argNom, argTyp, statStatic, statAbstract, isFin);
+            gen.addFunction(Visibility.valueOf(vis), name, returnType, argNames, argTypes, statStatic, statAbstract,
+                    isFinal);
         }
     }
 
@@ -248,62 +249,63 @@ public abstract class GenericFile {
      * @param vis
      * @param nom
      * @param ret
-     * @param argNom
-     * @param argTyp
+     * @param argNames
+     * @param argTypes
      * @param statStatic
      * @param statAbstract
-     * @param isFin
+     * @param isFinal
      * 
      * @since 2.0
      */
-    protected void addFunctionToDef(Visibility vis, String nom, String ret, List<String> argNom, List<String> argTyp,
-            boolean statStatic, boolean statAbstract, boolean isFin) {
+    protected void addFunctionToDef(Visibility vis, String name, String returnType, List<String> argNames,
+            List<String> argTypes, boolean statStatic, boolean statAbstract, boolean isFinal) {
         if (privateCheck(vis)) {
-            gen.addFunction(vis, nom, ret, argNom, argTyp, statStatic, statAbstract, isFin);
+            gen.addFunction(vis, name, returnType, argNames, argTypes, statStatic, statAbstract, isFinal);
         }
     }
 
-    protected void addConstructorToDef(int vis, String nom, List<String> argNom, List<String> argTyp) {
+    protected void addConstructorToDef(int vis, String name, List<String> argNames, List<String> argTypes) {
         if (privateCheck(vis)) {
-            gen.addConstructor(Visibility.valueOf(vis), nom, argNom, argTyp);
+            gen.addConstructor(Visibility.valueOf(vis), name, argNames, argTypes);
         }
     }
 
     /**
      * 
      * @param vis
-     * @param nom
-     * @param argNom
-     * @param argTyp
+     * @param name
+     * @param argNames
+     * @param argTypes
      * 
      * @since 2.0
      */
-    protected void addConstructorToDef(Visibility vis, String nom, List<String> argNom, List<String> argTyp) {
+    protected void addConstructorToDef(Visibility vis, String name, List<String> argNames, List<String> argTypes) {
         if (privateCheck(vis)) {
-            gen.addConstructor(vis, nom, argNom, argTyp);
+            gen.addConstructor(vis, name, argNames, argTypes);
         }
     }
 
-    protected void addInstanceVariableToClass(int vis, String typ, String nom, boolean statStatic, boolean statFinal) {
+    protected void addInstanceVariableToClass(int vis, String type, String name, boolean statStatic,
+            boolean statFinal) {
         if (privateCheck(vis) && constantCheck(statFinal)) {
-            ((GenericClass) gen).addInstanceVariable(Visibility.valueOf(vis), typ, nom, statStatic, statFinal);
+            ((GenericClass) gen).addInstanceVariable(Visibility.valueOf(vis), type, name, statStatic, statFinal);
         }
     }
 
     /**
      * 
      * @param vis
-     * @param typ
-     * @param nom
+     * @param type
+     * @param name
      * @param statStatic
      * @param statFinal
      * 
      * @since 2.0
      */
-    protected void addInstanceVariableToClass(Visibility vis, String typ, String nom, boolean statStatic,
+    protected void addInstanceVariableToClass(Visibility vis, String type, String name, boolean statStatic,
             boolean statFinal) {
         if (privateCheck(vis) && constantCheck(statFinal)) {
-            ((GenericClass) gen).addInstanceVariable(vis, typ, nom, statStatic, statFinal);
+            ((GenericClass) gen).addInstanceVariable(vis, type, name, statStatic, statFinal);
         }
     }
 
