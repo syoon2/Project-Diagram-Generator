@@ -91,6 +91,11 @@ class DirectoryOption extends InputOption {
         return this.directory;
     }
 
+    /**
+     * Returns the selected root directory.
+     * 
+     * @return the selected root directory
+     */
     public File getDirectory() {
         return directory;
     }

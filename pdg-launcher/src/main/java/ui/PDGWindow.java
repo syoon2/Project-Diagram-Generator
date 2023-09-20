@@ -179,6 +179,9 @@ public class PDGWindow extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
+    /**
+     * Sets up the menu bar.
+     */
     private void setupMenuBar() {
 
         menuBar = new JMenuBar();
@@ -187,7 +190,8 @@ public class PDGWindow extends JFrame {
 
         if (!SystemUtils.IS_OS_MAC) {
             JMenuItem exitMenuItem = new JMenuItem("Exit");
-            exitMenuItem.addActionListener(e -> dispatchEvent(new WindowEvent(PDGWindow.this, WindowEvent.WINDOW_CLOSING)));
+            exitMenuItem
+                    .addActionListener(e -> dispatchEvent(new WindowEvent(PDGWindow.this, WindowEvent.WINDOW_CLOSING)));
             fileMenu.add(exitMenuItem);
         }
 
@@ -201,7 +205,8 @@ public class PDGWindow extends JFrame {
                 Desktop.getDesktop().browse(new URI(gitProperties.getProperty("git.remote.origin.url")));
             } catch (IOException | URISyntaxException e) {
                 logger.catching(e);
-                JOptionPane.showMessageDialog(PDGWindow.this, e.getMessage(), e.getClass().getName(), JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(PDGWindow.this, e.getMessage(), e.getClass().getName(),
+                        JOptionPane.ERROR_MESSAGE);
             }
         });
         aboutMenu.add(repoMenuItem);
@@ -211,7 +216,8 @@ public class PDGWindow extends JFrame {
                 Desktop.getDesktop().browse(new URI("https://www.gnu.org/licenses/gpl-3.0.html#license-text"));
             } catch (IOException | URISyntaxException e) {
                 logger.catching(e);
-                JOptionPane.showMessageDialog(PDGWindow.this, e.getMessage(), e.getClass().getName(), JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(PDGWindow.this, e.getMessage(), e.getClass().getName(),
+                        JOptionPane.ERROR_MESSAGE);
             }
         });
         aboutMenu.add(licenseMenuItem);
@@ -222,6 +228,9 @@ public class PDGWindow extends JFrame {
 
     }
 
+    /**
+     * Sets up the user input elements.
+     */
     private void setupConfigContainer() {
         configContainer = new JPanel();
         configContainer.setLayout(new GridBagLayout());
@@ -248,6 +257,9 @@ public class PDGWindow extends JFrame {
         configContainer.add(optionContainer, c);
     }
 
+    /**
+     * Sets up the project input elements.
+     */
     private void setupInputContainer() {
         inputContainer = Box.createVerticalBox();
 
@@ -282,6 +294,9 @@ public class PDGWindow extends JFrame {
         inputContainer.add(generateButton);
     }
 
+    /**
+     * Sets up the checkboxes for diagram options.
+     */
     private void setupOptionContainer() {
         optionContainer = Box.createVerticalBox();
 

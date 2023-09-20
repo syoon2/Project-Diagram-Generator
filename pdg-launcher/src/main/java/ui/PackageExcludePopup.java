@@ -42,15 +42,33 @@ import ui.util.PackageTreeNode;
  */
 class PackageExcludePopup extends JDialog {
 
+    /** The default width of this popup. */
     private static final int DEFAULT_WIDTH = 300;
+    /** The default height of this popup. */
     private static final int DEFAULT_HEIGHT = 600;
 
+    /**
+     * The checkbox tree for selecting packages to exclude.
+     */
     private JCheckBoxTree tree;
+    /** The pane used for scrolling support. */
     private JScrollPane scrollPane;
+    /** The {@link PackageExcludeOption} that owns this popup. */
     private PackageExcludeOption peo;
+    /** The "submit" button. */
     private JButton submitButton;
+    /** The set of excluded packages. */
     private Set<TreePath> excludedPackages;
 
+    /**
+     * Constructs a new {@code PackageExcludePopup}.
+     * 
+     * @param parent the frame that owns this popup
+     * @param peo    the {@link PackageExcludeOption} that owns this popup
+     * 
+     * @throws NullPointerException     if {@code parent} is {@code null}
+     * @throws IllegalArgumentException if no root directory is set in {@code peo}
+     */
     PackageExcludePopup(Frame parent, PackageExcludeOption peo) {
         super(parent);
         this.peo = Objects.requireNonNull(peo);
@@ -72,6 +90,9 @@ class PackageExcludePopup extends JDialog {
         setVisible(true);
     }
 
+    /**
+     * Sets up the "submit" button in this popup.
+     */
     private void setupSubmitButton() {
         submitButton = new JButton("Submit");
         submitButton.addActionListener(e -> {

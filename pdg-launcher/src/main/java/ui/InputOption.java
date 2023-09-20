@@ -38,6 +38,7 @@ import org.apache.commons.io.IOUtils;
  */
 abstract class InputOption extends JComponent {
 
+    /** The "plus icon" used by {@code InputOption}. */
     private static final Icon BUTTON_PLUS_ICON;
     static {
         try {

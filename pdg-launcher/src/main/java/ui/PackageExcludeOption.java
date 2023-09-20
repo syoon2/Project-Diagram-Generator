@@ -38,11 +38,20 @@ import ui.util.PackageTreeNode;
  */
 class PackageExcludeOption extends InputOption {
 
+    /** The default text to go in the text box */
     private final static String DEFAULT_PKG_TEXT = "[packages to ignore]";
 
+    /** The directory option */
     private DirectoryOption directoryOption;
+    /** The list of ignored packages */
     private List<String> ignoredPackages = new ArrayList<String>();
     
+    /**
+     * Constructs a new {@code PackageExcludeOption}.
+     * 
+     * @param parent          the frame that owns this {@code PackageExcludeOption}
+     * @param directoryOption the directory option
+     */
     public PackageExcludeOption(Frame parent, DirectoryOption directoryOption) {
         super(DEFAULT_PKG_TEXT);
         this.directoryOption = Objects.requireNonNull(directoryOption);
@@ -53,10 +62,23 @@ class PackageExcludeOption extends InputOption {
 
     }
 
+    /**
+     * Returns the selected root directory.
+     * 
+     * @return the selected root directory
+     * 
+     * @see DirectoryOption#getDirectory()
+     */
     File getRootDirectory() {
         return directoryOption.getDirectory();
     }
 
+    /**
+     * Processes the packages to ignore.
+     * 
+     * @param ignored the set of packages represented as {@link TreePath}s
+     * @return the packages to ignore, represented as a list of strings
+     */
     List<String> processPackagesIgnore(Set<TreePath> ignored){
         ignoredPackages.clear();
         if (ignored.isEmpty()) {
@@ -84,6 +106,12 @@ class PackageExcludeOption extends InputOption {
         return getIgnoredPackages();
     }
 
+    /**
+     * Returns the packages to ignore. The list returned by this method is
+     * {@link java.util.Collections#unmodifiableList(List) unmodifiable}.
+     * 
+     * @return the list of packages to ignore
+     */
     public List<String> getIgnoredPackages() {
         return Collections.unmodifiableList(ignoredPackages);
     }
