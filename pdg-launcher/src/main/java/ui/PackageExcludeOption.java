@@ -45,7 +45,7 @@ class PackageExcludeOption extends InputOption {
     private DirectoryOption directoryOption;
     /** The list of ignored packages */
     private List<String> ignoredPackages = new ArrayList<String>();
-    
+
     /**
      * Constructs a new {@code PackageExcludeOption}.
      * 
@@ -79,7 +79,7 @@ class PackageExcludeOption extends InputOption {
      * @param ignored the set of packages represented as {@link TreePath}s
      * @return the packages to ignore, represented as a list of strings
      */
-    List<String> processPackagesIgnore(Set<TreePath> ignored){
+    List<String> processPackagesIgnore(Set<TreePath> ignored) {
         ignoredPackages.clear();
         if (ignored.isEmpty()) {
             return getIgnoredPackages();
