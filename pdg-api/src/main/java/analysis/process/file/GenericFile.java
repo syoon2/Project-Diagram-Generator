@@ -136,6 +136,8 @@ public abstract class GenericFile {
         handleAssociations(neighbors, bar, classRef);
         if (getStatusFunction()) {
             extractFunctions();
+            in.addFunction(Visibility.PUBLIC, "valueOf", in.getName(), List.of("name"), List.of("String"), true, false, false);
+            in.addFunction(Visibility.PUBLIC, "values", in.getName() + "[]", List.of(), true, false, false);
         }
     }
 

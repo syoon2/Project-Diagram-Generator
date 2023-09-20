@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import analysis.language.Visibility;
+import analysis.language.component.Argument;
 import analysis.language.component.Constructor;
 import analysis.language.component.Function;
 
@@ -90,6 +91,28 @@ public abstract class GenericDefinition implements Comparable<GenericDefinition>
     public void addFunction(Visibility vis, String funcName, String ret, List<String> argName, List<String> argType,
             boolean statStatic, boolean statAbstract, boolean isFinal) {
         Function in = new Function(vis, funcName, ret, argName, argType);
+        in.setAbstract(statAbstract);
+        in.setStatic(statStatic);
+        in.setFinal(isFinal);
+        addFunction(in);
+    }
+
+    /**
+     * Adds a function to this {@code GenericDefinition}.
+     * 
+     * @param vis          the visibility of the function
+     * @param funcName     the name of the function
+     * @param ret          the return type of the function
+     * @param arga         the arguments that the function takes
+     * @param statStatic   whether the function is static
+     * @param statAbstract whether the function is abstract
+     * @param isFinal      whether the function is declared as final
+     * 
+     * @since 2.0
+     */
+    public void addFunction(Visibility vis, String funcName, String ret, List<Argument> args,
+            boolean statStatic, boolean statAbstract, boolean isFinal) {
+        Function in = new Function(vis, funcName, args, ret);
         in.setAbstract(statAbstract);
         in.setStatic(statStatic);
         in.setFinal(isFinal);
