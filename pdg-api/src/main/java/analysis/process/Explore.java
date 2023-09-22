@@ -21,7 +21,10 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import analysis.language.actor.GenericClass;
 import analysis.language.actor.GenericDefinition;
+import analysis.language.actor.GenericEnum;
+import analysis.language.actor.GenericInterface;
 import analysis.process.file.FileFactory;
 import analysis.process.file.GenericFile;
 
@@ -32,9 +35,9 @@ public class Explore implements Runnable {
     // Instance Variables
 
     private List<GenericFile> files;
-    private Map<String, GenericDefinition> classes;
-    private Map<String, GenericDefinition> interfaces;
-    private Map<String, GenericDefinition> enums;
+    private Map<String, GenericClass> classes;
+    private Map<String, GenericInterface> interfaces;
+    private Map<String, GenericEnum> enums;
     private Cluster parent;
     private String rootPath;
 
@@ -46,9 +49,9 @@ public class Explore implements Runnable {
         rootPath = root.getAbsolutePath();
         ignore = new HashSet<String>();
         files = new ArrayList<GenericFile>();
-        classes = new HashMap<String, GenericDefinition>();
-        interfaces = new HashMap<String, GenericDefinition>();
-        enums = new HashMap<String, GenericDefinition>();
+        classes = new HashMap<String, GenericClass>();
+        interfaces = new HashMap<String, GenericInterface>();
+        enums = new HashMap<String, GenericEnum>();
         parent = new Cluster(ArrayUtils.EMPTY_STRING_ARRAY);
         if (rootPath.charAt(rootPath.length() - 1) != File.separatorChar) {
             rootPath += File.separatorChar;
@@ -79,11 +82,7 @@ public class Explore implements Runnable {
     }
 
     private void explore(File root) throws IOException {
-        for (String s : root.list()) {
-            File look = new File(root, s);
-            if (!look.exists()) {
-                continue;
-            }
+        for (File look : root.listFiles()) {
             if (look.isDirectory() && !ignore(look.getAbsolutePath())) {
                 explore(look);
             } else if (look.isFile()) {
@@ -99,13 +98,13 @@ public class Explore implements Runnable {
 
                     boolean canAdd = false;
                     if (f.isClassFile()) {
-                        classes.put(gd.getFullName(), gd);
+                        classes.put(gd.getFullName(), (GenericClass) gd);
                         canAdd = true;
                     } else if (f.isInterfaceFile()) {
-                        interfaces.put(gd.getFullName(), gd);
+                        interfaces.put(gd.getFullName(), (GenericInterface) gd);
                         canAdd = true;
                     } else if (f.isEnumFile()) {
-                        enums.put(gd.getFullName(), gd);
+                        enums.put(gd.getFullName(), (GenericEnum) gd);
                         canAdd = true;
                     }
                     if (canAdd)
@@ -128,20 +127,20 @@ public class Explore implements Runnable {
 
     // Getter Methods
 
-    public Collection<GenericDefinition> getClasses() {
+    public Collection<GenericClass> getClasses() {
         return classes.values();
     }
 
-    public Collection<GenericDefinition> getInterfaces() {
+    public Collection<GenericInterface> getInterfaces() {
         return interfaces.values();
     }
 
-    public Collection<GenericDefinition> getEnums() {
+    public Collection<GenericEnum> getEnums() {
         return enums.values();
     }
 
     public List<GenericDefinition> getDefinitions() {
-        List<GenericDefinition> out = new ArrayList<GenericDefinition>();
+        List<GenericDefinition> out = new ArrayList<>();
         for (String s : classes.keySet())
             out.add(classes.get(s));
         for (String s : interfaces.keySet())

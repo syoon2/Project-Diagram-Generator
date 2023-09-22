@@ -139,6 +139,12 @@ public abstract class GenericFile {
             in.addFunction(Visibility.PUBLIC, "valueOf", in.getName(), List.of("name"), List.of("String"), true, false, false);
             in.addFunction(Visibility.PUBLIC, "values", in.getName() + "[]", List.of(), true, false, false);
         }
+        if (getStatusConstant()) {
+            extractEnumConstants();
+        }
+        if (getStatusInstanceVariable()) {
+            extractInstanceVariables();
+        }
     }
 
     // Other
@@ -221,6 +227,12 @@ public abstract class GenericFile {
     protected abstract void extractFunctions();
 
     protected abstract void extractInstanceVariables();
+
+    /**
+     * 
+     * @since 2.0
+     */
+    protected abstract void extractEnumConstants();
 
     protected abstract String extractInheritance();
 

@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -277,6 +279,26 @@ public class JavaFile extends GenericFile {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     * 
+     * @since {@inheritDoc}
+     */
+    @Override
+    protected void extractEnumConstants() {
+        for (String line : getFileContents()) {
+            if (isEnumConstant(line)) {
+                Pattern pattern = Pattern.compile("(( )*\\w+ \\(( [\\w\\\".]+(,){0,1})* \\))");
+                Matcher matcher = pattern.matcher(line);
+                while (matcher.find()) {
+                    String decl = matcher.group();
+                    String name = decl.substring(0, decl.indexOf('(')).trim();
+                    addInstanceVariableToClass(Visibility.PUBLIC, name, getDefinition().getName(), true, true);
+                }
+            }
+        }
+    }
+
     @Override
     protected String extractInheritance() {
         for (String line : getFileContents()) {
@@ -408,6 +430,18 @@ public class JavaFile extends GenericFile {
     private boolean isInstanceVariable(String in) {
         in = removeEquals(in);
         return in.matches("(private|public|protected)[^{]*") && !in.contains("abstract") && !in.contains("(");
+    }
+
+    /**
+     * Determines whether a line corresponds to enum constant declaration.
+     * 
+     * @param in a line of code
+     * @return {@code true} if line matches enum constant declaration
+     * 
+     * @since 2.0
+     */
+    private boolean isEnumConstant(String in) {
+        return in.matches("(( )*\\w+ \\(( [\\w\\\".]+(,){0,1})* \\)( , ){0,1}){1,} ;");
     }
 
     private boolean isFunction(String in) {

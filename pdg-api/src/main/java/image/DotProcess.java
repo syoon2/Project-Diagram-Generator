@@ -14,6 +14,8 @@ import org.apache.commons.text.StringEscapeUtils;
 
 import analysis.language.actor.GenericClass;
 import analysis.language.actor.GenericDefinition;
+import analysis.language.actor.GenericEnum;
+import analysis.language.actor.GenericInterface;
 import analysis.process.Cluster;
 import analysis.process.Explore;
 
@@ -79,7 +81,7 @@ public class DotProcess {
 
         private String processClasses() {
             StringBuilder out = new StringBuilder();
-            for (GenericDefinition gc : explore.getClasses()) {
+            for (GenericClass gc : explore.getClasses()) {
                 reference.put(gc.getFullName(), count++);
                 out.append(generateClassDot((GenericClass) gc, reference.get(gc.getFullName())));
             }
@@ -88,7 +90,7 @@ public class DotProcess {
 
         private String processInterfaces() {
             StringBuilder out = new StringBuilder();
-            for (GenericDefinition gc : explore.getInterfaces()) {
+            for (GenericInterface gc : explore.getInterfaces()) {
                 reference.put(gc.getFullName(), count++);
                 out.append(generateInterfaceDot(gc, reference.get(gc.getFullName())));
             }
@@ -97,7 +99,7 @@ public class DotProcess {
 
         private String processEnums() {
             StringBuilder out = new StringBuilder();
-            for (GenericDefinition ge : explore.getEnums()) {
+            for (GenericEnum ge : explore.getEnums()) {
                 reference.put(ge.getFullName(), count++);
                 out.append(generateEnumDot(ge, reference.get(ge.getFullName())));
             }
@@ -185,13 +187,18 @@ public class DotProcess {
 
         // -- Generic Enum ----------------------------------------
 
-        public String generateEnumDot(GenericDefinition gi, int val) {
+        public String generateEnumDot(GenericEnum gi, int val) {
             String pref = "\tn" + val + " [label = <{";
-            String out = formEnumName() + "<BR/>" + gi.getName() + "|";
-            out += "|";
-            out += getFunctionDot(gi);
+            StringBuilder out = new StringBuilder(formEnumName() + "<BR/>" + gi.getName() + "|");
+            for (int i = 0; i < gi.getNumberInstanceVariables(); i++) {
+                out.append(DotComponent.dotInstanceVariable(gi.getInstanceVariableAt(i)));
+                if (i + 1 < gi.getNumberInstanceVariables())
+                    out.append("<BR/>");
+            }
+            out.append('|');
+            out.append(getFunctionDot(gi));
             String post = "}>];\n";
-            return pref + out + post;
+            return pref + out.toString() + post;
         }
 
         private String formEnumName() {
