@@ -18,6 +18,8 @@ import java.util.Set;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import analysis.language.Visibility;
 import analysis.language.actor.GenericClass;
@@ -33,6 +35,8 @@ public abstract class GenericFile {
     protected static final String FULL_NAME_SEPARATOR = Character.toString(IOUtils.DIR_SEPARATOR_UNIX);
 
     protected static final String ASSOCIATION_STAR_IMPORT = "*";
+
+    private static Logger logger = LogManager.getLogger();
 
     // Instance Variables
 
@@ -98,6 +102,7 @@ public abstract class GenericFile {
     // Operations
 
     public void process(Map<String, GenericDefinition> classRef, Cluster parent) {
+        logger.info("Processing " + context + '.' + name);
         Set<String> neighbors = parent.getCluster(context.split("\\.")).getComponents();
         if (isClassFile()) {
             processClass(classRef, neighbors);

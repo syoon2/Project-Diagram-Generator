@@ -83,6 +83,7 @@ public class Explore implements Runnable {
 
     private void explore(File root) throws IOException {
         for (File look : root.listFiles()) {
+            logger.debug("Exploring: " + look);
             if (look.isDirectory() && !ignore(look.getAbsolutePath())) {
                 explore(look);
             } else if (look.isFile()) {

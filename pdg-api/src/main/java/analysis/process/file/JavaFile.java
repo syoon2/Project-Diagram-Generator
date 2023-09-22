@@ -133,6 +133,7 @@ public class JavaFile extends GenericFile {
     }
 
     private void processFunction(String in) {
+        logger.traceEntry("processFunctions(in = \"{}\")", in);
         boolean stat = false;
         boolean abs = false;
         boolean fin = false;
@@ -256,6 +257,7 @@ public class JavaFile extends GenericFile {
 
     @Override
     protected void extractFunctions() {
+        logger.debug("Extracting functions");
         boolean skip = false;
         for (String line : getFileContents()) {
             if (skip) {
@@ -268,15 +270,18 @@ public class JavaFile extends GenericFile {
                 skip = true;
             }
         }
+        logger.debug("Finished extracting functions");
     }
 
     @Override
     protected void extractInstanceVariables() {
+        logger.debug("Extracting instance variables");
         for (String line : getFileContents()) {
             if (isInstanceVariable(line)) {
                 processInstanceVariable(line);
             }
         }
+        logger.debug("Finished extracting instance variables");
     }
 
     /**
@@ -286,6 +291,7 @@ public class JavaFile extends GenericFile {
      */
     @Override
     protected void extractEnumConstants() {
+        logger.debug("Extracting enum constants");
         for (String line : getFileContents()) {
             if (isEnumConstant(line)) {
                 Pattern pattern = Pattern.compile("(( )*\\w+ \\(( [\\w\\\".]+(,){0,1})* \\))");
@@ -297,6 +303,7 @@ public class JavaFile extends GenericFile {
                 }
             }
         }
+        logger.debug("Finished extracting enum constants");
     }
 
     @Override
