@@ -287,27 +287,27 @@ public abstract class GenericFile {
         }
     }
 
-    protected void addInstanceVariableToClass(int vis, String type, String name, boolean statStatic,
+    protected void addInstanceVariableToClass(int vis, String name, String type, boolean statStatic,
             boolean statFinal) {
         if (privateCheck(vis) && constantCheck(statFinal)) {
-            ((GenericClass) gen).addInstanceVariable(Visibility.valueOf(vis), type, name, statStatic, statFinal);
+            ((GenericClass) gen).addInstanceVariable(Visibility.valueOf(vis), name, type, statStatic, statFinal);
         }
     }
 
     /**
      * 
      * @param vis
-     * @param type
      * @param name
+     * @param type
      * @param statStatic
      * @param statFinal
      * 
      * @since 2.0
      */
-    protected void addInstanceVariableToClass(Visibility vis, String type, String name, boolean statStatic,
+    protected void addInstanceVariableToClass(Visibility vis, String name, String type, boolean statStatic,
             boolean statFinal) {
         if (privateCheck(vis) && constantCheck(statFinal)) {
-            ((GenericClass) gen).addInstanceVariable(vis, type, name, statStatic, statFinal);
+            ((GenericClass) gen).addInstanceVariable(vis, name, type, statStatic, statFinal);
         }
     }
 
