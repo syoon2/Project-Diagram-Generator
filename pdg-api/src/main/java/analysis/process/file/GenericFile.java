@@ -18,6 +18,8 @@ import java.util.Set;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import analysis.language.Visibility;
 import analysis.language.actor.GenericClass;
@@ -33,6 +35,8 @@ public abstract class GenericFile {
     protected static final String FULL_NAME_SEPARATOR = Character.toString(IOUtils.DIR_SEPARATOR_UNIX);
 
     protected static final String ASSOCIATION_STAR_IMPORT = "*";
+
+    private static Logger logger = LogManager.getLogger();
 
     // Instance Variables
 
@@ -98,6 +102,7 @@ public abstract class GenericFile {
     // Operations
 
     public void process(Map<String, GenericDefinition> classRef, Cluster parent) {
+        logger.info("Processing " + context + '.' + name);
         Set<String> neighbors = parent.getCluster(context.split("\\.")).getComponents();
         if (isClassFile()) {
             processClass(classRef, neighbors);
@@ -136,6 +141,14 @@ public abstract class GenericFile {
         handleAssociations(neighbors, bar, classRef);
         if (getStatusFunction()) {
             extractFunctions();
+            in.addFunction(Visibility.PUBLIC, "valueOf", in.getName(), List.of("name"), List.of("String"), true, false, false);
+            in.addFunction(Visibility.PUBLIC, "values", in.getName() + "[]", List.of(), true, false, false);
+        }
+        if (getStatusConstant()) {
+            extractEnumConstants();
+        }
+        if (getStatusInstanceVariable()) {
+            extractInstanceVariables();
         }
     }
 
@@ -220,6 +233,12 @@ public abstract class GenericFile {
 
     protected abstract void extractInstanceVariables();
 
+    /**
+     * 
+     * @since 2.0
+     */
+    protected abstract void extractEnumConstants();
+
     protected abstract String extractInheritance();
 
     protected abstract List<String> extractRealizations();
@@ -285,27 +304,27 @@ public abstract class GenericFile {
         }
     }
 
-    protected void addInstanceVariableToClass(int vis, String type, String name, boolean statStatic,
+    protected void addInstanceVariableToClass(int vis, String name, String type, boolean statStatic,
             boolean statFinal) {
         if (privateCheck(vis) && constantCheck(statFinal)) {
-            ((GenericClass) gen).addInstanceVariable(Visibility.valueOf(vis), type, name, statStatic, statFinal);
+            ((GenericClass) gen).addInstanceVariable(Visibility.valueOf(vis), name, type, statStatic, statFinal);
         }
     }
 
     /**
      * 
      * @param vis
-     * @param type
      * @param name
+     * @param type
      * @param statStatic
      * @param statFinal
      * 
      * @since 2.0
      */
-    protected void addInstanceVariableToClass(Visibility vis, String type, String name, boolean statStatic,
+    protected void addInstanceVariableToClass(Visibility vis, String name, String type, boolean statStatic,
             boolean statFinal) {
         if (privateCheck(vis) && constantCheck(statFinal)) {
-            ((GenericClass) gen).addInstanceVariable(vis, type, name, statStatic, statFinal);
+            ((GenericClass) gen).addInstanceVariable(vis, name, type, statStatic, statFinal);
         }
     }
 
