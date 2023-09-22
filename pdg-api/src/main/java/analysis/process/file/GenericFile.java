@@ -247,8 +247,8 @@ public abstract class GenericFile {
     /**
      * 
      * @param vis
-     * @param nom
-     * @param ret
+     * @param name
+     * @param returnType
      * @param argNames
      * @param argTypes
      * @param statStatic
