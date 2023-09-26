@@ -128,8 +128,11 @@ public class JavaFile extends GenericFile {
         String[] cont = cleanInput(in);
         logger.debug(Arrays.toString(cont));
         Visibility vis = processVisibility(cont[0]);
-        String typ = compileType(cont, 1).getLeft();
-        addInstanceVariableToClass(vis, cont[cont.length - 1], typ, underline, fina);
+        Pair<String, Integer> processedType = compileType(cont, 1);
+        String typ = processedType.getLeft();
+        for (int i = processedType.getRight(); i < cont.length; i++) {
+            addInstanceVariableToClass(vis, cont[i].replace(",", StringUtils.EMPTY), typ, underline, fina);
+        }
     }
 
     private void processFunction(String in) {
