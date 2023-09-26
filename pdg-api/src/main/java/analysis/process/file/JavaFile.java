@@ -439,7 +439,7 @@ public class JavaFile extends GenericFile {
 
     private boolean isInstanceVariable(String in) {
         in = removeEquals(in);
-        return in.matches("(private|public|protected)[^{]*") && !in.contains("abstract") && !in.contains("(");
+        return in.matches("((private|public|protected) )[^{]*") && !in.contains("abstract") && !in.contains("(");
     }
 
     /**
@@ -455,7 +455,7 @@ public class JavaFile extends GenericFile {
     }
 
     private boolean isFunction(String in) {
-        return in.matches("(private|public|protected).*") && !in.contains(" new ") && in.contains("(")
+        return in.matches("((private|public|protected) ).*") && !in.contains(" new ") && in.contains("(")
                 && !in.contains("=");
     }
 
