@@ -71,6 +71,7 @@ class PackageExcludePopup extends JDialog {
      */
     PackageExcludePopup(Frame parent, PackageExcludeOption peo) {
         super(parent);
+        setResizable(false);
         this.peo = Objects.requireNonNull(peo);
         File rootDir = this.peo.getRootDirectory();
         Objects.requireNonNull(rootDir);
@@ -80,7 +81,7 @@ class PackageExcludePopup extends JDialog {
         Box box = Box.createVerticalBox();
         tree = new JCheckBoxTree(new PackageTreeNode(rootDir));
         scrollPane = new JScrollPane(tree);
-        scrollPane.setMinimumSize(new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT));
+        setPreferredSize(new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT));
         box.add(scrollPane);
         setupSubmitButton();
         box.add(submitButton);
@@ -114,5 +115,6 @@ class PackageExcludePopup extends JDialog {
             peo.processPackagesIgnore(excludedPackages);
             PackageExcludePopup.this.dispose();
         });
+        submitButton.setAlignmentX(1f);
     }
 }
