@@ -25,10 +25,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
+import javax.swing.*;
+
 import org.apache.commons.cli.*;
 import org.apache.commons.collections4.properties.PropertiesFactory;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.SystemUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import com.jthemedetecor.OsThemeDetector;
 
 import image.ConvertVisual;
 import ui.PDGWindow;
@@ -44,6 +50,8 @@ public class PDGLauncher {
     /** Name of the program */
     public static final String NAME = "Project Diagram Generator";
 
+    /** Class logger */
+    private static Logger logger = LogManager.getLogger();
 
     /**
      * Automatically generated Git properties at build time.
@@ -156,6 +164,9 @@ public class PDGLauncher {
     }
 
     private static void runReal() {
+
+        final OsThemeDetector detector = OsThemeDetector.getDetector();
+
         if (SystemUtils.IS_OS_MAC) {
             // macOS-specific UI tinkering
 
@@ -168,7 +179,41 @@ public class PDGLauncher {
             // Associate cmd+Q with the our window handler
             System.setProperty("apple.eawt.quitStrategy", "CLOSE_ALL_WINDOWS");
         }
+
+        try {
+            if (SystemUtils.IS_OS_MAC) {
+                if (detector.isDark())
+                    UIManager.setLookAndFeel("com.formdev.flatlaf.themes.FlatMacDarkLaf");
+                else
+                    UIManager.setLookAndFeel("com.formdev.flatlaf.themes.FlatMacLightLaf");
+            } else if (detector.isDark())
+                UIManager.setLookAndFeel("com.formdev.flatlaf.FlatDarkLaf");
+            else
+                UIManager.setLookAndFeel("com.formdev.flatlaf.FlatLightLaf");
+        } catch (ReflectiveOperationException | UnsupportedLookAndFeelException e) {
+            logger.catching(e);
+        }
+
         PDGWindow disp = new PDGWindow();
+
+        detector.registerListener(isDark -> {
+            SwingUtilities.invokeLater(() -> {
+                try {
+                    if (SystemUtils.IS_OS_MAC) {
+                        if (isDark)
+                            UIManager.setLookAndFeel("com.formdev.flatlaf.themes.FlatMacDarkLaf");
+                        else
+                            UIManager.setLookAndFeel("com.formdev.flatlaf.themes.FlatMacLightLaf");
+                    } else if (isDark)
+                        UIManager.setLookAndFeel("com.formdev.flatlaf.FlatDarkLaf");
+                    else
+                        UIManager.setLookAndFeel("com.formdev.flatlaf.FlatLightLaf");
+                    SwingUtilities.updateComponentTreeUI(disp);
+                } catch (ReflectiveOperationException | UnsupportedLookAndFeelException e) {
+                    logger.catching(e);
+                }
+            });
+        });
     }
 
 }

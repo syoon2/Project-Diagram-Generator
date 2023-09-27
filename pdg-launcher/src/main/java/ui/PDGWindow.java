@@ -43,6 +43,7 @@ import org.apache.batik.dom.svg.SVGDocumentFactory;
 import org.apache.batik.swing.JSVGCanvas;
 import org.apache.batik.swing.gvt.AbstractPanInteractor;
 import org.apache.batik.util.XMLResourceDescriptor;
+import org.apache.commons.lang3.JavaVersion;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.SystemUtils;
 import org.apache.logging.log4j.LogManager;
@@ -171,6 +172,10 @@ public class PDGWindow extends JFrame {
 
         // Update title
         setTitle(TITLE);
+        if (SystemUtils.IS_OS_MAC) {
+            // Use transparent title bar
+            getRootPane().putClientProperty( "apple.awt.transparentTitleBar", true );
+        }
 
         pack();
 

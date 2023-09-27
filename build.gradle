@@ -5,9 +5,12 @@ plugins {
 }
 
 
-repositories {
-  mavenLocal()
-  mavenCentral()
+allprojects {
+  repositories {
+    mavenLocal()
+    mavenCentral()
+    maven { url 'https://jitpack.io' }
+  }
 }
 
 subprojects {

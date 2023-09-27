@@ -21,6 +21,12 @@ dependencies {
   // GraalVM JS
   runtimeOnly group: 'org.graalvm.js', name: 'js', version: '23.0.1'
 
+  // FlatLaf
+  runtimeOnly group: 'com.formdev', name: 'flatlaf', version: '3.2.1'
+
+  // jSystemThemeDetector
+  implementation group: 'com.github.Dansoftowner', name: 'jSystemThemeDetector', version: '3.6'
+
 }
 
 ext {
