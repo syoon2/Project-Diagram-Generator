@@ -15,7 +15,7 @@ allprojects {
 
 subprojects {
   group = 'com.github.syoon2.pdg'
-  version = '2.0.0-SNAPSHOT'
+  version = '2.0.0'
 
   apply plugin: 'java'
   apply plugin: "com.gorylenko.gradle-git-properties"
