@@ -88,6 +88,7 @@ class PackageExcludePopup extends JDialog {
         add(box);
         pack();
         setModal(true);
+        setLocationRelativeTo(parent);
         setVisible(true);
     }
 
