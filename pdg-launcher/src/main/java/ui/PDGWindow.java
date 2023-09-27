@@ -135,31 +135,21 @@ public class PDGWindow extends JFrame {
 
         // Use mouse for zooming in and scrolling
         svgCanvas.addMouseWheelListener(e -> {
+            Action action = null;
             if (e.isControlDown()) {
-                if (e.getWheelRotation() < 0) {
-                    Action action = svgCanvas.getActionMap().get(JSVGCanvas.ZOOM_IN_ACTION);
-                    if (action != null)
-                        action.actionPerformed(null);
-
-                } else if (e.getWheelRotation() > 0) {
-                    Action action = svgCanvas.getActionMap().get(JSVGCanvas.ZOOM_OUT_ACTION);
-                    if (action != null)
-                        action.actionPerformed(null);
-
-                }
+                if (e.getWheelRotation() < 0)
+                    action = svgCanvas.getActionMap().get(JSVGCanvas.ZOOM_IN_ACTION);
+                else if (e.getWheelRotation() > 0)
+                    action = svgCanvas.getActionMap().get(JSVGCanvas.ZOOM_OUT_ACTION);
             } else {
                 if (e.getWheelRotation() < 0) {
-                    Action action = svgCanvas.getActionMap().get(JSVGCanvas.FAST_SCROLL_UP_ACTION);
-                    if (action != null)
-                        action.actionPerformed(null);
-
+                    action = svgCanvas.getActionMap().get(JSVGCanvas.FAST_SCROLL_UP_ACTION);
                 } else if (e.getWheelRotation() > 0) {
-                    Action action = svgCanvas.getActionMap().get(JSVGCanvas.FAST_SCROLL_DOWN_ACTION);
-                    if (action != null)
-                        action.actionPerformed(null);
-
+                    action = svgCanvas.getActionMap().get(JSVGCanvas.FAST_SCROLL_DOWN_ACTION);
                 }
             }
+            if (action != null)
+                action.actionPerformed(null);
         });
 
         panel.setTopComponent(svgCanvas);
