@@ -1,6 +1,6 @@
 plugins {
-  id 'java'
   id "com.gorylenko.gradle-git-properties" version "2.4.1"
+  id 'io.freefair.aggregate-javadoc' version '8.4'
   id "io.freefair.javadoc-links" version "8.4"
 }
 
@@ -10,6 +10,14 @@ allprojects {
     mavenLocal()
     mavenCentral()
     maven { url 'https://jitpack.io' }
+  }
+}
+
+dependencies {
+  rootProject.subprojects { subproject ->
+    subproject.plugins.withId("java") {
+      javadoc subproject
+    }
   }
 }
 
