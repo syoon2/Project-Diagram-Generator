@@ -33,6 +33,12 @@ that corresponds to the provided project.
   functions, private instance variables/functions, and/or the constants using
   the four checkboxes on the right of the screen.
 
+## Documentation
+
+To read the Javadoc for this project, run `./gradlew javadoc` then browse
+the `build/docs/javadoc` folder. The Javadoc for the project (especially the API)
+is currently incomplete due to the absence of documentation from the upstream.
+
 ## License
 
 - API: [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)  
