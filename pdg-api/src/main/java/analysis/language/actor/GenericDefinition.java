@@ -103,7 +103,7 @@ public abstract class GenericDefinition implements Comparable<GenericDefinition>
      * @param vis          the visibility of the function
      * @param funcName     the name of the function
      * @param ret          the return type of the function
-     * @param arga         the arguments that the function takes
+     * @param args         the arguments that the function takes
      * @param statStatic   whether the function is static
      * @param statAbstract whether the function is abstract
      * @param isFinal      whether the function is declared as final
