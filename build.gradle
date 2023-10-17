@@ -49,7 +49,7 @@ subprojects {
     implementation group: 'commons-io', name: 'commons-io', version: '2.14.0'
 
     // Apache Log4j2
-    implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.20.0'
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.21.0'
     runtimeOnly group: 'org.apache.logging.log4j', name: 'log4j-slf4j-impl', version: '2.20.0'
 
     // graphviz-java
