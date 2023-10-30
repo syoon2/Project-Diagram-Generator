@@ -1,6 +1,6 @@
 dependencies {
 
   // Apache Commons Text
-  implementation group: 'org.apache.commons', name: 'commons-text', version: '1.10.0'
+  implementation group: 'org.apache.commons', name: 'commons-text', version: '1.11.0'
 
 }
