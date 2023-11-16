@@ -470,7 +470,7 @@ public class JCheckBoxTree extends JTree {
             pathBuilder.addFirst(currNode);
             currNode = currNode.getParent();
         }
-        return new TreePath(pathBuilder.toArray(new TreeNode[0]));
+        return new TreePath(pathBuilder.toArray(TreeNode[]::new));
     }
 
 }
