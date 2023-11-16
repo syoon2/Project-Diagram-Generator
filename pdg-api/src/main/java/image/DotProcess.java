@@ -69,13 +69,13 @@ public class DotProcess {
         }
 
         private String processInitiation() { // Can manipulate here for adjusting draw settings
-            String out = "digraph G {\n";
-            out += "\tnode[shape=record,style=filled,fillcolor=gray95];\r\n" +
-                    "\tedge[concentrate=true];\n" +
-                    "\tgraph[splines = ortho, ranksep = 1, ratio = fill, color=blue];\n" +
-                    "\trankdir = TB;\n"; // splines = ortho, nodesep = 1 for straight lines, looks rough, let user
-                                         // change how lines are displayed
-            out += StringUtils.LF;
+            String out = "digraph G {\n"
+                    + "\tnode[shape=record,style=filled,fillcolor=gray95];\n"
+                    + "\tedge[concentrate=true];\n"
+                    + "\tgraph[splines = ortho, ranksep = 1, ratio = fill, color=blue];\n"
+                    + "\trankdir = TB;\n" // splines = ortho, nodesep = 1 for straight lines, looks rough, let user
+                                          // change how lines are displayed
+                    + StringUtils.LF;
             return out;
         }
 
