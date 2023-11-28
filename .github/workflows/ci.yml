@@ -30,12 +30,12 @@ jobs:
     - name: Validate Gradle wrapper
       uses: gradle/wrapper-validation-action@v1
     - name: Setup Gradle
-      uses: gradle/gradle-build-action@v2.9.0
+      uses: gradle/gradle-build-action@v2.10.0
       with:
         gradle-version: wrapper
         # dependency-graph: generate-and-submit
     - name: Build
-      uses: gradle/gradle-build-action@v2.9.0
+      uses: gradle/gradle-build-action@v2.10.0
       with:
         arguments: :pdg-launcher:uberJar
     - name: Upload JAR file
