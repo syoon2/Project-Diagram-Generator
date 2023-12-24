@@ -77,10 +77,8 @@ public class PackageTreeNode implements TreeNode {
             for (File subdirectory : subdirectories) {
                 subNodes.add(new PackageTreeNode(this, subdirectory));
             }
-        } else {
-            subNodes = List.<PackageTreeNode>of();
-        }
-
+        } else
+            subNodes = Collections.emptyList();
     }
 
     /**

@@ -9,6 +9,7 @@ package analysis.process.file;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -141,8 +142,10 @@ public abstract class GenericFile {
         handleAssociations(neighbors, bar, classRef);
         if (getStatusFunction()) {
             extractFunctions();
-            in.addFunction(Visibility.PUBLIC, "valueOf", in.getName(), List.of("name"), List.of("String"), true, false, false);
-            in.addFunction(Visibility.PUBLIC, "values", in.getName() + "[]", List.of(), true, false, false);
+            in.addFunction(Visibility.PUBLIC, "valueOf", in.getName(), Collections.singletonList("name"),
+                    Collections.singletonList("String"), true, false, false);
+            in.addFunction(Visibility.PUBLIC, "values", in.getName() + "[]", Collections.emptyList(), true, false,
+                    false);
         }
         if (getStatusConstant()) {
             extractEnumConstants();
