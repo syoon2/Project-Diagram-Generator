@@ -19,7 +19,7 @@ dependencies {
   runtimeOnly group: 'org.apache.logging.log4j', name: 'log4j-core', version: "${log4jVersion}"
 
   // GraalVM JS
-  runtimeOnly group: 'org.graalvm.js', name: 'js', version: '23.0.2'
+  runtimeOnly group: 'org.graalvm.js', name: 'js', version: '23.0.3'
 
   // FlatLaf
   runtimeOnly group: 'com.formdev', name: 'flatlaf', version: '3.3'
