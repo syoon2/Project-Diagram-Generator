@@ -7,4 +7,9 @@ dependencies {
   // Apache Commons Text
   implementation group: 'org.apache.commons', name: 'commons-text', version: '1.11.0'
 
+  // graphviz-java
+  api (group: 'guru.nidi', name: 'graphviz-java', version: '0.18.1') {
+    exclude group: 'guru.nidi.com.kitfox', module: 'svgSalamander'
+  }
+
 }
