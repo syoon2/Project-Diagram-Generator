@@ -6,7 +6,7 @@ plugins {
 
 ext {
   batikVersion = '1.17'
-  junit5Version = '5.10.1'
+  junit5Version = '5.10.2'
   log4jVersion = '2.22.1'
 }
 
