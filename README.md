@@ -6,20 +6,6 @@
 Program that takes the root folder of a Java project and builds a UML diagram
 that corresponds to the provided project.
 
-## Build
-
-### Requirements
-
-- Java 11 or later
-- [Graphviz](https://graphviz.org/) (optional)
-
-### Instructions
-
-1. Clone this repository.
-2. Run `./gradlew :pdg-launcher:run` (if you just want to run
-  this) or `./gradlew :pdg-launcher:uberJar` (if you want an
-  all-in-one JAR file)
-
 ## How to use this
 
 - You need to provide three things for the program to run: the directory of the
@@ -32,6 +18,24 @@ that corresponds to the provided project.
 - You can also filter out whether the UML will contain instance variables,
   functions, private instance variables/functions, and/or the constants using
   the four checkboxes on the right of the screen.
+
+## How to run
+
+### Requirements
+
+- Java 11 or later
+- [Graphviz](https://graphviz.org/) (optional)
+
+### Prebuilt JAR File
+
+- Download the prebuilt JAR file in the [releases](https://github.com/syoon2/Project-Diagram-Generator/releases) page.
+
+### Build Instructions
+
+1. Clone this repository.
+2. Run `./gradlew :pdg-launcher:run` (if you just want to run
+  this) or `./gradlew :pdg-launcher:uberJar` (if you want an
+  all-in-one JAR file)
 
 ## Documentation
 
