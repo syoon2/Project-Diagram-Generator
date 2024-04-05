@@ -89,6 +89,26 @@ public class PDGWindow extends JFrame {
     private static SVGDocumentFactory svgFactory = new SAXSVGDocumentFactory(
             XMLResourceDescriptor.getXMLParserClassName());
 
+    /**
+     * The singleton instance.
+     * 
+     * @since 2.1.0
+     */
+    private static PDGWindow INSTANCE;
+
+    /**
+     * Returns the singleton instance.
+     * 
+     * @return the singleton instance
+     * 
+     * @since 2.1.0
+     */
+    public static PDGWindow instance() {
+        if (INSTANCE == null)
+            INSTANCE = new PDGWindow();
+        return INSTANCE;
+    }
+
     /** The dividing split pane. */
     private JSplitPane panel;
 
@@ -112,7 +132,7 @@ public class PDGWindow extends JFrame {
      * Constructs a new {@code PDGWindow}.
      */
     @SuppressWarnings("unchecked")
-    public PDGWindow() {
+    private PDGWindow() {
         setMinimumSize(new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT));
 
         setupMenuBar();

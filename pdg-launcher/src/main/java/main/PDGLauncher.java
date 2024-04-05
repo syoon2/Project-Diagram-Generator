@@ -194,7 +194,7 @@ public class PDGLauncher {
             logger.catching(e);
         }
 
-        PDGWindow disp = new PDGWindow();
+        PDGWindow disp = PDGWindow.instance();
 
         detector.registerListener(isDark -> {
             SwingUtilities.invokeLater(() -> {
