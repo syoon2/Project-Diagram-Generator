@@ -43,7 +43,6 @@ import org.apache.batik.dom.svg.SVGDocumentFactory;
 import org.apache.batik.swing.JSVGCanvas;
 import org.apache.batik.swing.gvt.AbstractPanInteractor;
 import org.apache.batik.util.XMLResourceDescriptor;
-import org.apache.commons.lang3.JavaVersion;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.SystemUtils;
 import org.apache.logging.log4j.LogManager;
@@ -53,6 +52,7 @@ import org.w3c.dom.svg.SVGDocument;
 import analysis.process.Explore;
 import image.ConvertVisual;
 import image.DotProcess;
+import ui.util.graphviz.GraphvizEngineInitializer;
 
 /**
  * The main GUI window for Project Diagram Generator.
@@ -299,7 +299,7 @@ public class PDGWindow extends JFrame {
                 } catch (Throwable exception) {
                     logger.catching(exception);
                 }
-                generateButton.setEnabled(true);
+                generateButton.setEnabled(GraphvizEngineInitializer.GRAPHVIZ_AVAILABLE);
                 generateButton.setText("Generate image");
             }, "Diagram generator").start();
         });
