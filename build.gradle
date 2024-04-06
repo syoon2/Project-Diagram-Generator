@@ -28,7 +28,7 @@ dependencies {
 
 subprojects {
   group = 'com.github.syoon2.pdg'
-  version = '2.0.1'
+  version = '2.0.2'
 
   apply plugin: 'java'
   apply plugin: "com.gorylenko.gradle-git-properties"
