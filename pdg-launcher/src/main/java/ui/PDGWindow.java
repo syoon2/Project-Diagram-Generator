@@ -282,6 +282,7 @@ public class PDGWindow extends JFrame {
         PackageExcludeOption packageExcludeOption = new PackageExcludeOption(this, directoryOption);
         SaveOption saveOption = new SaveOption(this);
         JButton generateButton = new JButton("Generate image");
+        generateButton.setEnabled(GraphvizEngineInitializer.GRAPHVIZ_AVAILABLE);
         generateButton.addActionListener(event -> {
             new Thread(() -> {
                 try {
