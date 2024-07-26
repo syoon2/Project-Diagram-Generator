@@ -24,7 +24,7 @@ dependencies {
   runtimeOnly group: 'org.openjdk.nashorn', name: 'nashorn-core', version: '15.4'
 
   // FlatLaf
-  runtimeOnly group: 'com.formdev', name: 'flatlaf', version: '3.4.1'
+  runtimeOnly group: 'com.formdev', name: 'flatlaf', version: '3.5'
 
   // jSystemThemeDetector
   implementation group: 'com.github.Dansoftowner', name: 'jSystemThemeDetector', version: '3.9.1'
