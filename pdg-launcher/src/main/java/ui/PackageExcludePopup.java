@@ -18,6 +18,7 @@
 
 package ui;
 
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Frame;
 import java.io.File;
@@ -78,14 +79,13 @@ class PackageExcludePopup extends JDialog {
         if (!rootDir.isDirectory()) {
             throw new IllegalArgumentException("Argument does not represent a directory");
         }
-        Box box = Box.createVerticalBox();
+        setLayout(new BorderLayout());
         tree = new JCheckBoxTree(new PackageTreeNode(rootDir));
         scrollPane = new JScrollPane(tree);
         setPreferredSize(new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT));
-        box.add(scrollPane);
+        add(scrollPane, BorderLayout.CENTER);
         setupSubmitButton();
-        box.add(submitButton);
-        add(box);
+        add(submitButton, BorderLayout.SOUTH);
         pack();
         setModal(true);
         setLocationRelativeTo(parent);
