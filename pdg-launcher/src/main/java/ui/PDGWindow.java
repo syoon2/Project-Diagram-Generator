@@ -117,10 +117,6 @@ public class PDGWindow extends JFrame {
 
     /** User configuration graphic element container. */
     private Container configContainer;
-    /** User input graphic element container. */
-    private Container inputContainer;
-    /** Container for diagram generator options. */
-    private Container optionContainer;
 
     /** Toggleable option checkbox */
     private JCheckBox instanceVarCheck, functionCheck, privateEntityCheck, constantCheck;
@@ -179,6 +175,7 @@ public class PDGWindow extends JFrame {
         panel.setBottomComponent(configContainer);
 
         panel.setResizeWeight(1d);
+        panel.setDividerSize(0);
 
         // Update title
         setTitle(TITLE);
@@ -252,31 +249,12 @@ public class PDGWindow extends JFrame {
 
         setupInputContainer();
         setupOptionContainer();
-
-        GridBagConstraints c = new GridBagConstraints();
-        c.weightx = 0.5d;
-        c.gridx = 0;
-        c.gridy = 0;
-        c.gridheight = 3;
-        c.fill = GridBagConstraints.BOTH;
-        c.insets = new Insets(0, 16, 0, 16);
-
-        configContainer.add(inputContainer, c);
-
-        c.weightx = 0.5d;
-        c.gridx = GridBagConstraints.RELATIVE;
-        c.gridy = 0;
-        c.fill = GridBagConstraints.BOTH;
-        c.anchor = GridBagConstraints.EAST;
-        c.insets = new Insets(16, 16, 16, 32);
-        configContainer.add(optionContainer, c);
     }
 
     /**
      * Sets up the project input elements.
      */
     private void setupInputContainer() {
-        inputContainer = Box.createVerticalBox();
 
         DirectoryOption directoryOption = new DirectoryOption(this);
         PackageExcludeOption packageExcludeOption = new PackageExcludeOption(this, directoryOption);
@@ -304,17 +282,35 @@ public class PDGWindow extends JFrame {
                 generateButton.setText("Generate image");
             }, "Diagram generator").start();
         });
-        inputContainer.add(directoryOption);
-        inputContainer.add(packageExcludeOption);
-        inputContainer.add(saveOption);
-        inputContainer.add(generateButton);
+
+        GridBagConstraints c = new GridBagConstraints();
+        c.weightx = 0.5d;
+        c.gridx = 0;
+        c.gridy = 0;
+        c.fill = GridBagConstraints.BOTH;
+        c.insets = new Insets(16, 16, 8, 8);
+
+        configContainer.add(directoryOption, c);
+
+        c.gridy = GridBagConstraints.RELATIVE;
+        c.insets = new Insets(8, 16, 8, 8);
+        configContainer.add(packageExcludeOption, c);
+        c.insets = new Insets(8, 16, 16, 8);
+        configContainer.add(saveOption, c);
+
+        c.gridx = GridBagConstraints.RELATIVE;
+        c.weightx = 0d;
+        c.gridy = 2;
+        c.fill = GridBagConstraints.BOTH;
+        c.insets = new Insets(8, 8, 16, 16);
+        configContainer.add(generateButton, c);
     }
 
     /**
      * Sets up the checkboxes for diagram options.
      */
     private void setupOptionContainer() {
-        optionContainer = Box.createVerticalBox();
+        Container optionContainer = Box.createVerticalBox();
 
         instanceVarCheck = new JCheckBox(BOOLEAN_SELECTION[0], false);
         functionCheck = new JCheckBox(BOOLEAN_SELECTION[1], false);
@@ -325,6 +321,16 @@ public class PDGWindow extends JFrame {
         optionContainer.add(functionCheck);
         optionContainer.add(privateEntityCheck);
         optionContainer.add(constantCheck);
+
+        GridBagConstraints c = new GridBagConstraints();
+
+        c.weightx = 0d;
+        c.gridx = GridBagConstraints.RELATIVE;
+        c.gridy = 0;
+        c.gridheight = 2;
+        c.fill = GridBagConstraints.BOTH;
+        c.insets = new Insets(16, 8, 8, 16);
+        configContainer.add(optionContainer, c);
     }
 
     /**
