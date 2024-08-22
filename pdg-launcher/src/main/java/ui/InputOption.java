@@ -76,12 +76,14 @@ abstract class InputOption extends JComponent {
         setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
         c.gridx = 0;
+        c.weightx = 1d;
         c.fill = GridBagConstraints.BOTH;
         c.anchor = GridBagConstraints.WEST;
         c.insets = new Insets(0, 0, 0, 16);
         add(getTextField(), c);
 
         c.gridx = GridBagConstraints.RELATIVE;
+        c.weightx = 0d;
         c.insets = new Insets(0, 0, 0, 0);
         c.anchor = GridBagConstraints.EAST;
         add(getButton(), c);
