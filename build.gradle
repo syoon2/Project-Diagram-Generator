@@ -46,8 +46,9 @@ subprojects {
 
   dependencies {
     // JUnit 5 / Jupiter
-    testImplementation("org.junit.jupiter:junit-jupiter:${junit5Version}")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junit5Version}")
+    testImplementation(platform("org.junit:junit-bom:${junit5Version}"))
+    testImplementation("org.junit.jupiter:junit-jupiter")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
     // Apache Commons
     implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.17.0'
