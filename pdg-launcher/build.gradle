@@ -14,7 +14,7 @@ dependencies {
   implementation group: 'commons-cli', name: 'commons-cli', version: '1.9.0'
 
   // Apache Commons Collections
-  implementation group: 'org.apache.commons', name: 'commons-collections4', version: '4.4'
+  implementation group: 'org.apache.commons', name: 'commons-collections4', version: '4.5.0'
 
   // Apache Log4j2
   runtimeOnly group: 'org.apache.logging.log4j', name: 'log4j-slf4j-impl', version: "${log4jVersion}"
