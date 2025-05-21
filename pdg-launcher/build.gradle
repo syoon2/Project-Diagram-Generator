@@ -21,7 +21,7 @@ dependencies {
   runtimeOnly group: 'org.apache.logging.log4j', name: 'log4j-core', version: "${log4jVersion}"
 
   // OpenJDK Nashorn
-  runtimeOnly group: 'org.openjdk.nashorn', name: 'nashorn-core', version: '15.4'
+  runtimeOnly group: 'org.openjdk.nashorn', name: 'nashorn-core', version: '15.6'
 
   // FlatLaf
   runtimeOnly group: 'com.formdev', name: 'flatlaf', version: '3.5.4'
