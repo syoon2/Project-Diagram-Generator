@@ -68,7 +68,8 @@ public class JavaFile extends GenericFile {
         in = in.replaceAll("\"[^\"]*?\"", "\"\""); // remove String literals
         in = in.replaceAll("//.*?\n", StringUtils.LF); // remove comments
 
-        in = in.replaceAll("(?<=@.*)\n", ";\n"); // Buffer @ lines preceding something to be on a separate line
+        //TODO: Put the {0,21413} here instead of * to avoid a bug, look into robust solution
+        in = in.replaceAll("(?<=@.{0,21413})\n", ";\n"); // Buffer @ lines preceding something to be on a separate line
 
         in = in.replaceAll(StringUtils.LF, " "); // remove new lines, add space gaps
         in = in.replaceAll("/\\*.*?\\*/", StringUtils.EMPTY); // remove multi-line comments (/* ... */) with non-greedy
@@ -83,6 +84,7 @@ public class JavaFile extends GenericFile {
         in = bufferCharacter(in, "\\}");
         in = bufferCharacter(in, "\\)");
         in = bufferCharacter(in, "\\(");
+        in = bufferCharacter(in, ",");
         while (in.contains("  ")) {
             in = in.replaceAll("  ", " ");
         }
@@ -332,6 +334,7 @@ public class JavaFile extends GenericFile {
                 while (++posit < use.length && use[posit].matches("[\\w><]*")) {
                     String name = use[posit].replaceAll("<[^>]*>", StringUtils.EMPTY);
                     out.add(name);
+                    posit++;
                 }
             }
         }
