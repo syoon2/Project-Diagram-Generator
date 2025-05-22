@@ -84,7 +84,6 @@ public class JavaFile extends GenericFile {
         in = bufferCharacter(in, "\\}");
         in = bufferCharacter(in, "\\)");
         in = bufferCharacter(in, "\\(");
-        in = bufferCharacter(in, ",");
         while (in.contains("  ")) {
             in = in.replaceAll("  ", " ");
         }
@@ -334,7 +333,6 @@ public class JavaFile extends GenericFile {
                 while (++posit < use.length && use[posit].matches("[\\w><]*")) {
                     String name = use[posit].replaceAll("<[^>]*>", StringUtils.EMPTY);
                     out.add(name);
-                    posit++;
                 }
             }
         }
